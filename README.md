@@ -18,8 +18,10 @@ This app is for organisers and champs of the Day, so PRojectcoded too Organised 
 ## Pub Packages 📦 and Fonts
 
 Well, there are bit so much packages we are using in this App, 
+
 Well, there are bit so much fonts... we are using in this App,
 #### ✍️ WorkSans
+https://fonts.google.com/specimen/Work+Sans
 
 
 #### 🔗 carbon_icons: ^0.0.1+2 
