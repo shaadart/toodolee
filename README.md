@@ -1,16 +1,30 @@
 # toodo
 
-A new Flutter project.
+This is a Readme of Todo App
 
-## Getting Started
+## OverView 👀
 
-This project is a starting point for a Flutter application.
+This project is a starting point for 
+##### Project_Coded 
 
-A few resources to get you started if this is your first Flutter project:
+This is a minimal Todo App, This is one of it's kind it got things, features etc.  to Organise your Day better! the Best part is that it Takes Only 10 Things that are Necessary for anyone to Perform, and you have to Decide what are these 10 Things which you are needed to do? Ask Yourself do you got something on this list? The Project _Coded is Making, by Two Young Developers, Dadzie and Maxsinss.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Scheduling App making Process ⏰
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This app is for organisers and champs of the Day, so PRojectcoded too Organised this app making process! 
+
+![WhatsApp Image 2021-04-21 at 08 12 15](https://user-images.githubusercontent.com/64954854/115496871-31d18a00-a288-11eb-83df-c533cd6c8e28.jpeg)
+
+## Pub Packages 📦 and Fonts
+
+Well, there are bit so much packages we are using in this App, 
+
+Well, there are bit so much fonts... we are using in this App,
+#### ✍️ WorkSans
+https://fonts.google.com/specimen/Work+Sans
+
+
+#### 🔗 carbon_icons: ^0.0.1+2 
+https://pub.dev/packages/carbon_icons
+
+
