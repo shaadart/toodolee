@@ -42,7 +42,7 @@ class _TodoAppState extends State<TodoApp> {
         onPressed: () {
           print("Add it");
         },
-        child: Icon(CarbonIcons.music),
+        child: Icon(CarbonIcons.add),
       ),
     );
   }
