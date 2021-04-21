@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:carbon_icons/carbon_icons.dart';
+import 'package:toodo/uis/addTodoBottomSheet.dart'; //It is an Icons Library
 
 //Home Page
 //Settings
@@ -40,6 +41,7 @@ class _TodoAppState extends State<TodoApp> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          addTodoBottomSheet(context);
           print("Add it");
         },
         child: Icon(CarbonIcons.add),
