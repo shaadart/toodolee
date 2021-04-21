@@ -15,10 +15,14 @@ This app is for organisers and champs of the Day, so PRojectcoded too Organised 
 
 ![WhatsApp Image 2021-04-21 at 08 12 15](https://user-images.githubusercontent.com/64954854/115496871-31d18a00-a288-11eb-83df-c533cd6c8e28.jpeg)
 
-## Pub Packages 📦
+## Pub Packages 📦 and Fonts
 
-Well, there are bit so much packages we using in this App, 
+Well, there are bit so much packages we are using in this App, 
+Well, there are bit so much fonts... we are using in this App,
+#### ✍️ WorkSans
 
-🔗 carbon_icons: ^0.0.1+2
+
+#### 🔗 carbon_icons: ^0.0.1+2 
+https://pub.dev/packages/carbon_icons
 
 
