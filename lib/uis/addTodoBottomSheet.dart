@@ -55,23 +55,21 @@ void addTodoBottomSheet(context) {
                   onPressed: () {},
                   color: Colors.black54,
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      FlatButton.icon(
-                          onPressed: () {},
-                          color: Colors.blue,
-                          icon: Icon(
-                            CarbonIcons.add,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            "Add Todo",
-                            style: TextStyle(color: Colors.white),
-                          ))
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FlatButton.icon(
+                        onPressed: () {},
+                        color: Colors.blue,
+                        icon: Icon(
+                          CarbonIcons.add,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          "Add Todo",
+                          style: TextStyle(color: Colors.white),
+                        ))
+                  ],
                 )
               ],
             )

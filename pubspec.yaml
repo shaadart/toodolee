@@ -29,6 +29,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   carbon_icons: ^0.0.1+2
+  # hive:
+  # path_provider:
+  # hive_flutter:
   
 
 dev_dependencies:

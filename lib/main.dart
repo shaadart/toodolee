@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:carbon_icons/carbon_icons.dart';
-import 'package:toodo/uis/addTodoBottomSheet.dart'; //It is an Icons Library
+import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:toodo/uis/addTodoBottomSheet.dart';
 
 //Home Page
 //Settings
@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: TodoApp(),
         title: 'To Do App',
-        theme: ThemeData(
-          fontFamily: "WorkSans",
-        ));
+        theme: ThemeData(fontFamily: "WorkSans"));
   }
 }
 
@@ -36,8 +34,13 @@ class _TodoAppState extends State<TodoApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Todo App", style: TextStyle(fontWeight: FontWeight.w700)),
-        backgroundColor: Colors.blueAccent[900],
+        elevation: 5,
+        title: Text("Todo App",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Colors.black54,
+            )),
+        backgroundColor: Colors.white,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
