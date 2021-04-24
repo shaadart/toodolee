@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+//import 'package:path_provider/path_provider.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/listui.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:hive/hive.dart';
+//import 'package:hive_flutter/hive_flutter.dart';
 
 //Home Page
 //Settings
@@ -10,6 +14,9 @@ import 'package:toodo/uis/listui.dart';
 //Bottom-Sheet
 
 void main() {
+  // final document = await getApplicationDocumentsDirectory();
+  // Hive.init(document.path);
+  // Hive.openBox("");
   runApp(MyApp());
 }
 
@@ -31,6 +38,9 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
