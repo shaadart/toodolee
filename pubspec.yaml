@@ -23,23 +23,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  #pexels: ^0.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   carbon_icons: ^0.0.1+2
-  #hive:
-  #path_provider:
-  #hive_flutter:
+  hive:
+  path_provider:
+  hive_flutter:
   emoji_picker: ^0.1.0
   # flutter_keyboard_visibility:
   #shared_preferences: ^2.0.5
   
 
 dev_dependencies:
-  #hive_generator:
-  #build_runner:
+  hive_generator:
+  build_runner:
   flutter_test:
     sdk: flutter
 
@@ -56,8 +57,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - jsons/quotes.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

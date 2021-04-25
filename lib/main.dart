@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/pages/more.dart';
-//import 'package:path_provider/path_provider.dart';
+
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/listui.dart';
-//import 'package:path_provider/path_provider.dart';
-//import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
 //import 'package:hive_flutter/hive_flutter.dart';
 
 //Home Page
@@ -13,11 +14,12 @@ import 'package:toodo/uis/listui.dart';
 
 //Todo
 //Bottom-Sheet
-
-void main() {
-  // final document = await getApplicationDocumentsDirectory();
-  // Hive.init(document.path);
-  // Hive.openBox("");
+const String todoBoxname = "todo";
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final document = await getApplicationDocumentsDirectory();
+  Hive.init(document.path);
+  await Hive.openBox<TodoModel>(todoBoxname);
   runApp(MyApp());
 }
 
@@ -39,8 +41,15 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
+  Box<TodoModel> todoBox;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  @override
+  void initState() {
+    
+    super.initState();
+    todoBox = Hive.box<TodoModel>(todoBoxname);
+  }
 
   @override
   Widget build(BuildContext context) {
