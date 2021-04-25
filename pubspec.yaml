@@ -74,16 +74,16 @@ flutter:
   fonts:
     - family: WorkSans
       fonts:
-        - asset: fonts/static/WorkSans-Regular.ttf
-        - asset: fonts/WorkSans-Italic-VariableFont_wght.ttf
-        - asset: fonts/static/WorkSans-SemiBold.ttf
+        - asset: fonts/WorkSans/static/WorkSans-Regular.ttf
+        - asset: fonts/WorkSans/WorkSans-Italic-VariableFont_wght.ttf
+        - asset: fonts/WorkSans/static/WorkSans-SemiBold.ttf
           style: italic
           weight: 600
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+    - family: Elsie
+      fonts:
+        - asset: fonts/Elsie/Elsie-Regular.ttf
+        - asset: fonts/Elsie/Elsie-Black.ttf
+          weight: 900
+  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

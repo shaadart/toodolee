@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:toodo/pages/more.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/listui.dart';
@@ -45,6 +46,17 @@ class _TodoAppState extends State<TodoApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: Icon(
+                CarbonIcons.menu,
+                color: Colors.black87,
+              ),
+              onPressed: () async {
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MorePage()));
+              })
+        ],
         elevation: 5,
         title: Text("Todo App",
             style: TextStyle(
