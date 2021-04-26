@@ -18,7 +18,7 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
     };
     return TodoModel(
       todoName: fields[0] as String,
-      todoRemainder: fields[2] as DateTime,
+      todoRemainder: fields[2] as String,
       todoEmoji: fields[1] as String,
       isCompleted: fields[3] as bool,
     );

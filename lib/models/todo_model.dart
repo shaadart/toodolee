@@ -10,10 +10,12 @@ class TodoModel {
   @HiveField(1)
   String todoEmoji;
   @HiveField(2)
-  DateTime todoRemainder;
+  String todoRemainder;
   @HiveField(3)
   bool isCompleted;
 
   TodoModel(
       {this.todoName, this.todoRemainder, this.todoEmoji, this.isCompleted});
+
+  
 }

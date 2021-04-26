@@ -7,12 +7,14 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
 
 Box<TodoModel> todoBox;
+int totalTodoItem = 10;
+
+String selectedEmoji;
 
 void addTodoBottomSheet(context) {
-  DateTime todoRemainder;
   String todoName = (titleController.text).toString();
+  String todoRemainder;
 
-  String selectedEmoji;
   bool showEmojiKeyboard = false;
 
   FocusNode focusNode = FocusNode();
@@ -33,7 +35,7 @@ void addTodoBottomSheet(context) {
         Widget emojiSelect() {
           return EmojiPicker(
               numRecommended: 25,
-              recommendKeywords: ["sing", "coding"],
+              recommendKeywords: todoName.split(" "),
               columns: 7,
               rows: 3,
               onEmojiSelected: (emoji, catergory) {
@@ -43,9 +45,10 @@ void addTodoBottomSheet(context) {
               });
         }
 
-        // @override
+        @override
         void initState() {
           //super.initState();
+
           focusNode.addListener(() {
             if (focusNode.hasFocus) {
               setState(() {
@@ -53,6 +56,17 @@ void addTodoBottomSheet(context) {
               });
             }
           });
+        }
+
+        Future<TimeOfDay> openTimePicker(BuildContext context) async {
+          final TimeOfDay t = await showTimePicker(
+              context: context, initialTime: TimeOfDay.now());
+
+          if (t != null) {
+            setState(() {
+              todoRemainder = t.format(context);
+            });
+          }
         }
 
         return Wrap(
@@ -69,6 +83,9 @@ void addTodoBottomSheet(context) {
                         children: [
                           TextFormField(
                             controller: titleController,
+                            onChanged: (value) {
+                              todoName = value;
+                            },
                             onTap: () {
                               showEmojiKeyboard = false;
                             },
@@ -107,12 +124,8 @@ void addTodoBottomSheet(context) {
                                   IconButton(
                                     icon: Icon(CarbonIcons.notification),
                                     onPressed: () async {
-                                      TimeOfDay timeChoosen =
-                                          await showTimePicker(
-                                        context: context,
-                                        initialTime:
-                                            TimeOfDay(hour: 7, minute: 15),
-                                      );
+                                      openTimePicker(context);
+                                      print(time.hour);
                                       // todoRemainder = timeChoosen as DateTime;
                                     },
                                     color: Colors.black54,
@@ -146,9 +159,16 @@ void addTodoBottomSheet(context) {
                                             todoEmoji: selectedEmoji.toString(),
                                             isCompleted: false);
 
-                                        todoBox.add(todo);
+                                        if (todo.todoName.length > 2) {
+                                          todoBox.add(todo);
+                                        }
+                                        totalTodoItem = totalTodoItem - 1;
 
                                         Navigator.pop(context);
+
+                                        setState(() {
+                                          print(totalTodoItem);
+                                        });
                                       },
                                       color: Colors.blue,
                                       icon: Icon(

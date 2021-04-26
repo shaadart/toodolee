@@ -15,6 +15,8 @@ import 'package:hive/hive.dart';
 //Todo
 //Bottom-Sheet
 const String todoBoxname = "todo";
+TimeOfDay time;
+TimeOfDay picked;
 final TextEditingController titleController = TextEditingController();
 final TextEditingController descriptionController = TextEditingController();
 
@@ -46,7 +48,6 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  
   @override
   void initState() {
     super.initState();
@@ -78,12 +79,14 @@ class _TodoAppState extends State<TodoApp> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // showEmojiKeyboard ? emojiSelect() : Container(),
           addTodoBottomSheet(context);
           print("Add it");
         },
         child: Icon(CarbonIcons.add),
       ),
-      body: TodoCard(), 
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: TodoCard(),
     );
   }
 }

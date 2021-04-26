@@ -8,10 +8,19 @@ import 'package:carbon_icons/carbon_icons.dart';
 import 'package:toodo/uis/more_options_lists.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class TodoCard extends StatelessWidget {
+import 'addTodoBottomSheet.dart';
+
+class TodoCard extends StatefulWidget {
   const TodoCard({
     Key key,
   }) : super(key: key);
+
+  @override
+  _TodoCardState createState() => _TodoCardState();
+}
+
+class _TodoCardState extends State<TodoCard> {
+  //bool isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +28,12 @@ class TodoCard extends StatelessWidget {
         valueListenable: Hive.box<TodoModel>(todoBoxname).listenable(),
         builder: (context, Box<TodoModel> box, _) {
           List<int> keys = box.keys.cast<int>().toList();
-          if (todoBoxname.isEmpty) {
+          if (todoBox.isEmpty) {
             return Center(
-              child: Text('No Data Available'),
+              child: Text(
+                'No Data Available',
+                style: TextStyle(color: Colors.black26),
+              ),
             );
           } else {
             return ListView.separated(
@@ -34,9 +46,13 @@ class TodoCard extends StatelessWidget {
 
                   return Card(
                     color: Colors.white,
+                    elevation: 1.4,
                     child: Wrap(
                       children: [
                         ListTile(
+                          onLongPress: () {
+                            print("object");
+                          },
                           leading: IconButton(
                               icon: Icon(CarbonIcons.checkbox),
                               onPressed: () {}),
@@ -52,7 +68,7 @@ class TodoCard extends StatelessWidget {
                         // ),
                         ButtonBar(
                           children: [
-                            Text('${todo.todoRemainder}'),
+                            Text('${todo.todoRemainder.toString()}'),
                             Text(
                               "•",
                               style: TextStyle(fontSize: 20),
