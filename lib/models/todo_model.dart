@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
 
 part 'todo_model.g.dart';
 
@@ -8,13 +8,12 @@ class TodoModel {
   @HiveField(0)
   String todoName;
   @HiveField(1)
-  String todoDescription;
-  @HiveField(2)
   String todoEmoji;
-  @HiveField(3)
+  @HiveField(2)
   DateTime todoRemainder;
-  @HiveField(4)
+  @HiveField(3)
   bool isCompleted;
 
-  TodoModel({this.todoName, this.todoDescription, this.isCompleted, this.todoRemainder, this.todoEmoji});
+  TodoModel(
+      {this.todoName, this.todoRemainder, this.todoEmoji, this.isCompleted});
 }

@@ -26,16 +26,15 @@ dependencies:
   #pexels: ^0.1.1
 
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   carbon_icons: ^0.0.1+2
   hive:
   path_provider:
+  share: ^2.0.1
   hive_flutter:
+  shared_preferences: ^0.5.4
   emoji_picker: ^0.1.0
-  # flutter_keyboard_visibility:
-  #shared_preferences: ^2.0.5
+  
   
 
 dev_dependencies:

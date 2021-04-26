@@ -1,10 +1,20 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:toodo/main.dart';
 import 'dart:async';
+import 'package:hive/hive.dart';
 import 'package:emoji_picker/emoji_picker.dart';
+import 'package:toodo/models/todo_model.dart';
+
+Box<TodoModel> todoBox;
 
 void addTodoBottomSheet(context) {
+  DateTime todoRemainder;
+  String todoName = (titleController.text).toString();
+
+  String selectedEmoji;
   bool showEmojiKeyboard = false;
+
   FocusNode focusNode = FocusNode();
 
   showModalBottomSheet(
@@ -18,11 +28,22 @@ void addTodoBottomSheet(context) {
       ),
     ),
     builder: (context) {
-      // Using Wrap makes the bottom sheet height the height of the content.
-      // Otherwise, the height will be half the height of the screen.
-      return StatefulBuilder(builder: (BuildContext context,
-          StateSetter setState /*You can rename this!*/) {
-        @override
+      return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        Widget emojiSelect() {
+          return EmojiPicker(
+              numRecommended: 25,
+              recommendKeywords: ["sing", "coding"],
+              columns: 7,
+              rows: 3,
+              onEmojiSelected: (emoji, catergory) {
+                setState(() {
+                  selectedEmoji = emoji.emoji;
+                });
+              });
+        }
+
+        // @override
         void initState() {
           //super.initState();
           focusNode.addListener(() {
@@ -47,8 +68,12 @@ void addTodoBottomSheet(context) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           TextFormField(
+                            controller: titleController,
+                            onTap: () {
+                              showEmojiKeyboard = false;
+                            },
                             focusNode: focusNode,
-                            autofocus: false,
+                            autofocus: true,
                             autocorrect: true,
                             decoration: InputDecoration(
                               hoverColor: Colors.amber,
@@ -82,21 +107,27 @@ void addTodoBottomSheet(context) {
                                   IconButton(
                                     icon: Icon(CarbonIcons.notification),
                                     onPressed: () async {
-                                      final TimeOfDay newTime =
+                                      TimeOfDay timeChoosen =
                                           await showTimePicker(
                                         context: context,
                                         initialTime:
                                             TimeOfDay(hour: 7, minute: 15),
                                       );
+                                      // todoRemainder = timeChoosen as DateTime;
                                     },
                                     color: Colors.black54,
                                   ),
                                   IconButton(
-                                    icon: Icon(CarbonIcons.face_add),
+                                    icon: selectedEmoji == null
+                                        ? Icon(CarbonIcons.face_add)
+                                        : Text(
+                                            selectedEmoji,
+                                            style: TextStyle(fontSize: 20),
+                                          ),
                                     onPressed: () {
+                                      focusNode.unfocus();
+                                      focusNode.canRequestFocus = false;
                                       setState(() {
-                                        focusNode.unfocus();
-                                        focusNode.canRequestFocus = false;
                                         showEmojiKeyboard = !showEmojiKeyboard;
                                       });
                                     },
@@ -108,7 +139,17 @@ void addTodoBottomSheet(context) {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   FlatButton.icon(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        TodoModel todo = TodoModel(
+                                            todoName: todoName,
+                                            todoRemainder: todoRemainder,
+                                            todoEmoji: selectedEmoji.toString(),
+                                            isCompleted: false);
+
+                                        todoBox.add(todo);
+
+                                        Navigator.pop(context);
+                                      },
                                       color: Colors.blue,
                                       icon: Icon(
                                         CarbonIcons.add,
@@ -146,15 +187,4 @@ void addTodoBottomSheet(context) {
       });
     },
   );
-}
-
-Widget emojiSelect() {
-  return EmojiPicker(
-      numRecommended: 25,
-      recommendKeywords: ["sing", "coding"],
-      columns: 7,
-      rows: 3,
-      onEmojiSelected: (emoji, catergory) {
-        print(emoji);
-      });
 }
