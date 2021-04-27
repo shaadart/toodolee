@@ -1,7 +1,45 @@
 //import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 //import "package:pexels/pexels.dart";
 //import 'dart:async';
+//
+List<StaggeredTile> _cardTile = <StaggeredTile>[
+  StaggeredTile.count(2, 2),
+  StaggeredTile.count(2, 4),
+  StaggeredTile.count(2, 3),
+  StaggeredTile.count(2, 1),
+  StaggeredTile.count(15, 1),
+  StaggeredTile.count(15, 1),
+  StaggeredTile.count(15, 1),
+  StaggeredTile.count(15, 1),
+];
+
+//List of Cards with color and icon
+List<Widget> _listTile = <Widget>[
+  BackGroundTile(
+      backgroundColor: Colors.amberAccent.withOpacity(0.6),
+      icondata: Icons.wb_sunny),
+  BackGroundTile(
+      backgroundColor: Colors.lightGreenAccent.withOpacity(0.6),
+      icondata: Icons.lightbulb),
+  BackGroundTile(
+      backgroundColor: Colors.blueAccent.withOpacity(0.6),
+      icondata: Icons.format_quote_sharp),
+  BackGroundTile(
+      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
+      icondata: Icons.check),
+  BackGroundTile(
+      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
+      icondata: Icons.check),
+  BackGroundTile(
+      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
+      icondata: Icons.check),
+  BackGroundTile(
+      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
+      icondata: Icons.check),
+];
 
 class MorePage extends StatefulWidget {
   @override
@@ -13,60 +51,45 @@ class _MorePageState extends State<MorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black54),
-          elevation: 5,
-          title: Text("More Page",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.black54,
-              )),
-          backgroundColor: Colors.white,
-        ),
-        body: ListView(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Card(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 1.8,
-                    color: Colors.red,
-                    child: Text("data"),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Card(
-                  child: Expanded(
-                    child: Container(
-                      color: Colors.blue,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ListTile(
-                          title: Text(
-                            "The true way to render ourselves happy is to love our work and find in it our pleasure. ",
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.04),
-                          ),
-                          subtitle: Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              "......",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.03),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ]));
+      iconTheme: IconThemeData(color: Colors.black54),
+      elevation: 5,
+      title: Text("More Page",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Colors.black54,
+          )),
+      backgroundColor: Colors.white,
+    ));
+    body:
+    Container(
+      // Staggered Grid View starts here
+      child: ListView(
+        children: [
+          StaggeredGridView.count(
+            crossAxisCount: 4,
+            staggeredTiles: _cardTile,
+            children: _listTile,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BackGroundTile extends StatelessWidget {
+  final Color backgroundColor;
+  final IconData icondata;
+
+  BackGroundTile({this.backgroundColor, this.icondata});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: backgroundColor,
+      child: Icon(icondata, color: Colors.white),
+    );
   }
 }
 

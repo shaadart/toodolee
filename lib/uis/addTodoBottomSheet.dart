@@ -145,7 +145,13 @@ void addTodoBottomSheet(context) {
                                       });
                                     },
                                     color: Colors.black54,
-                                  )
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        CarbonIcons.camera,
+                                        color: Colors.black54,
+                                      ),
+                                      onPressed: () {})
                                 ],
                               ),
                               Row(

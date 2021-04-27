@@ -34,6 +34,11 @@ dependencies:
   hive_flutter:
   shared_preferences: ^0.5.4
   emoji_picker: ^0.1.0
+  flutter_staggered_grid_view: ^0.4.0
+  screenshot: ^0.2.0
+  flutter_local_notifications: ^5.0.0+1
+  camera:
+  
   
   
 
@@ -84,6 +89,12 @@ flutter:
         - asset: fonts/Elsie/Elsie-Regular.ttf
         - asset: fonts/Elsie/Elsie-Black.ttf
           weight: 900
+
+    - family: AlegreyaSc
+      fonts:
+        - asset: fonts/Alegreya_SC/AlegreyaSC-Black.ttf
+        - asset: fonts/Alegreya_SC/AlegreyaSC-Medium.ttf
+          weight: 700
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
