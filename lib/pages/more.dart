@@ -10,10 +10,10 @@ List<StaggeredTile> _cardTile = <StaggeredTile>[
   StaggeredTile.count(2, 4),
   StaggeredTile.count(2, 3),
   StaggeredTile.count(2, 1),
-  StaggeredTile.count(15, 1),
-  StaggeredTile.count(15, 1),
-  StaggeredTile.count(15, 1),
-  StaggeredTile.count(15, 1),
+  // StaggeredTile.count(15, 1),
+  // StaggeredTile.count(15, 1),
+  // StaggeredTile.count(15, 1),
+  // StaggeredTile.count(15, 1),
 ];
 
 //List of Cards with color and icon

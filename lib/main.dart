@@ -8,7 +8,7 @@ import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/listui.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
-import 'package:camera/camera.dart';
+//import 'package:camera/camera.dart';
 //import 'package:process/process.dart';
 //import 'package:hive_flutter/hive_flutter.dart';
 
@@ -20,10 +20,11 @@ import 'package:camera/camera.dart';
 const String todoBoxname = "todo";
 TimeOfDay time;
 TimeOfDay picked;
-final TextEditingController titleController = TextEditingController();
+
 final TextEditingController descriptionController = TextEditingController();
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final document = await getApplicationDocumentsDirectory();
@@ -76,7 +77,7 @@ class _TodoAppState extends State<TodoApp> {
               })
         ],
         elevation: 3,
-        title: Text("Todo App 💙",
+        title: Text("Toodolee 💙",
             style: TextStyle(
               fontWeight: FontWeight.w700,
               color: Colors.blue,

@@ -15,7 +15,8 @@ class TodoModel {
   bool isCompleted;
 
   TodoModel(
-      {this.todoName, this.todoRemainder, this.todoEmoji, this.isCompleted});
-
-  
+      {this.todoName,
+      this.todoRemainder,
+      this.todoEmoji,
+      this.isCompleted}); //added false, value, if getting errors, remove "false" from here
 }

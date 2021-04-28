@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:toodo/main.dart';
@@ -8,13 +10,14 @@ import 'package:toodo/models/todo_model.dart';
 
 Box<TodoModel> todoBox;
 int totalTodoItem = 10;
-
+int initialTodoItem = 0;
+final TextEditingController titleController = TextEditingController();
 String selectedEmoji;
 
 void addTodoBottomSheet(context) {
   String todoName = (titleController.text).toString();
   String todoRemainder;
-
+  bool isCompleted = false;
   bool showEmojiKeyboard = false;
 
   FocusNode focusNode = FocusNode();
@@ -37,6 +40,7 @@ void addTodoBottomSheet(context) {
               numRecommended: 25,
               recommendKeywords: todoName.split(" "),
               columns: 7,
+              buttonMode: ButtonMode.CUPERTINO,
               rows: 3,
               onEmojiSelected: (emoji, catergory) {
                 setState(() {
@@ -83,6 +87,7 @@ void addTodoBottomSheet(context) {
                         children: [
                           TextFormField(
                             controller: titleController,
+                            maxLength: 20,
                             onChanged: (value) {
                               todoName = value;
                             },
@@ -124,8 +129,8 @@ void addTodoBottomSheet(context) {
                                   IconButton(
                                     icon: Icon(CarbonIcons.notification),
                                     onPressed: () async {
-                                      openTimePicker(context);
-                                      print(time.hour);
+                                      await openTimePicker(context);
+
                                       // todoRemainder = timeChoosen as DateTime;
                                     },
                                     color: Colors.black54,
@@ -146,12 +151,6 @@ void addTodoBottomSheet(context) {
                                     },
                                     color: Colors.black54,
                                   ),
-                                  IconButton(
-                                      icon: Icon(
-                                        CarbonIcons.camera,
-                                        color: Colors.black54,
-                                      ),
-                                      onPressed: () {})
                                 ],
                               ),
                               Row(
@@ -169,12 +168,42 @@ void addTodoBottomSheet(context) {
                                           todoBox.add(todo);
                                         }
                                         totalTodoItem = totalTodoItem - 1;
-
-                                        Navigator.pop(context);
-
+                                        titleController.clear();
                                         setState(() {
                                           print(totalTodoItem);
+                                          selectedEmoji == "";
+                                          todoRemainder == null;
                                         });
+                                        Navigator.pop(context);
+                                        //sleep(Duration(seconds: 1));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                backgroundColor:
+                                                    Colors.blue[200],
+                                                content: Row(
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                            "${todo.todoEmoji}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                    Expanded(
+                                                        flex: 5,
+                                                        child: Text(
+                                                          "${todo.todoName}, is Added to the Toodolee",
+                                                        )),
+                                                    // FlatButton(
+                                                    //   child: Text("Undo"),
+                                                    //   color: Colors.white,
+                                                    //   onPressed: () async{
+                                                    //     await box.deleteAt(index);
+                                                    //     Navigator.pop(context);
+                                                    //   },
+                                                    // ),
+                                                  ],
+                                                )));
                                       },
                                       color: Colors.blue,
                                       icon: Icon(
