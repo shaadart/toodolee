@@ -13,12 +13,12 @@ int totalTodoItem = 10;
 int initialTodoItem = 0;
 final TextEditingController titleController = TextEditingController();
 String selectedEmoji;
-
-void addTodoBottomSheet(context) {
   String todoName = (titleController.text).toString();
   String todoRemainder;
   bool isCompleted = false;
   bool showEmojiKeyboard = false;
+void addTodoBottomSheet(context) {
+
 
   FocusNode focusNode = FocusNode();
 

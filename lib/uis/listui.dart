@@ -57,8 +57,20 @@ class _TodoCardState extends State<TodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
+                                  // todo.isCompleted = true;
                                   setState(() {
                                     todo.isCompleted = !todo.isCompleted;
+                                    if (todo.isCompleted == true) {
+                                      TodoModel modifiedtodo = TodoModel(
+                                          todoName: todo.todoName,
+                                          todoRemainder: todo.todoRemainder,
+                                          todoEmoji: selectedEmoji.toString(),
+                                          isCompleted: true);
+
+                                      todoBox.add(modifiedtodo);
+
+                                      todoBox.deleteAt(index);
+                                    }
                                   });
                                   // if (todo.isCompleted == true) {
                                   //   await playLocalAsset();
