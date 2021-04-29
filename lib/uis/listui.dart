@@ -6,6 +6,7 @@ import 'package:toodo/models/todo_model.dart';
 import 'package:share/share.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:dart_random_choice/dart_random_choice.dart';
 
 Box<TodoModel> box;
 Box<TodoModel> dbox;
@@ -31,13 +32,67 @@ class _TodoCardState extends State<TodoCard> {
         builder: (context, Box<TodoModel> box, _) {
           List<int> keys = box.keys.cast<int>().toList();
 
+          Map<String, String> imageLists = {
+            'assets/bitmojis/battery full.png': "Energy, aaaaaaaa.. Me = Bolt",
+            'assets/bitmojis/busy.png': "Get Things done, Nowww...",
+            'assets/bitmojis/cat.png':
+                "We Belive in Work, goodness comes automatically, do we?",
+            'assets/bitmojis/check.png': "Writing it first then check it",
+            'assets/bitmojis/coffee.png':
+                "Die hard fan of Coffee, but work is priority",
+            'assets/bitmojis/dog.png':
+                "I turn Dreams to Real, after undertanding, i have to work for it",
+            'assets/bitmojis/good.png': "good.. now lift goods..",
+            'assets/bitmojis/guitar.png':
+                "Energy-ised! Now to break all the odds..",
+            'assets/bitmojis/hey 2.png':
+                "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
+            'assets/bitmojis/hey bro.png':
+                "Hey Beauty, do You know you work is more beautiful?",
+            'assets/bitmojis/hey hi.png':
+                "Welcome to the realest world... #Worldofwork",
+            'assets/bitmojis/hi 2.png': "Toooooodooooo, hiiiiiiiiiiiis",
+            'assets/bitmojis/hi 3.png':
+                "if you think, your work is sweeter than any stuff, you are a bolt...",
+            'assets/bitmojis/hi 4.png': "Can't Mail you, So i mailed myself..",
+            'assets/bitmojis/hi 5.png':
+                "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got Work.. ",
+            'assets/bitmojis/hi 6.png':
+                "I am going to work on this chicken, you can also join me...",
+            'assets/bitmojis/hi 7.png':
+                "hewwwwww.. to the 'work'-'shipper', - Who ships work, to its Destrination",
+            'assets/bitmojis/hi 8.png':
+                "Going to space... to see what stars you will make",
+            'assets/bitmojis/ji 9.png':
+                "Hey.. hey.. hey.. Today is Blessed to see you.. yes 'today'.",
+          };
+          var r = imageLists[randomChoice(imageLists.keys)];
+
           if (todoBox.isEmpty == true) {
-            return Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'No Data Available',
-                  style: TextStyle(color: Colors.black26),
-                ));
+            return Column(
+              children: [
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                      Colors.white.withOpacity(0.3), BlendMode.colorDodge),
+                  child: Container(
+                    // width: MediaQuery.of(context).size.width / 1.1,
+                    child: Center(
+                      child: Image.asset(
+                        r[keys],
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: Text(
+                        "r[value]",
+                        style: TextStyle(color: Colors.black26, fontSize: 15),
+                      ),
+                    )),
+              ],
+            );
           } else if (todoBox.length == todoBox.length) {
             return SingleChildScrollView(
                 physics: ScrollPhysics(),
@@ -62,18 +117,38 @@ class _TodoCardState extends State<TodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
-                                  TodoModel completedTodo = TodoModel(
-                                    todoName: todo.todoName,
-                                    todoEmoji: todo.todoEmoji,
-                                    todoRemainder: todo.todoRemainder,
-                                    isCompleted: todo.isCompleted = true,
-                                  );
-                                  todoBox.put(key, completedTodo);
+                                  setState(() {
+                                    todo.isCompleted = !todo.isCompleted;
+                                    if (todo.isCompleted == true) {
+                                      TodoModel completedTodo = TodoModel(
+                                        todoName: todo.todoName,
+                                        todoEmoji: todo.todoEmoji,
+                                        todoRemainder: todo.todoRemainder,
+                                        isCompleted: todo.isCompleted = true,
+                                      );
+                                      todoBox.put(key, completedTodo);
+                                    } else {
+                                      TodoModel incompletedTodo = TodoModel(
+                                        todoName: todo.todoName,
+                                        todoEmoji: todo.todoEmoji,
+                                        todoRemainder: todo.todoRemainder,
+                                        isCompleted: todo.isCompleted = false,
+                                      );
+                                      todoBox.put(key, incompletedTodo);
+                                    }
+                                  });
                                   // setState(() {
                                   //   todo.isCompleted = !todo.isCompleted;
 
                                   // });
                                 },
+
+                                //   child: ListTile(
+                                //       trailing: Text("${completedTodo.todoEmoji}"),
+                                //       title: Text("${completedTodo.todoName}"),
+                                //       subtitle: Text("${completedTodo.todoRemainder}")),
+                                // ););
+
                                 icon: todo.isCompleted == false
                                     ? Icon(CarbonIcons.radio_button,
                                         color: Colors.blue)
@@ -177,8 +252,10 @@ class _TodoCardState extends State<TodoCard> {
                                             Divider(),
                                             FlatButton(
                                               onPressed: () async {
-                                                totalTodoItem += 1;
                                                 await box.deleteAt(index);
+                                                setState(() {
+                                                  dataToChange += 1;
+                                                });
                                                 Navigator.pop(context);
                                               },
                                               child: ListTile(

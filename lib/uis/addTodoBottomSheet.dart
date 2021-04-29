@@ -9,18 +9,17 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
 
 Box<TodoModel> todoBox;
+int dataToChange = 2;
+// int indexT;
 
-int totalTodoItem = 10;
 int initialTodoItem = 0;
 final TextEditingController titleController = TextEditingController();
 String selectedEmoji;
-  String todoName = (titleController.text).toString();
-  String todoRemainder;
-  bool isCompleted = false;
-  bool showEmojiKeyboard = false;
+String todoName = (titleController.text).toString();
+String todoRemainder;
+bool isCompleted = false;
+bool showEmojiKeyboard = false;
 void addTodoBottomSheet(context) {
-
-
   FocusNode focusNode = FocusNode();
 
   showModalBottomSheet(
@@ -72,6 +71,12 @@ void addTodoBottomSheet(context) {
               todoRemainder = t.format(context);
             });
           }
+        }
+
+        void remainingTodoCount() {
+          setState(() {
+            dataToChange = dataToChange - todoBox.length;
+          });
         }
 
         return Wrap(
@@ -128,13 +133,18 @@ void addTodoBottomSheet(context) {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   IconButton(
-                                    icon: Icon(CarbonIcons.notification),
+                                    icon: (todoRemainder != null)
+                                        ? Icon(CarbonIcons.notification_filled,
+                                            color: Colors.blue)
+                                        : Icon(CarbonIcons.notification),
                                     onPressed: () async {
                                       await openTimePicker(context);
 
                                       // todoRemainder = timeChoosen as DateTime;
                                     },
-                                    color: Colors.black54,
+                                    color: (todoRemainder != null)
+                                        ? Colors.blue
+                                        : Colors.black54,
                                   ),
                                   IconButton(
                                     icon: selectedEmoji == null
@@ -167,11 +177,13 @@ void addTodoBottomSheet(context) {
 
                                         if (todo.todoName.length > 2) {
                                           todoBox.add(todo);
+                                          setState(() {
+                                            dataToChange -= 1;
+                                          });
                                         }
-                                        totalTodoItem = totalTodoItem - 1;
+
                                         titleController.clear();
                                         setState(() {
-                                          print(totalTodoItem);
                                           selectedEmoji == "";
                                           todoRemainder == null;
                                         });
@@ -186,7 +198,10 @@ void addTodoBottomSheet(context) {
                                                     Expanded(
                                                         flex: 1,
                                                         child: Text(
-                                                            "${todo.todoEmoji}",
+                                                            todo.todoEmoji ==
+                                                                    "null"
+                                                                ? "👍"
+                                                                : "${todo.todoEmoji}",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white))),
