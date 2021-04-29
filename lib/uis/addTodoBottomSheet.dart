@@ -9,6 +9,7 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
 
 Box<TodoModel> todoBox;
+
 int totalTodoItem = 10;
 int initialTodoItem = 0;
 final TextEditingController titleController = TextEditingController();

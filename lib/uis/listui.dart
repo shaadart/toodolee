@@ -7,6 +7,9 @@ import 'package:share/share.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 
+Box<TodoModel> box;
+Box<TodoModel> dbox;
+
 class TodoCard extends StatefulWidget {
   const TodoCard({
     Key key,
@@ -17,6 +20,8 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
+  TodoModel get indexT => null;
+
   //bool isCompleted = false;
 
   @override
@@ -33,7 +38,7 @@ class _TodoCardState extends State<TodoCard> {
                   'No Data Available',
                   style: TextStyle(color: Colors.black26),
                 ));
-          } else {
+          } else if (todoBox.length == todoBox.length) {
             return SingleChildScrollView(
                 physics: ScrollPhysics(),
                 child: ListView.separated(
@@ -48,7 +53,7 @@ class _TodoCardState extends State<TodoCard> {
                       //todo.isCompleted = false;
                       return Card(
                         color: Colors.white,
-                        elevation: 2.4,
+                        elevation: 0.7,
                         child: Wrap(
                           children: [
                             ListTile(
@@ -57,24 +62,17 @@ class _TodoCardState extends State<TodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
-                                  // todo.isCompleted = true;
-                                  setState(() {
-                                    todo.isCompleted = !todo.isCompleted;
-                                    if (todo.isCompleted == true) {
-                                      TodoModel modifiedtodo = TodoModel(
-                                          todoName: todo.todoName,
-                                          todoRemainder: todo.todoRemainder,
-                                          todoEmoji: selectedEmoji.toString(),
-                                          isCompleted: true);
+                                  TodoModel completedTodo = TodoModel(
+                                    todoName: todo.todoName,
+                                    todoEmoji: todo.todoEmoji,
+                                    todoRemainder: todo.todoRemainder,
+                                    isCompleted: todo.isCompleted = true,
+                                  );
+                                  todoBox.put(key, completedTodo);
+                                  // setState(() {
+                                  //   todo.isCompleted = !todo.isCompleted;
 
-                                      todoBox.add(modifiedtodo);
-
-                                      todoBox.deleteAt(index);
-                                    }
-                                  });
-                                  // if (todo.isCompleted == true) {
-                                  //   await playLocalAsset();
-                                  // }
+                                  // });
                                 },
                                 icon: todo.isCompleted == false
                                     ? Icon(CarbonIcons.radio_button,

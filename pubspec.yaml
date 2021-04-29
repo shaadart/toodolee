@@ -102,6 +102,14 @@ flutter:
         - asset: fonts/Alegreya_SC/AlegreyaSC-Black.ttf
         - asset: fonts/Alegreya_SC/AlegreyaSC-Medium.ttf
           weight: 700
-  
+
+    - family: Itim
+      fonts:
+        - asset: fonts/Itim/Itim-Regular.ttf
+        
+    - family: cafe24_behappy
+      fonts:
+        - asset: fonts/cafe24_behappy/Cafe24Behappy.ttf
+          
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
