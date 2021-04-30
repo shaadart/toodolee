@@ -48,7 +48,7 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hey 2.png':
                 "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
             'assets/bitmojis/hey bro.png':
-                "Hey Beauty, do You know you work is more beautiful?",
+                "Hey Beauty, do You know? your work is more beautiful?",
             'assets/bitmojis/hey hi.png':
                 "Welcome to the realest world... #Worldofwork",
             'assets/bitmojis/hi 2.png': "Toooooodooooo, hiiiiiiiiiiiis",
@@ -60,13 +60,98 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hi 6.png':
                 "I am going to work on this chicken, you can also join me...",
             'assets/bitmojis/hi 7.png':
-                "hewwwwww.. to the 'work'-'shipper', - Who ships work, to its Destrination",
+                "hewwwwww.. to the 'work'-'shipper', - Who ships work, to its Destination",
             'assets/bitmojis/hi 8.png':
                 "Going to space... to see what stars you will make",
-            'assets/bitmojis/ji 9.png':
+            'assets/bitmojis/hi 9.png':
                 "Hey.. hey.. hey.. Today is Blessed to see you.. yes 'today'.",
+            'assets/bitmojis/hi 10.png':
+                "Let me Greet you with all the greeting i have, so you do your toodoolees like toodles",
+            'assets/bitmojis/hi 11.png':
+                "Going to the operator, to ask them to Kill the Subscription of my 'Nut-Flix'..",
+            'assets/bitmojis/hi 12.png':
+                "Will you join, We are going to the astronauts in space, so to check what Computers they use in space? it's certernaily not windows.",
+            'assets/bitmojis/hi 13.png':
+                "Me = says, good. and spreading lucks to all of you.",
+            'assets/bitmojis/hi 14.png':
+                "Stick with me...We will go to different places after the work",
+            'assets/bitmojis/hi 15.png': "This Origami can fly...",
+            'assets/bitmojis/hi 16.png':
+                "This Boi, is really good at tongue Twisting, i need to work hard from now..",
+            'assets/bitmojis/hi 18.png':
+                "Saaalaaaaaaaaaaaaaaam.... to all revolutionaries",
+            'assets/bitmojis/hi 19.png': "Halloo, unlimited times, Haloo ++",
+            'assets/bitmojis/hi 20.png':
+                "Aloha.. I am in Hawaii, yeah, but still got work here..",
+            'assets/bitmojis/hi 21.png':
+                "best time to enjoy, live, and schedule... Lemme schedule this day",
+            'assets/bitmojis/hi 22.png':
+                "I drink so much coffee at work, I consider it part of my daily grind.",
+            'assets/bitmojis/hi 23.png':
+                "Going to the Space to plant this, so it will see your progress when i will not be there. ",
+            'assets/bitmojis/hi 24.png':
+                "Under the sea... (in a Vacation). Yeah, i will work here too..",
+            'assets/bitmojis/hi bush.png':
+                "It's my Dream to make this bush a big tree, lemme work for it",
+            'assets/bitmojis/hi.png': "Hi.. (Swwwwwwwwwwwwwing....)",
+            'assets/bitmojis/kite.png':
+                "I realised, Dreams also needs a push of focused work to get a flight.",
+            "assets/bitmojis/let's start.png":
+                "Letsssssss. Staaaaaaaaaaaart.....",
+            'assets/bitmojis/mario.png':
+                "Comming out of the loop, so to Work...",
+            'assets/bitmojis/melon.png':
+                "Staaaaaaaaaaaaaaaaaaaaaaaaarted now.... but melons first..",
+            'assets/bitmojis/morning.png':
+                "Dance with me... from whereever you are..",
+            'assets/bitmojis/parachute hi.png':
+                "To all.. Come, Let's Fly together and make the history..",
+            'assets/bitmojis/piano.png':
+                "Can you name Something? which is better than composing your own music..",
+            'assets/bitmojis/proud.png':
+                "Glory is yet to be come.. Prepare for the day",
+            'assets/bitmojis/run energy.png': "On the work-path...",
+            'assets/bitmojis/skipping.png':
+                "Skipping just before writing tooodooolee, not for skip-ing the work.. hehe",
+            'assets/bitmojis/tann.png':
+                "Tann!... Now I know.. How zombies gets to feel in the 'PlantsVsZombies' game",
+            'assets/bitmojis/tea 2.png':
+                "Stick with me.. We will Enjoy every world after this last piece of work",
+            'assets/bitmojis/tea.png':
+                "Yum... Will Drink it just after swimming on the waves of lit bits of work..",
+            'assets/bitmojis/work.png':
+                "Lazies will say I am Phsyco-path.. But I am On the work-path...",
+            'assets/bitmojis/yeah.png':
+                "Yeah... yeah... yeah... Now you know, Work is Important for the whole life.. hmm..",
+            'assets/bitmojis/easy.png':
+                "Look it's as easy as it is looking hard",
+            'assets/bitmojis/happy.png':
+                "Look... Everytime we all are happy or we 'am' happy, #WeareOne",
+            'assets/bitmojis/happy 2.png':
+                "Things sometimes gets tough, but its good to see we are for one another, #WeareOne",
+            'assets/bitmojis/happy 3.png':
+                "Look the work you did yesterday has became a star in our Silky Bay Galaxy",
+            'assets/bitmojis/dinosaur.png':
+                "We Found some strawberry under the cave... Let me make a Jam out of it..",
+            'assets/bitmojis/green light.png':
+                "It's all green, why don't we start it now..",
+            'assets/bitmojis/morning3.png':
+                "Fresh Mornings is best among all times of the day, let's create this time best day of the whole life..",
+            'assets/bitmojis/team awesome.png':
+                "Team........ Awesome.......... (ENERGY)",
+            'assets/bitmojis/love.png':
+                "I colored my heart Blue from Red.. and it was the best of all descissions",
+            'assets/bitmojis/rainbow.png':
+                "Swiiiiiing... in dreams and in real tooo...",
+            'assets/bitmojis/diamond.png':
+                "Shhh.. Un-Stealing the lucks and Stealing the Urgues of doing Work",
+            'assets/bitmojis/hey 3.png': "Hey <3000.. and Work <30000",
           };
-          var r = imageLists[randomChoice(imageLists.keys)];
+          var listImageKeys = imageLists.keys;
+          var randomImage = randomChoice(listImageKeys);
+          var paddingOfText = MediaQuery.of(context).size.width / 20;
+          var listImageValues = imageLists["$randomImage"];
+          // var randomValue = randomChoice(listImageValues);
 
           if (todoBox.isEmpty == true) {
             return Column(
@@ -78,17 +163,24 @@ class _TodoCardState extends State<TodoCard> {
                     // width: MediaQuery.of(context).size.width / 1.1,
                     child: Center(
                       child: Image.asset(
-                        r[keys],
+                        "${randomImage}",
                       ),
                     ),
                   ),
                 ),
                 Align(
                     alignment: Alignment.center,
-                    child: Center(
-                      child: Text(
-                        "r[value]",
-                        style: TextStyle(color: Colors.black26, fontSize: 15),
+                    child: Padding(
+                      padding: EdgeInsets.all(paddingOfText),
+                      child: Center(
+                        child: Text(
+                          "$listImageValues",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black26,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
                     )),
               ],
