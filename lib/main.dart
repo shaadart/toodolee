@@ -116,13 +116,13 @@ class _TodoAppState extends State<TodoApp> {
             thickness: 0.9,
           ),
           TodoCard(),
-          Align(
-              alignment: Alignment.center,
-              child: Text(
-                "You can Add ${dataToChange} Todolees more",
-                style: TextStyle(
-                    fontStyle: FontStyle.normal, color: Colors.black26),
-              )),
+          // Align(
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //       "You can Add ${dataToChange} Todolees more",
+          //       style: TextStyle(
+          //           fontStyle: FontStyle.normal, color: Colors.black26),
+          //     )),
 
           //CompletedTodoUI(),
         ],

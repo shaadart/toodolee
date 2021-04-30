@@ -7,6 +7,7 @@ import 'package:share/share.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
+import 'package:extended_image/extended_image.dart';
 
 Box<TodoModel> box;
 Box<TodoModel> dbox;
@@ -31,34 +32,102 @@ class _TodoCardState extends State<TodoCard> {
         valueListenable: Hive.box<TodoModel>(todoBoxname).listenable(),
         builder: (context, Box<TodoModel> box, _) {
           List<int> keys = box.keys.cast<int>().toList();
-
+          List<String> workList = [
+            "work",
+            "work",
+            "write that",
+            "write them",
+            "move a bit",
+            "swim",
+            "start doing do's",
+            "keep learning",
+            "do exercising",
+            "do meditation",
+            "write poems",
+            "write programmes",
+            "make jams",
+            "create apps",
+            "read books",
+            "Attract people",
+            "Make friends",
+            "dive into work",
+            "design",
+            "make designs",
+            "do designing",
+            "make charity",
+            "Meet Clients",
+            "Learn",
+            "make collections",
+            "cook",
+            "make toodoolee",
+            "make music",
+            "make beats",
+            "Do personal Develoopment",
+            "learn that musical instrument",
+            "learn languages",
+            "do photography",
+            "do yoga",
+            "write poems",
+            "write stories",
+            "write essays",
+            "learn beatbox",
+            "do cycling",
+            "give charity",
+            "organize stuffs",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+            "work",
+          ];
+          String work = randomChoice(workList);
           Map<String, String> imageLists = {
             'assets/bitmojis/battery full.png': "Energy, aaaaaaaa.. Me = Bolt",
             'assets/bitmojis/busy.png': "Get Things done, Nowww...",
             'assets/bitmojis/cat.png':
-                "We Belive in Work, goodness comes automatically, do we?",
+                "We Belive in ${work}, goodness comes automatically, do we?",
             'assets/bitmojis/check.png': "Writing it first then check it",
             'assets/bitmojis/coffee.png':
-                "Die hard fan of Coffee, but work is priority",
+                "Die hard fan of Coffee, but ${work} is priority",
             'assets/bitmojis/dog.png':
-                "I turn Dreams to Real, after undertanding, i have to work for it",
+                "I turn Dreams to Real, after undertanding, i have to ${work} for it",
             'assets/bitmojis/good.png': "good.. now lift goods..",
             'assets/bitmojis/guitar.png':
                 "Energy-ised! Now to break all the odds..",
             'assets/bitmojis/hey 2.png':
                 "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
             'assets/bitmojis/hey bro.png':
-                "Hey Beauty, do You know? your work is more beautiful?",
+                "Hey Beauty, do You know? your ${work} is more beautiful?",
             'assets/bitmojis/hey hi.png':
-                "Welcome to the realest world... #Worldofwork",
+                "Welcome to the realest world... #WorldofWork",
             'assets/bitmojis/hi 2.png': "Toooooodooooo, hiiiiiiiiiiiis",
             'assets/bitmojis/hi 3.png':
                 "if you think, your work is sweeter than any stuff, you are a bolt...",
             'assets/bitmojis/hi 4.png': "Can't Mail you, So i mailed myself..",
             'assets/bitmojis/hi 5.png':
-                "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got Work.. ",
+                "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got to ${work}.. ",
             'assets/bitmojis/hi 6.png':
-                "I am going to work on this chicken, you can also join me...",
+                "I am going to ${work} on this chicken, you can also join me...",
             'assets/bitmojis/hi 7.png':
                 "hewwwwww.. to the 'work'-'shipper', - Who ships work, to its Destination",
             'assets/bitmojis/hi 8.png':
@@ -66,40 +135,40 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hi 9.png':
                 "Hey.. hey.. hey.. Today is Blessed to see you.. yes 'today'.",
             'assets/bitmojis/hi 10.png':
-                "Let me Greet you with all the greeting i have, so you do your toodoolees like toodles",
+                "Let me Greet you with all the greetings i have, so that you greet your urgues to $work, like toodles",
             'assets/bitmojis/hi 11.png':
                 "Going to the operator, to ask them to Kill the Subscription of my 'Nut-Flix'..",
             'assets/bitmojis/hi 12.png':
-                "Will you join, We are going to the astronauts in space, so to check what Computers they use in space? it's certernaily not windows.",
+                "Will you join, We are going to the astronauts in space, so to check what Computers they use in space? it's certainly not windows.",
             'assets/bitmojis/hi 13.png':
                 "Me = says, good. and spreading lucks to all of you.",
             'assets/bitmojis/hi 14.png':
-                "Stick with me...We will go to different places after the work",
+                "Stick with me...We will go to different places after the Work",
             'assets/bitmojis/hi 15.png': "This Origami can fly...",
             'assets/bitmojis/hi 16.png':
-                "This Boi, is really good at tongue Twisting, i need to work hard from now..",
+                "This Boi, is really good at tongue Twisting, i need to ${work} and learn tounge-twisting hard from now... - Bro I will seeeeee you next time",
             'assets/bitmojis/hi 18.png':
                 "Saaalaaaaaaaaaaaaaaam.... to all revolutionaries",
             'assets/bitmojis/hi 19.png': "Halloo, unlimited times, Haloo ++",
             'assets/bitmojis/hi 20.png':
-                "Aloha.. I am in Hawaii, yeah, but still got work here..",
+                "Aloha.. I am in Hawaii, yeah, but still got to ${work} here..",
             'assets/bitmojis/hi 21.png':
                 "best time to enjoy, live, and schedule... Lemme schedule this day",
             'assets/bitmojis/hi 22.png':
-                "I drink so much coffee at work, I consider it part of my daily grind.",
+                "I drink so much coffee at ${work}, I consider it part of my daily grind.",
             'assets/bitmojis/hi 23.png':
                 "Going to the Space to plant this, so it will see your progress when i will not be there. ",
             'assets/bitmojis/hi 24.png':
-                "Under the sea... (in a Vacation). Yeah, i will work here too..",
+                "Under the sea... (in a Vacation). Yeah, i will ${work} here too..",
             'assets/bitmojis/hi bush.png':
-                "It's my Dream to make this bush a big tree, lemme work for it",
+                "It's my Dream to make this bush a big tree, lemme ${work} for it",
             'assets/bitmojis/hi.png': "Hi.. (Swwwwwwwwwwwwwing....)",
             'assets/bitmojis/kite.png':
                 "I realised, Dreams also needs a push of focused work to get a flight.",
             "assets/bitmojis/let's start.png":
                 "Letsssssss. Staaaaaaaaaaaart.....",
             'assets/bitmojis/mario.png':
-                "Comming out of the loop, so to Work...",
+                "Comming out of the loop, so to ${work}...",
             'assets/bitmojis/melon.png':
                 "Staaaaaaaaaaaaaaaaaaaaaaaaarted now.... but melons first..",
             'assets/bitmojis/morning.png':
@@ -110,19 +179,20 @@ class _TodoCardState extends State<TodoCard> {
                 "Can you name Something? which is better than composing your own music..",
             'assets/bitmojis/proud.png':
                 "Glory is yet to be come.. Prepare for the day",
-            'assets/bitmojis/run energy.png': "On the work-path...",
+            'assets/bitmojis/run energy.png':
+                "On the work-path... or to $work paathh..",
             'assets/bitmojis/skipping.png':
-                "Skipping just before writing tooodooolee, not for skip-ing the work.. hehe",
+                "Skipping just before writing tooodooolee, not for skip-ing the ${work}.. hehe",
             'assets/bitmojis/tann.png':
                 "Tann!... Now I know.. How zombies gets to feel in the 'PlantsVsZombies' game",
             'assets/bitmojis/tea 2.png':
-                "Stick with me.. We will Enjoy every world after this last piece of work",
+                "Stick with me.. We will Enjoy every world after this last piece of work of to ${work}",
             'assets/bitmojis/tea.png':
-                "Yum... Will Drink it just after swimming on the waves of lit bits of work..",
-            'assets/bitmojis/work.png':
-                "Lazies will say I am Phsyco-path.. But I am On the work-path...",
+                "Yum... Will Drink it just after swimming on the waves of lilly-lil bits of work..",
+            'assets/bitmojis/${work}.png':
+                "Lazies will say I am Phsyco-path.. But I am On the ${work}-path...",
             'assets/bitmojis/yeah.png':
-                "Yeah... yeah... yeah... Now you know, Work is Important for the whole life.. hmm..",
+                "Yeah... yeah... yeah... Now you know, ${work} is Important for the whole life.. hmm..",
             'assets/bitmojis/easy.png':
                 "Look it's as easy as it is looking hard",
             'assets/bitmojis/happy.png':
@@ -130,13 +200,13 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/happy 2.png':
                 "Things sometimes gets tough, but its good to see we are for one another, #WeareOne",
             'assets/bitmojis/happy 3.png':
-                "Look the work you did yesterday has became a star in our Silky Bay Galaxy",
+                "Look the ${work} you did yesterday has became a star in our Silky Bay Galaxy",
             'assets/bitmojis/dinosaur.png':
                 "We Found some strawberry under the cave... Let me make a Jam out of it..",
             'assets/bitmojis/green light.png':
                 "It's all green, why don't we start it now..",
             'assets/bitmojis/morning3.png':
-                "Fresh Mornings is best among all times of the day, let's create this time best day of the whole life..",
+                "Fresh Mornings is best among all times of the day, let's create this time best day of the whole life.. lemme write that i need to '$work' for today.",
             'assets/bitmojis/team awesome.png':
                 "Team........ Awesome.......... (ENERGY)",
             'assets/bitmojis/love.png':
@@ -144,8 +214,20 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/rainbow.png':
                 "Swiiiiiing... in dreams and in real tooo...",
             'assets/bitmojis/diamond.png':
-                "Shhh.. Un-Stealing the lucks and Stealing the Urgues of doing Work",
-            'assets/bitmojis/hey 3.png': "Hey <3000.. and Work <30000",
+                "Shhh.. Un-Stealing the lucks and Stealing the Urgues to ${work}",
+            'assets/bitmojis/hey 3.png': "Hey <3000.. and ${work} <30000",
+            'assets/bitmojis/bird.png':
+                "Chu..Chu.. All - Aboard Next Stop to the ${work}'s Zone.",
+            'assets/bitmojis/${work}hard.png':
+                "Preparing for the ${work}, You can also join the Grind. heh",
+            'assets/bitmojis/rainbow2.png':
+                "Aaaye, I am not Unicorn, just i am uniquely-born",
+            'assets/bitmojis/good heart.png':
+                "Me: Training the heart hard.... and discard the rest of the taaaask..",
+            'assets/bitmojis/pressplus.png':
+                "Pressssssssss the Plussssssssss... :) it will make you surplus. (muscle emoji)",
+            'assets/bitmojis/chill.png':
+                "Chillling.. Yeah also got some killing stuffs, Yeah to $work ... and you?",
           };
           var listImageKeys = imageLists.keys;
           var randomImage = randomChoice(listImageKeys);
@@ -162,8 +244,22 @@ class _TodoCardState extends State<TodoCard> {
                   child: Container(
                     // width: MediaQuery.of(context).size.width / 1.1,
                     child: Center(
-                      child: Image.asset(
+                      child: ExtendedImage.asset(
                         "${randomImage}",
+                        mode: ExtendedImageMode.gesture,
+                        initGestureConfigHandler: (state) {
+                          return GestureConfig(
+                            minScale: 1,
+                            //animationMinScale: 0.7,
+                            maxScale: 1,
+                            animationMaxScale: 1.5,
+                            speed: 1,
+                            inertialSpeed: 10.0,
+                            initialScale: 1.0,
+                            inPageView: false,
+                            initialAlignment: InitialAlignment.center,
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -174,7 +270,7 @@ class _TodoCardState extends State<TodoCard> {
                       padding: EdgeInsets.all(paddingOfText),
                       child: Center(
                         child: Text(
-                          "$listImageValues",
+                          '"$listImageValues"',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black26,
@@ -183,6 +279,18 @@ class _TodoCardState extends State<TodoCard> {
                         ),
                       ),
                     )),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      8, 0, 8, MediaQuery.of(context).size.height / 40),
+                  child: Text(
+                    "BTW, To Start press +",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black26,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic),
+                  ),
+                )
               ],
             );
           } else if (todoBox.length == todoBox.length) {
