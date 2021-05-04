@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
-import 'package:toodo/models/todo_model.dart';
+
 import 'package:share/share.dart';
+import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
@@ -22,7 +23,7 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
-  TodoModel get indexT => null;
+ 
 
   //bool isCompleted = false;
 
@@ -32,17 +33,89 @@ class _TodoCardState extends State<TodoCard> {
         valueListenable: Hive.box<TodoModel>(todoBoxname).listenable(),
         builder: (context, Box<TodoModel> box, _) {
           List<int> keys = box.keys.cast<int>().toList();
+
+          List<String> heyss = [
+            "Hoi",
+            "hi",
+            "heeh",
+            "heys",
+            "hey",
+            "All",
+            "Hooooollla",
+            "hoela",
+            "yo",
+            "yop",
+            "hui",
+            "Anyway",
+            "so",
+            "bravvo",
+            "Chu-chu",
+            "hoooyaah",
+            "here",
+            "now",
+            "you know?",
+            "do you know?",
+            "amazing!",
+            "right",
+            "aloooha",
+            "hui-hui",
+            "hututu",
+            "hi",
+            "hello",
+            "hey all",
+            "hey people",
+            "guys",
+            "Bonjour",
+            "Hola",
+            "Guten Tag",
+            "olá",
+            "marhabaan",
+            "kon’nichiwa",
+            "hyālō",
+            "vandanalu",
+            "namaskār",
+            "vanakkam",
+            "hallo",
+            "ke aal aee",
+            "moni",
+          ];
+
+          String randomHeyss = randomChoice(heyss);
           List<String> workList = [
-            "work",
-            "work",
-            "write that",
-            "write them",
+            "write that thing",
+            "write them all",
             "move a bit",
-            "swim",
+            "swimming",
             "start doing do's",
             "keep learning",
             "do exercising",
             "do meditation",
+            "do t-shirt designing",
+            "make goods",
+            "cultivate fruits",
+            "make that movie",
+            "learn dancing",
+            "learn singing",
+            "make that movie",
+            "do t-shirt designing",
+            "make goods",
+            "cultivate fruits",
+            "make that movie",
+            "learn dancing",
+            "learn singing",
+            "write letters",
+            "making videos",
+            "making puzzles",
+            "learn calliagraphy",
+            "praising lord",
+            "do streching",
+            "paint sneeekers",
+            "sell kites",
+            "do business",
+            "sow some seeds of Apples",
+            "organize work-space",
+            "play cricket",
+            "write blogs",
             "write poems",
             "write programmes",
             "make jams",
@@ -51,14 +124,14 @@ class _TodoCardState extends State<TodoCard> {
             "Attract people",
             "Make friends",
             "dive into work",
-            "design",
+            "designing",
             "make designs",
             "do designing",
             "make charity",
             "Meet Clients",
-            "Learn",
+            "Learning",
             "make collections",
-            "cook",
+            "cooking",
             "make toodoolee",
             "make music",
             "make beats",
@@ -74,28 +147,19 @@ class _TodoCardState extends State<TodoCard> {
             "do cycling",
             "give charity",
             "organize stuffs",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
-            "work",
+            "create webpages",
+            "create websites",
+            "create my own languages",
+            "make available food for some people",
+            "learn smilling",
+            "learn socialising",
+            "learn talking",
+            "learn painting",
+            "learn jockey",
+            "learn football",
+            "learn cricket",
+            "learn basketball",
+            "learn home designing",
             "work",
             "work",
             "work",
@@ -105,10 +169,10 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/battery full.png': "Energy, aaaaaaaa.. Me = Bolt",
             'assets/bitmojis/busy.png': "Get Things done, Nowww...",
             'assets/bitmojis/cat.png':
-                "We Belive in ${work}, goodness comes automatically, do we?",
+                "We Belive in working, goodness comes automatically, do we?",
             'assets/bitmojis/check.png': "Writing it first then check it",
             'assets/bitmojis/coffee.png':
-                "Die hard fan of Coffee, but ${work} is priority",
+                "Die hard fan of Coffee, but ${work} is more in caffiiinnnee..",
             'assets/bitmojis/dog.png':
                 "I turn Dreams to Real, after undertanding, i have to ${work} for it",
             'assets/bitmojis/good.png': "good.. now lift goods..",
@@ -117,7 +181,7 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hey 2.png':
                 "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
             'assets/bitmojis/hey bro.png':
-                "Hey Beauty, do You know? your ${work} is more beautiful?",
+                "Hey Beauty, do You know? your work of - '${work}' is more beautiful?",
             'assets/bitmojis/hey hi.png':
                 "Welcome to the realest world... #WorldofWork",
             'assets/bitmojis/hi 2.png': "Toooooodooooo, hiiiiiiiiiiiis",
@@ -139,7 +203,7 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hi 11.png':
                 "Going to the operator, to ask them to Kill the Subscription of my 'Nut-Flix'..",
             'assets/bitmojis/hi 12.png':
-                "Will you join, We are going to the astronauts in space, so to check what Computers they use in space? it's certainly not windows.",
+                "Will you join? We are going to the astronauts in space, so to check what Computers they use in space? it's certainly not windows.",
             'assets/bitmojis/hi 13.png':
                 "Me = says, good. and spreading lucks to all of you.",
             'assets/bitmojis/hi 14.png':
@@ -155,7 +219,7 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/hi 21.png':
                 "best time to enjoy, live, and schedule... Lemme schedule this day",
             'assets/bitmojis/hi 22.png':
-                "I drink so much coffee at ${work}, I consider it part of my daily grind.",
+                "I drink so much coffee at Work, I consider it part of my daily grind.",
             'assets/bitmojis/hi 23.png':
                 "Going to the Space to plant this, so it will see your progress when i will not be there. ",
             'assets/bitmojis/hi 24.png':
@@ -182,17 +246,17 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/run energy.png':
                 "On the work-path... or to $work paathh..",
             'assets/bitmojis/skipping.png':
-                "Skipping just before writing tooodooolee, not for skip-ing the ${work}.. hehe",
+                "Skipping just before writing tooodooolee, not for skip-ing the work.. hehe",
             'assets/bitmojis/tann.png':
                 "Tann!... Now I know.. How zombies gets to feel in the 'PlantsVsZombies' game",
             'assets/bitmojis/tea 2.png':
-                "Stick with me.. We will Enjoy every world after this last piece of work of to ${work}",
+                "Stick with me.. We will Enjoy every world after this last piece of work",
             'assets/bitmojis/tea.png':
-                "Yum... Will Drink it just after swimming on the waves of lilly-lil bits of work..",
-            'assets/bitmojis/${work}.png':
+                "Yums...Together we all Will Drink it just after swimming on the waves of lilly-lil bits of work..",
+            'assets/bitmojis/work.png':
                 "Lazies will say I am Phsyco-path.. But I am On the ${work}-path...",
             'assets/bitmojis/yeah.png':
-                "Yeah... yeah... yeah... Now you know, ${work} is Important for the whole life.. hmm..",
+                "Yeah... yeah... yeah... Now you know, (${work}) is Important for the whole life.. hmm..",
             'assets/bitmojis/easy.png':
                 "Look it's as easy as it is looking hard",
             'assets/bitmojis/happy.png':
@@ -200,11 +264,11 @@ class _TodoCardState extends State<TodoCard> {
             'assets/bitmojis/happy 2.png':
                 "Things sometimes gets tough, but its good to see we are for one another, #WeareOne",
             'assets/bitmojis/happy 3.png':
-                "Look the ${work} you did yesterday has became a star in our Silky Bay Galaxy",
+                "Look the work you did yesterday has became a star in our Silky Bay Galaxy,",
             'assets/bitmojis/dinosaur.png':
                 "We Found some strawberry under the cave... Let me make a Jam out of it..",
             'assets/bitmojis/green light.png':
-                "It's all green, why don't we start it now..",
+                "It's all green, why don't we start to $work now..",
             'assets/bitmojis/morning3.png':
                 "Fresh Mornings is best among all times of the day, let's create this time best day of the whole life.. lemme write that i need to '$work' for today.",
             'assets/bitmojis/team awesome.png':
@@ -215,17 +279,18 @@ class _TodoCardState extends State<TodoCard> {
                 "Swiiiiiing... in dreams and in real tooo...",
             'assets/bitmojis/diamond.png':
                 "Shhh.. Un-Stealing the lucks and Stealing the Urgues to ${work}",
-            'assets/bitmojis/hey 3.png': "Hey <3000.. and ${work} <30000",
+            'assets/bitmojis/hey 3.png':
+                "Hey <3000.. and ${work} > 30000000000",
             'assets/bitmojis/bird.png':
                 "Chu..Chu.. All - Aboard Next Stop to the ${work}'s Zone.",
-            'assets/bitmojis/${work}hard.png':
-                "Preparing for the ${work}, You can also join the Grind. heh",
+            'assets/bitmojis/workhard.png':
+                "Preparing to ${work}, You can also join the Grind. heh",
             'assets/bitmojis/rainbow2.png':
-                "Aaaye, I am not Unicorn, just i am uniquely-born",
+                "Aaaye, I am not Unicorn, i am just, uniquely-born :)",
             'assets/bitmojis/good heart.png':
                 "Me: Training the heart hard.... and discard the rest of the taaaask..",
             'assets/bitmojis/pressplus.png':
-                "Pressssssssss the Plussssssssss... :) it will make you surplus. (muscle emoji)",
+                "Pressssssssss the Plussssssssss... it will make you surplus. 💪💪💪",
             'assets/bitmojis/chill.png':
                 "Chillling.. Yeah also got some killing stuffs, Yeah to $work ... and you?",
           };
@@ -252,7 +317,7 @@ class _TodoCardState extends State<TodoCard> {
                             minScale: 1,
                             //animationMinScale: 0.7,
                             maxScale: 1,
-                            animationMaxScale: 1.5,
+                            animationMaxScale: 1.3,
                             speed: 1,
                             inertialSpeed: 10.0,
                             initialScale: 1.0,
@@ -283,7 +348,7 @@ class _TodoCardState extends State<TodoCard> {
                   padding: EdgeInsets.fromLTRB(
                       8, 0, 8, MediaQuery.of(context).size.height / 40),
                   child: Text(
-                    "BTW, To Start press +",
+                    "$randomHeyss, To Start press +",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black26,
@@ -307,7 +372,7 @@ class _TodoCardState extends State<TodoCard> {
                       final TodoModel todo = box.get(key);
                       //todo.isCompleted = false;
                       return Card(
-                        color: Colors.white,
+                        // color: Colors.white,
                         elevation: 0.7,
                         child: Wrap(
                           children: [

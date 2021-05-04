@@ -1,15 +1,25 @@
 //import 'package:carbon_icons/carbon_icons.dart';
+//import 'package:carbon_icons/carbon_icons.dart';
+import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:hive/hive.dart';
+import 'package:toodo/models/weather_model.dart';
+import 'package:toodo/pages/bored.dart';
+import 'package:toodo/pages/progressbar.dart';
+import 'package:toodo/pages/quotes.dart';
+import 'package:toodo/pages/weatherCard.dart';
+import 'package:animate_do/animate_do.dart';
 
 //import "package:pexels/pexels.dart";
 //import 'dart:async';
-//
+Box<WeatherModel> weatherBox;
 List<StaggeredTile> _cardTile = <StaggeredTile>[
-  StaggeredTile.count(2, 2),
+  StaggeredTile.count(2, 2.5),
   StaggeredTile.count(2, 4),
-  StaggeredTile.count(2, 3),
-  StaggeredTile.count(2, 1),
+  StaggeredTile.count(2, 1.5),
+
+  StaggeredTile.count(4, 4),
   // StaggeredTile.count(15, 1),
   // StaggeredTile.count(15, 1),
   // StaggeredTile.count(15, 1),
@@ -18,27 +28,10 @@ List<StaggeredTile> _cardTile = <StaggeredTile>[
 
 //List of Cards with color and icon
 List<Widget> _listTile = <Widget>[
-  BackGroundTile(
-      backgroundColor: Colors.amberAccent.withOpacity(0.6),
-      icondata: Icons.wb_sunny),
-  BackGroundTile(
-      backgroundColor: Colors.lightGreenAccent.withOpacity(0.6),
-      icondata: Icons.lightbulb),
-  BackGroundTile(
-      backgroundColor: Colors.blueAccent.withOpacity(0.6),
-      icondata: Icons.format_quote_sharp),
-  BackGroundTile(
-      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
-      icondata: Icons.check),
-  BackGroundTile(
-      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
-      icondata: Icons.check),
-  BackGroundTile(
-      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
-      icondata: Icons.check),
-  BackGroundTile(
-      backgroundColor: Colors.orangeAccent.withOpacity(0.6),
-      icondata: Icons.check),
+  FadeOutRight(child: Weathercard()),
+  FadeInDown(child: Quotes()),
+  FadeInLeft(child: ProgressBar()),
+  FadeInUp(child: Bored()),
 ];
 
 class MorePage extends StatefulWidget {
@@ -50,29 +43,28 @@ class _MorePageState extends State<MorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      iconTheme: IconThemeData(color: Colors.black54),
-      elevation: 5,
-      title: Text("More Page",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: Colors.black54,
-          )),
-      backgroundColor: Colors.white,
-    ));
-    body:
-    Container(
-      // Staggered Grid View starts here
-      child: ListView(
-        children: [
-          StaggeredGridView.count(
-            crossAxisCount: 4,
-            staggeredTiles: _cardTile,
-            children: _listTile,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-          ),
-        ],
+      appBar: AppBar(
+        centerTitle: false,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black54),
+        title: GradientText(
+            text: "Grid-oji 💙",
+            colors: <Color>[Colors.blue.shade600, Colors.blue[100]],
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              // color: Colors.blue,
+            )),
+        backgroundColor: Colors.white24,
+      ),
+      body: Container(
+        // Staggered Grid View starts here
+        child: StaggeredGridView.count(
+          crossAxisCount: 4,
+          staggeredTiles: _cardTile,
+          children: _listTile,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+        ),
       ),
     );
   }
