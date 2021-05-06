@@ -7,11 +7,13 @@ import 'package:http/http.dart';
 import 'package:toodo/pages/more.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
+
 import 'package:animate_do/animate_do.dart';
 import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 // http://www.boredapi.com/api/activity/
 class Bored extends StatefulWidget {
@@ -146,7 +148,8 @@ class _BoredState extends State<Bored> {
                                                     ? await launch(texturl)
                                                     : throw 'Could not launch $texturl';
                                               },
-                                              icon: Icon(CarbonIcons.link))
+                                              icon: Icon(CarbonIcons.link,
+                                                  color: Colors.blue))
                                           : Container(),
                                     ],
                                   ),
@@ -229,7 +232,10 @@ class _BoredState extends State<Bored> {
                                                     ? await launch(texturl)
                                                     : throw 'Could not launch $texturl';
                                               },
-                                              icon: Icon(CarbonIcons.link))
+                                              icon: Icon(
+                                                CarbonIcons.link,
+                                                color: Colors.blue,
+                                              ))
                                           : Container(),
                                     ],
                                   ),

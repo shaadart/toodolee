@@ -23,16 +23,17 @@ environment:
 dependency_overrides:
   #audioplayers: 
   
-  screenshot:
   
+
 dependencies:
   flutter:
     sdk: flutter
+  
+  path: ^1.8.0
   #audioplayers: ^0.15.1
   #pexels: ^0.1.1
   easy_gradient_text: ^1.0.0
-  image_gallery_saver:
-  
+  flutter_tindercard:
   cupertino_icons: ^1.0.2
   #flutter_gradients: ^1.0.0+3
   gradient_widgets: ^0.6.0
@@ -41,7 +42,7 @@ dependencies:
   flutter_native_splash: ^1.1.8+4
   path_provider:
   sleek_circular_slider: ^2.0.0
-  gallery_saver: ^2.1.0
+  
   share: ^2.0.1
   page_transition: ^1.1.7+6
   hive_flutter: ^1.0.0
@@ -54,6 +55,7 @@ dependencies:
   flip_card: ^0.5.0
   http: ^0.13.2
   animate_do: ^2.0.0
+  #permission_handler: ^5.0.1+1
   carousel_slider: ^3.0.0
   url_launcher: ^6.0.3
 
@@ -68,11 +70,8 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:

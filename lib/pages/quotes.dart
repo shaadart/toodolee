@@ -3,17 +3,25 @@ import 'dart:io';
 //import 'dart:html';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:dart_random_choice/dart_random_choice.dart';
+import 'dart:ui';
+import 'package:extended_image/extended_image.dart';
+import 'package:flutter/widgets.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:easy_gradient_text/easy_gradient_text.dart';
+
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+//import "package:permission_handler/permission_handler.dart";
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
-import 'package:toodo/pages/more.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+
+// import 'package:screenshot/screenshot.dart';
 
 class Quotes extends StatefulWidget {
   const Quotes({
@@ -26,8 +34,10 @@ class Quotes extends StatefulWidget {
 
 class _QuotesState extends State<Quotes> {
   int _counter = 0;
+  static GlobalKey _repaintKey = new GlobalKey();
   Uint8List _imageFile;
-  ScreenshotController screenshotquotes = new ScreenshotController();
+  var baseFileName = "Quote";
+
   List _items = [];
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/quotes.json');
@@ -46,72 +56,93 @@ class _QuotesState extends State<Quotes> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: DefaultAssetBundle.of(context).loadString("jsons/quotes.json"),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        var myquotes = json.decode(snapshot.data.toString());
-        int lengthofJSON = 1643;
-        var rangeofQuotes = random(0, lengthofJSON);
+        future: DefaultAssetBundle.of(context).loadString("jsons/quotes.json"),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              child: Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: 60.0,
+                  width: 60.0,
+                ),
+              ),
+            ); // I understand it will be empty for now
+          } else {
+            var myquotes = json.decode(snapshot.data.toString());
+            int lengthofJSON = 1643;
+            var rangeofQuotes = random(0, lengthofJSON);
 
-        if (myquotes.length < lengthofJSON) {
-          return Container(
-              height: MediaQuery.of(context).size.width / 10,
-              child: CircularProgressIndicator());
-        } else {
-          //var randomMyQuotes = myquotes[0].shuffle().first;
-          return Screenshot(
-            controller: screenshotquotes,
-            child: FlipCard(
+            //var randomMyQuotes = myquotes[0].shuffle().first;
+            return FlipCard(
               direction: FlipDirection.HORIZONTAL,
-              front: Card(
-                // color: Colors.transparent,
-                child: GradientCard(
-                  gradient: Gradients.buildGradient(
-                      Alignment.topRight, Alignment.bottomLeft, [
-                    Colors.blueAccent[700],
-                    Colors.blue,
-                    Colors.blueAccent[100],
-                    // Colors.black54,
-                    //  Colors.black87,
-                    //  Colors.black87,
-                  ]),
-                  semanticContainer: false,
-                  child: Wrap(
-                    children: [
-                      Center(
-                        child: Column(
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.width / 20)),
-                            Container(
-                                child: Icon(CarbonIcons.quotes,
-                                    color: Colors.white)),
-                            Container(
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.width / 30),
-                                child: Text(
-                                    "${myquotes[rangeofQuotes]["text"]}",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: (myquotes[rangeofQuotes]
-                                                        ["text"]) //161
-                                                    .length >
-                                                90
-                                            ? 12
-                                            : 16))),
-                            Container(
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.width / 30),
-                                child: Text(
-                                    "@${myquotes[rangeofQuotes]["author"]}",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontStyle: FontStyle.italic)))
-                          ],
+              front: RepaintBoundary(
+                key: _repaintKey,
+                child: Card(
+                  // color: Colors.transparent,
+                  child: GradientCard(
+                    gradient: Gradients.buildGradient(
+                        Alignment.topRight, Alignment.bottomLeft, [
+                      Colors.blueAccent[700],
+                      Colors.blue,
+                      Colors.blueAccent[100],
+                      // Colors.black54,
+                      //  Colors.black87,
+                      //  Colors.black87,
+                    ]),
+                    semanticContainer: false,
+                    child: Wrap(
+                      children: [
+                        Center(
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.all(
+                                      MediaQuery.of(context).size.width / 20)),
+                              FadeIn(
+                                duration: Duration(milliseconds: 2000),
+                                child: Container(
+                                    child: Icon(CarbonIcons.quotes,
+                                        color: Colors.white)),
+                              ),
+                              FadeInUp(
+                                delay: Duration(milliseconds: 300),
+                                duration: Duration(milliseconds: 1000),
+                                child: Container(
+                                    padding: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 30),
+                                    child: Text(
+                                        "${myquotes[rangeofQuotes]["text"]}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: (myquotes[rangeofQuotes]
+                                                            ["text"]) //161
+                                                        .length >
+                                                    90
+                                                ? 12
+                                                : 16))),
+                              ),
+                              FadeIn(
+                                delay: Duration(milliseconds: 1000),
+                                duration: Duration(milliseconds: 800),
+                                child: Container(
+                                    padding: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 30),
+                                    child: Text(
+                                        myquotes[rangeofQuotes]["author"] ==
+                                                null
+                                            ? "..."
+                                            : "@${myquotes[rangeofQuotes]["author"]}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontStyle: FontStyle.italic))),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -142,92 +173,203 @@ class _QuotesState extends State<Quotes> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ))),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Center(
-                                    child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.white,
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(CarbonIcons.share),
-                                  ),
-                                )),
+                        FadeInUp(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Center(
+                                      child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.white,
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(CarbonIcons.share),
+                                    ),
+                                  )),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Center(
-                                    child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.white,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      screenshotquotes
-                                          .capture()
-                                          .then((Uint8List image) async {
-                                        //Capture Done
-
-                                        setState(() {
-                                          _imageFile = image;
-                                        });
-                                      }).catchError((onError) {
-                                        print(onError);
-                                      });
-
-                                      print("Quote Captured");
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              backgroundColor: Colors.blue[200],
-                                              content: Row(
-                                                children: [
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child: Text("👍",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white))),
-                                                  Expanded(
-                                                      flex: 5,
-                                                      child: Text(
-                                                        "Quotes, is captured sucessfully",
-                                                      )),
-                                                  // FlatButton(
-                                                  //   child: Text("Undo"),
-                                                  //   color: Colors.white,
-                                                  //   onPressed: () async{
-                                                  //     await box.deleteAt(index);
-                                                  //     Navigator.pop(context);
-                                                  //   },
-                                                  // ),
-                                                ],
-                                              )));
-                                    },
-                                    icon: Icon(CarbonIcons.download),
-                                  ),
-                                )),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Center(
+                                      child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.white,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        // ScreenShot();
+                                        print("Quote Captured");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                backgroundColor:
+                                                    Colors.blue[200],
+                                                content: Row(
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text("👍",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                    Expanded(
+                                                        flex: 5,
+                                                        child: Text(
+                                                          "Quotes, is captured sucessfully",
+                                                        )),
+                                                    // FlatButton(
+                                                    //   child: Text("Undo"),
+                                                    //   color: Colors.white,
+                                                    //   onPressed: () async{
+                                                    //     await box.deleteAt(index);
+                                                    //     Navigator.pop(context);
+                                                    //   },
+                                                    // ),
+                                                  ],
+                                                )));
+                                      },
+                                      icon: Icon(CarbonIcons.download),
+                                    ),
+                                  )),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        });
   }
 
   random(min, max) {
     var rn = new Random();
     return min + rn.nextInt(max - min);
   }
+
+  // Future<bool> saveFile(var byteList) async {
+  //   Directory storageDir;
+  //   try {
+  //     if (await requestPermission(Permission.storage)) {
+  //       storageDir = await getExternalStorageDirectory();
+
+  //       String newPath = '';
+  //       List<String> folders = storageDir.path.split('/');
+  //       for (int x = 1; x < folders.length; x++) {
+  //         String folder = folders[x];
+  //         if (folder != 'Android') {
+  //           newPath += '/' + folder;
+  //         } else {
+  //           break;
+  //         }
+  //       }
+  //       newPath = newPath + '/yourFolderName';
+  //       storageDir = Directory(newPath);
+  //     } else {
+  //       if (await requestPermission(Permission.photos)) {
+  //         storageDir = await getTemporaryDirectory();
+  //       } else {
+  //         return false;
+  //       }
+  //     }
+  //     if (!await storageDir.exists()) {
+  //       await storageDir.create(recursive: true);
+  //     }
+  //     if (await storageDir.exists()) {
+  //       File savedFile = File(storageDir.path + "/yourfileName");
+  //       var savedPath = storageDir.path + "/$baseFileName";
+  //       savedFile.writeAsBytesSync(
+  //           byteList); //the byteList that you send from captureBoundary
+  //       if (savedPath != null) {
+  //         print("File saved");
+  //       } else {
+  //         print("Error saving");
+  //       }
+  //       return true;
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return false;
+  // }
+
+  // Future<Uint8List> captureBoundary() async {
+  //   try {
+  //     RenderRepaintBoundary boundary =
+  //         _repaintKey.currentContext.findRenderObject();
+  //     Image savedImage = (await boundary.toImage(pixelRatio: 3.0)) as Image;
+  //     ByteData byteData =
+  //         await savedImage.toByteData(format: ImageByteFormat.png);
+  //     Uint8List pngBytes = byteData.buffer.asUint8List();
+  //     saveFile(widget.pickedImage.uri.path, pngBytes);
+  //     return pngBytes;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+
+  // Future<Uint8List> captureBoundary() async {
+  //   try {
+  //     RenderRepaintBoundary boundary =
+  //         _repaintKey.currentContext.findRenderObject();
+  //     Image savedImage = (await boundary.toImage(pixelRatio: 3.0)) as Image;
+  //     ByteData byteData =
+  //         await savedImage.toByteData(format: ImageByteFormat.png);
+  //     UInt8List pngBytes = byteData.buffer.asUint8List();
+  //     saveFile(widget.pickedImage.uri.path, pngBytes);
+  //     return pngBytes;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+
+  //   Future<bool> saveFile(var byteList) async {
+  //     Directory storageDir;
+  //     try {
+  //       if (await requestPermission(Permission.storage)) {
+  //         storageDir = await getExternalStorageDirectory();
+
+  //         String newPath = '';
+  //         List<String> folders = storageDir.path.split('/');
+  //         for (int x = 1; x < folders.length; x++) {
+  //           String folder = folders[x];
+  //           if (folder != 'Android') {
+  //             newPath += '/' + folder;
+  //           } else {
+  //             break;
+  //           }
+  //         }
+  //         newPath = newPath + '/yourFolderName';
+  //         storageDir = Directory(newPath);
+  //       } else {
+  //         if (await requestPermission(Permission.photos)) {
+  //           storageDir = await getTemporaryDirectory();
+  //         } else {
+  //           return false;
+  //         }
+  //       }
+  //       if (!await storageDir.exists()) {
+  //         await storageDir.create(recursive: true);
+  //       }
+  //       if (await storageDir.exists()) {
+  //         File savedFile = File(storageDir.path + "/yourfileName");
+  //         savedPath = storageDir.path + "/$baseFileName";
+  //         savedFile.writeAsBytesSync(
+  //             byteList); //the byteList that you send from captureBoundary
+  //         if (savedPath != null) {
+  //           print("File saved");
+  //         } else {
+  //           print("Error saving");
+  //         }
+  //         return true;
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //     return false;
+  //   }
+  // }
 }

@@ -3,23 +3,25 @@
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:toodo/models/completed_todo_model.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:toodo/uis/completedListUi.dart';
 import 'package:toodo/models/todo_model.dart';
 //import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/models/weather_model.dart';
 import 'package:toodo/pages/more.dart';
 //import 'package:share/share.dart';
+import 'package:toodo/uis/listui.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 //import 'package:toodo/uis/completedListUi.dart';
-import 'package:toodo/uis/listui.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 //import 'package:camera/camera.dart';
-import 'package:page_transition/page_transition.dart';
+
 //import 'package:process/process.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:animate_do/animate_do.dart';
 import 'models/todo_model.dart';
 
@@ -30,6 +32,7 @@ import 'models/todo_model.dart';
 //Bottom-Sheet
 const String todoBoxname = "todo";
 const String weatherBoxname = "weather";
+const String completedtodoBoxname = "completedtodo";
 // int totalTodoCount = 2;
 // int remainingTodosCount = totalTodoCount - todoBox.length;
 TimeOfDay time;
@@ -46,11 +49,13 @@ void main() async {
   //Registering Adapters
   Hive.registerAdapter(TodoModelAdapter());
   Hive.registerAdapter(WeatherModelAdapter());
+  Hive.registerAdapter(CompletedTodoModelAdapter());
   //Opening Boxes
   await Hive.openBox<WeatherModel>(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
+  await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
 //Run Main App
-  runApp(MyApp());
+  runApp(MyApp()); //dekhke he laglaa hai
 }
 
 class MyApp extends StatelessWidget {
@@ -77,7 +82,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Splash extends StatelessWidget {
+class Splash extends StatefulWidget {
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,8 +124,10 @@ class _TodoAppState extends State<TodoApp> {
   @override
   void initState() {
     super.initState();
+    completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
     todoBox = Hive.box<TodoModel>(todoBoxname);
     weatherBox = Hive.box<WeatherModel>(weatherBoxname);
+
     setState(() {});
   }
 
@@ -167,12 +179,9 @@ class _TodoAppState extends State<TodoApp> {
                   ),
                   onPressed: () async {
                     await Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            child: MorePage(),
-                            inheritTheme: true,
-                            ctx: context));
+                      context,
+                      MaterialPageRoute(builder: (context) => MorePage()),
+                    );
                   }),
             )
           ],

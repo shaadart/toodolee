@@ -11,7 +11,6 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:extended_image/extended_image.dart';
 
 Box<TodoModel> box;
-Box<TodoModel> dbox;
 
 class TodoCard extends StatefulWidget {
   const TodoCard({
@@ -23,8 +22,6 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
- 
-
   //bool isCompleted = false;
 
   @override
@@ -78,6 +75,39 @@ class _TodoCardState extends State<TodoCard> {
             "hallo",
             "ke aal aee",
             "moni",
+            "lllu",
+            "haiiyye",
+            "uhi",
+            "yeh",
+            "yeaaaa",
+            "waah",
+            "yoaah",
+            "soo aaah",
+            "thus",
+            "hussshh",
+            "ku-ooh",
+            "ji ji",
+            "ji",
+            "heheh",
+            "heya",
+            "hey ya",
+            "ho yah",
+            "eye",
+            "eeh",
+            "aayye",
+            "heeeye"
+                "ggg",
+            "hhhee",
+            "(giggles)",
+            "(winks)",
+            "supp",
+            "says",
+            "tells",
+            "asks",
+            "yellow",
+            "greeen",
+            "cheeese",
+            "hoooooyah",
           ];
 
           String randomHeyss = randomChoice(heyss);
@@ -382,6 +412,16 @@ class _TodoCardState extends State<TodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
+                                  // CompletedTodoModel completedTodo =
+                                  //         CompletedTodoModel(
+                                  //       completedTodoName: todo.todoName,
+                                  //       completedTodoEmoji: todo.todoEmoji,
+                                  //       completedTodoRemainder:
+                                  //           todo.todoRemainder,
+                                  //       isCompleted: todo.isCompleted = true,
+                                  //     );
+                                  //     completedBox.put(key, completedTodo);
+                                  //     print(completedBox.length);
                                   setState(() {
                                     todo.isCompleted = !todo.isCompleted;
                                     if (todo.isCompleted == true) {
