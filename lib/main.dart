@@ -3,6 +3,7 @@
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:flutter/services.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:toodo/uis/completedListUi.dart';
@@ -30,6 +31,7 @@ import 'models/todo_model.dart';
 
 //Todo
 //Bottom-Sheet
+Box<CompletedTodoModel> completedBox;
 const String todoBoxname = "todo";
 const String weatherBoxname = "weather";
 const String completedtodoBoxname = "completedtodo";
@@ -44,6 +46,9 @@ TimeOfDay picked;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
   //Registering Adapters
@@ -63,7 +68,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 3)),
+        future: Future.delayed(Duration(seconds: 0)),
         builder: (context, AsyncSnapshot snapshot) {
           // Show splash screen while waiting for app resources to load:
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -226,6 +231,10 @@ class _TodoAppState extends State<TodoApp> {
               duration: Duration(milliseconds: 2000),
               //delay: Duration(milliseconds: 200),
             ),
+            CompletedTodoCard(),
+            Container(
+              height: MediaQuery.of(context).size.width / 4,
+            )
             // Align(
             //     alignment: Alignment.center,
             //     child: Text(

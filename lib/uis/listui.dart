@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
-
+import 'package:toodo/uis/completedListUi.dart';
 import 'package:share/share.dart';
+import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
@@ -38,6 +39,20 @@ class _TodoCardState extends State<TodoCard> {
             "heys",
             "hey",
             "All",
+            "koool",
+            "coooool",
+            "pool",
+            "lalala",
+            "oeye",
+            "arrrees",
+            "yaahoo",
+            "gigigi",
+            "swiiiinggg",
+            "zoooom",
+            "booo",
+            "freeeeee",
+            "oh haaa",
+            "haai",
             "Hooooollla",
             "hoela",
             "yo",
@@ -333,28 +348,31 @@ class _TodoCardState extends State<TodoCard> {
           if (todoBox.isEmpty == true) {
             return Column(
               children: [
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      Colors.white.withOpacity(0.3), BlendMode.colorDodge),
-                  child: Container(
-                    // width: MediaQuery.of(context).size.width / 1.1,
-                    child: Center(
-                      child: ExtendedImage.asset(
-                        "${randomImage}",
-                        mode: ExtendedImageMode.gesture,
-                        initGestureConfigHandler: (state) {
-                          return GestureConfig(
-                            minScale: 1,
-                            //animationMinScale: 0.7,
-                            maxScale: 1,
-                            animationMaxScale: 1.3,
-                            speed: 1,
-                            inertialSpeed: 10.0,
-                            initialScale: 1.0,
-                            inPageView: false,
-                            initialAlignment: InitialAlignment.center,
-                          );
-                        },
+                Container(
+                  height: MediaQuery.of(context).size.height / 1.7,
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                        Colors.white.withOpacity(0.3), BlendMode.colorDodge),
+                    child: Container(
+                      // width: MediaQuery.of(context).size.width / 1.1,
+                      child: Center(
+                        child: ExtendedImage.asset(
+                          "${randomImage}",
+                          mode: ExtendedImageMode.gesture,
+                          initGestureConfigHandler: (state) {
+                            return GestureConfig(
+                              minScale: 1,
+                              //animationMinScale: 0.7,
+                              maxScale: 1,
+                              animationMaxScale: 1.3,
+                              speed: 1,
+                              inertialSpeed: 10.0,
+                              initialScale: 1.0,
+                              inPageView: false,
+                              initialAlignment: InitialAlignment.center,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -400,6 +418,9 @@ class _TodoCardState extends State<TodoCard> {
                     itemBuilder: (_, index) {
                       final int key = keys[index];
                       final TodoModel todo = box.get(key);
+                      String completedTodoName = todo.todoName;
+                      String completedTodoEmoji = todo.todoEmoji;
+                      String completedTodoRemainder = todo.todoRemainder;
                       //todo.isCompleted = false;
                       return Card(
                         // color: Colors.white,
@@ -412,35 +433,30 @@ class _TodoCardState extends State<TodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
-                                  // CompletedTodoModel completedTodo =
-                                  //         CompletedTodoModel(
-                                  //       completedTodoName: todo.todoName,
-                                  //       completedTodoEmoji: todo.todoEmoji,
-                                  //       completedTodoRemainder:
-                                  //           todo.todoRemainder,
-                                  //       isCompleted: todo.isCompleted = true,
-                                  //     );
-                                  //     completedBox.put(key, completedTodo);
-                                  //     print(completedBox.length);
                                   setState(() {
                                     todo.isCompleted = !todo.isCompleted;
                                     if (todo.isCompleted == true) {
-                                      TodoModel completedTodo = TodoModel(
-                                        todoName: todo.todoName,
-                                        todoEmoji: todo.todoEmoji,
-                                        todoRemainder: todo.todoRemainder,
+                                      CompletedTodoModel completedTodo =
+                                          CompletedTodoModel(
+                                        completedTodoName: completedTodoName,
+                                        completedTodoEmoji: completedTodoEmoji,
+                                        completedTodoRemainder:
+                                            completedTodoRemainder,
                                         isCompleted: todo.isCompleted = true,
                                       );
-                                      todoBox.put(key, completedTodo);
-                                    } else {
-                                      TodoModel incompletedTodo = TodoModel(
-                                        todoName: todo.todoName,
-                                        todoEmoji: todo.todoEmoji,
-                                        todoRemainder: todo.todoRemainder,
-                                        isCompleted: todo.isCompleted = false,
-                                      );
-                                      todoBox.put(key, incompletedTodo);
-                                    }
+                                      print(completedTodo.completedTodoName);
+                                      completedBox.add(completedTodo);
+                                      todoBox.deleteAt(index);
+                                      print(completedBox.length);
+
+                                      //   TodoModel completedTodo = TodoModel(
+                                      //     todoName: todo.todoName,
+                                      //     todoEmoji: todo.todoEmoji,
+                                      //     todoRemainder: todo.todoRemainder,
+                                      //     isCompleted: todo.isCompleted = true,
+                                      //   );
+                                      // todoBox.put(key, completedTodo);
+                                    } else {}
                                   });
                                   // setState(() {
                                   //   todo.isCompleted = !todo.isCompleted;
