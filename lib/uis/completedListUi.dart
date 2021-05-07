@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -47,13 +48,31 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
           Hive.box<CompletedTodoModel>(completedtodoBoxname).listenable(),
       builder: (context, Box<CompletedTodoModel> cbox, _) {
         List<int> ckeys = cbox.keys.cast<int>().toList() ?? [];
-        if (completedBox.isEmpty == true) {
+        if (completedBox.isEmpty == true && todoBox.isEmpty == false) {
           return Column(children: [
-            ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.3), BlendMode.colorDodge),
-              child: CircularProgressIndicator(),
-            )
+            FadeInUp(
+              //delay: Duration(milliseconds: 800),
+              duration: Duration(milliseconds: 2000),
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width / 15,
+                        MediaQuery.of(context).size.width / 60,
+                        MediaQuery.of(context).size.width / 15,
+                        MediaQuery.of(context).size.width / 30),
+                    child: Center(
+                      child: Text(
+                        'Tap and Add Any Task in the Completed Column',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black26,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  )),
+            ),
           ]);
         } else if (completedBox.length == completedBox.length) {
           return SingleChildScrollView(
@@ -233,9 +252,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                           FlatButton(
                                             onPressed: () async {
                                               await box.deleteAt(index);
-                                              setState(() {
-                                                dataToChange += 1;
-                                              });
+                                              setState(() {});
                                               Navigator.pop(context);
                                             },
                                             child: ListTile(

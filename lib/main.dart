@@ -1,8 +1,10 @@
 //import 'dart:ui';
 
 import 'package:easy_gradient_text/easy_gradient_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -31,13 +33,19 @@ import 'models/todo_model.dart';
 
 //Todo
 //Bottom-Sheet
+
 Box<CompletedTodoModel> completedBox;
 const String todoBoxname = "todo";
 const String weatherBoxname = "weather";
 const String completedtodoBoxname = "completedtodo";
-// int totalTodoCount = 2;
-// int remainingTodosCount = totalTodoCount - todoBox.length;
+//var  = ValueNotifier<int>(2);
+
+ValueNotifier<int> totalTodoCount = ValueNotifier(10);
+
+//var remainingTodosCount = ValueNotifier(totalTodoCount - todoBox.length);
+
 TimeOfDay time;
+
 TimeOfDay picked;
 
 // final TextEditingController descriptionController = TextEditingController();
@@ -132,122 +140,144 @@ class _TodoAppState extends State<TodoApp> {
     completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
     todoBox = Hive.box<TodoModel>(todoBoxname);
     weatherBox = Hive.box<WeatherModel>(weatherBoxname);
-
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return FadeOut(
-      child: Scaffold(
-        bottomNavigationBar: FadeInUp(
-          delay: Duration(milliseconds: 500),
-          duration: Duration(milliseconds: 2000),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
-            //backgroundColor: Colors.blue,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            selectedItemColor: Colors.blue,
-            //unselectedItemColor: Colors.white.withOpacity(.6),
-            selectedFontSize: 14,
-            unselectedFontSize: 14,
-            onTap: (value) {
-              // Respond to item press.
-              setState(() => _currentIndex = value);
-            },
-            items: [
-              BottomNavigationBarItem(
-                title: Text('Favorites'),
-                icon: Icon(CarbonIcons.grid),
+    return ValueListenableBuilder<int>(
+        valueListenable: totalTodoCount,
+        builder: (context, remainingTodoCount, _) {
+          return FadeOut(
+            child: Scaffold(
+              bottomNavigationBar: FadeInUp(
+                delay: Duration(milliseconds: 500),
+                duration: Duration(milliseconds: 2000),
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: _currentIndex,
+                  //backgroundColor: Colors.blue,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  selectedItemColor: Colors.blue,
+                  //unselectedItemColor: Colors.white.withOpacity(.6),
+                  selectedFontSize: 14,
+                  unselectedFontSize: 14,
+                  onTap: (value) {
+                    // Respond to item press.
+                    setState(() => _currentIndex = value);
+                  },
+                  items: [
+                    BottomNavigationBarItem(
+                      title: Text('Favorites'),
+                      icon: Icon(CarbonIcons.grid),
+                    ),
+                    BottomNavigationBarItem(
+                      title: Text('Toodolees'),
+                      icon: Icon(CarbonIcons.checkmark),
+                    ),
+                    BottomNavigationBarItem(
+                      title: Text('Settings'),
+                      icon: Icon(CarbonIcons.settings),
+                    ),
+                  ],
+                ),
               ),
-              BottomNavigationBarItem(
-                title: Text('Toodolees'),
-                icon: Icon(CarbonIcons.checkmark),
+              appBar: AppBar(
+                centerTitle: false,
+                actions: [
+                  SlideInDown(
+                    child: IconButton(
+                        icon: Icon(
+                          CarbonIcons.menu,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MorePage()),
+                          );
+                        }),
+                  )
+                ],
+                elevation: 0,
+                title: FadeInDown(
+                  child: GradientText(
+                      text: "Toodolee 💙",
+                      colors: <Color>[Colors.blue.shade600, Colors.blue[100]],
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        // color: Colors.blue,
+                      )),
+                  duration: Duration(milliseconds: 1000),
+                  delay: Duration(milliseconds: 500),
+                ),
+                backgroundColor: Colors.white24,
               ),
-              BottomNavigationBarItem(
-                title: Text('Settings'),
-                icon: Icon(CarbonIcons.settings),
-              ),
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          centerTitle: false,
-          actions: [
-            SlideInDown(
-              child: IconButton(
-                  icon: Icon(
-                    CarbonIcons.menu,
-                    color: Colors.blue,
+              floatingActionButton: Visibility(
+                visible: (remainingTodoCount <= 0) ? false : true,
+                child: FadeInDown(
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // showEmojiKeyboard ? emojiSelect() : Container(),
+                      addTodoBottomSheet(context);
+                      print("Add it");
+                    },
+                    child: Icon(CarbonIcons.add),
                   ),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MorePage()),
-                    );
-                  }),
-            )
-          ],
-          elevation: 0,
-          title: FadeInDown(
-            child: GradientText(
-                text: "Toodolee 💙",
-                colors: <Color>[Colors.blue.shade600, Colors.blue[100]],
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  // color: Colors.blue,
-                )),
-            duration: Duration(milliseconds: 1000),
-            delay: Duration(milliseconds: 500),
-          ),
-          backgroundColor: Colors.white24,
-        ),
-        floatingActionButton: Visibility(
-          visible: (dataToChange == 0) ? false : true,
-          child: FadeInDown(
-            child: FloatingActionButton(
-              onPressed: () {
-                // showEmojiKeyboard ? emojiSelect() : Container(),
-                addTodoBottomSheet(context);
-                print("Add it");
-              },
-              child: Icon(CarbonIcons.add),
-            ),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        body: ListView(
-          children: [
-            FadeInRightBig(
-              child: Divider(
-                indent: 85,
-                thickness: 0.9,
+                ),
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.endFloat,
+              body: ListView(
+                children: [
+                  // FadeInRightBig(
+                  //   child: Divider(
+                  //     indent: 85,
+                  //     thickness: 0.9,
+                  //   ),
+                  // ),
+                  FadeInUp(
+                    child: TodoCard(),
+                    duration: Duration(milliseconds: 2000),
+                    //delay: Duration(milliseconds: 200),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.all(MediaQuery.of(context).size.width / 60),
+                    
+                    child: FadeInUp(
+                      duration: Duration(milliseconds: 2000),
+                      child: 
+                    
+                      Text(
+                          todoBox.isEmpty == true
+                              ? ""
+                              : "You can add : ${remainingTodoCount} more ",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black26,
+                            fontSize: 15,
+                          )),
+                    ),
+                  ),
+                  CompletedTodoCard(),
+                  Container(
+                    height: MediaQuery.of(context).size.width / 4,
+                  ),
+                  // Align(
+                  //     alignment: Alignment.center,
+                  //     child: Text(
+                  //       "You can Add ${dataToChange} Todolees more",
+                  //       style: TextStyle(
+                  //           fontStyle: FontStyle.normal, color: Colors.black26),
+                  //     )),
+
+                  //CompletedTodoUI(),
+                ],
               ),
             ),
-            FadeInUp(
-              child: TodoCard(),
-              duration: Duration(milliseconds: 2000),
-              //delay: Duration(milliseconds: 200),
-            ),
-            CompletedTodoCard(),
-            Container(
-              height: MediaQuery.of(context).size.width / 4,
-            )
-            // Align(
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       "You can Add ${dataToChange} Todolees more",
-            //       style: TextStyle(
-            //           fontStyle: FontStyle.normal, color: Colors.black26),
-            //     )),
-
-            //CompletedTodoUI(),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 

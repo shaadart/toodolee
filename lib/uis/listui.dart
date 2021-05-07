@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
@@ -12,6 +13,9 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:extended_image/extended_image.dart';
 
 Box<TodoModel> box;
+void incrementCount() {
+  totalTodoCount.value++;
+}
 
 class TodoCard extends StatefulWidget {
   const TodoCard({
@@ -23,6 +27,10 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
+  @override
+  void initState() {
+    super.initState();
+  }
   //bool isCompleted = false;
 
   @override
@@ -574,9 +582,8 @@ class _TodoCardState extends State<TodoCard> {
                                             FlatButton(
                                               onPressed: () async {
                                                 await box.deleteAt(index);
-                                                setState(() {
-                                                  dataToChange += 1;
-                                                });
+                                               incrementCount();
+                                                setState(() {});
                                                 Navigator.pop(context);
                                               },
                                               child: ListTile(

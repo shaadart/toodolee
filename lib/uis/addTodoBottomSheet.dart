@@ -10,7 +10,10 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
 
 Box<TodoModel> todoBox;
-int dataToChange = 2;
+void decrementCount() {
+  totalTodoCount.value--;
+}
+
 // int indexT;
 
 int initialTodoItem = 0;
@@ -73,12 +76,6 @@ void addTodoBottomSheet(context) {
               todoRemainder = t.format(context);
             });
           }
-        }
-
-        void remainingTodoCount() {
-          setState(() {
-            dataToChange = dataToChange - todoBox.length;
-          });
         }
 
         return Padding(
@@ -188,9 +185,8 @@ void addTodoBottomSheet(context) {
 
                                         if (todo.todoName.length > 2) {
                                           todoBox.add(todo);
-                                          setState(() {
-                                            dataToChange -= 1;
-                                          });
+                                          decrementCount();
+                                          setState(() {});
                                         }
 
                                         titleController.clear();
