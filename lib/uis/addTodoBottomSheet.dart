@@ -1,15 +1,21 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:toodo/main.dart';
 import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
+import 'package:toodo/pages/listspage.dart';
+import 'package:toodo/uis/listui.dart';
 
 Box<TodoModel> todoBox;
+TodoModel todo;
 void decrementCount() {
   totalTodoCount.value--;
 }
@@ -20,15 +26,15 @@ int initialTodoItem = 0;
 final TextEditingController titleController = TextEditingController();
 String selectedEmoji;
 String todoName = (titleController.text).toString();
-String todoRemainder;
+String rawtodoRemainder;
 bool isCompleted = false;
 bool showEmojiKeyboard = false;
 void addTodoBottomSheet(context) {
   FocusNode focusNode = FocusNode();
 
   showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
-    isScrollControlled: false,
     isDismissible: true,
     shape: RoundedRectangleBorder(
       // <-- for border radius
@@ -40,6 +46,7 @@ void addTodoBottomSheet(context) {
     builder: (context) {
       return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+        final player = AudioCache();
         Widget emojiSelect() {
           return EmojiPicker(
               numRecommended: 25,
@@ -73,129 +80,137 @@ void addTodoBottomSheet(context) {
 
           if (t != null) {
             setState(() {
-              todoRemainder = t.format(context);
+              rawtodoRemainder = t.format(context);
             });
           }
         }
 
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Wrap(
-            children: [
-              WillPopScope(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Wrap(
-                      //height: MediaQuery.of(context).size.height / 4.8,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FadeIn(
-                              child: TextFormField(
-                                controller: titleController,
-                                maxLength: 20,
-                                onChanged: (value) {
-                                  todoName = value;
-                                },
-                                onTap: () {
-                                  showEmojiKeyboard = false;
-                                },
-                                focusNode: focusNode,
-                                //autofocus: true,
-                                autocorrect: true,
-                                decoration: InputDecoration(
-                                  hoverColor: Colors.amber,
-                                  border: InputBorder.none,
-                                  prefixIcon: Icon(CarbonIcons.pen_fountain),
-                                  hintText: "What toodo?",
-                                  hintStyle: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w200),
-                                  contentPadding: EdgeInsets.all(20.0),
-                                ),
+        return Wrap(
+          children: [
+            WillPopScope(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                //mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Wrap(
+                    //height: MediaQuery.of(context).size.height / 4.8,
+                    children: [
+                      Column(
+                        //mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          FadeIn(
+                            child: TextFormField(
+                              controller: titleController,
+                              maxLength: 20,
+                              onChanged: (value) {
+                                todoName = value;
+                              },
+                              onTap: () {
+                                showEmojiKeyboard = false;
+                              },
+                              focusNode: focusNode,
+                              //autofocus: true,
+                              autocorrect: true,
+                              decoration: InputDecoration(
+                                hoverColor: Colors.amber,
+                                border: InputBorder.none,
+                                prefixIcon: Icon(CarbonIcons.pen_fountain),
+                                hintText: "What toodo?",
+                                hintStyle: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w200),
+                                contentPadding: EdgeInsets.all(20.0),
                               ),
                             ),
-                            // TextFormField(
-                            //   autocorrect: true,
-                            //   decoration: InputDecoration(
-                            //     hoverColor: Colors.amber,
-                            //     border: InputBorder.none,
-                            //     prefixIcon: Icon(CarbonIcons.pen),
-                            //     hintText: "Description (optional)",
-                            //     hintStyle: TextStyle(
-                            //         color: Colors.black54,
-                            //         fontWeight: FontWeight.w200),
-                            //     contentPadding: EdgeInsets.all(20.0),
-                            //   ),
-                            // ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    FadeInUp(
-                                      child: IconButton(
-                                        icon: (todoRemainder != null)
-                                            ? Icon(
-                                                CarbonIcons.notification_filled,
-                                                color: Colors.blue)
-                                            : Icon(CarbonIcons.notification),
-                                        onPressed: () async {
-                                          await openTimePicker(context);
-
-                                          // todoRemainder = timeChoosen as DateTime;
-                                        },
-                                        color: (todoRemainder != null)
-                                            ? Colors.blue
-                                            : Colors.black54,
-                                      ),
+                          ),
+                          // TextFormField(
+                          //   autocorrect: true,
+                          //   decoration: InputDecoration(
+                          //     hoverColor: Colors.amber,
+                          //     border: InputBorder.none,
+                          //     prefixIcon: Icon(CarbonIcons.pen),
+                          //     hintText: "Description (optional)",
+                          //     hintStyle: TextStyle(
+                          //         color: Colors.black54,
+                          //         fontWeight: FontWeight.w200),
+                          //     contentPadding: EdgeInsets.all(20.0),
+                          //   ),
+                          // ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  FadeInUp(
+                                    child: IconButton(
+                                      icon: (rawtodoRemainder != null)
+                                          ? Icon(
+                                              CarbonIcons.notification_filled,
+                                              color: Colors.blue)
+                                          : Icon(CarbonIcons.notification),
+                                      onPressed: () async {
+                                        await openTimePicker(context);
+                                        player.play(
+                                          'sounds/navigation_forward-selection-minimal.wav',
+                                          stayAwake: false,
+                                          mode: PlayerMode.LOW_LATENCY,
+                                        );
+                                        // todoRemainder = timeChoosen as DateTime;
+                                      },
+                                      color: (rawtodoRemainder != null)
+                                          ? Colors.blue
+                                          : Colors.black54,
                                     ),
-                                    FadeInUp(
-                                      child: IconButton(
-                                        icon: selectedEmoji == null
-                                            ? Icon(CarbonIcons.face_add)
-                                            : Text(
-                                                selectedEmoji,
-                                                style: TextStyle(fontSize: 20),
-                                              ),
-                                        onPressed: () {
-                                          focusNode.unfocus();
-                                          focusNode.canRequestFocus = false;
-                                          setState(() {
-                                            showEmojiKeyboard =
-                                                !showEmojiKeyboard;
-                                          });
-                                        },
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                FadeInRight(
-                                  child: FlatButton.icon(
+                                  ),
+                                  FadeInUp(
+                                    child: IconButton(
+                                      icon: selectedEmoji == null
+                                          ? Icon(CarbonIcons.face_add)
+                                          : Text(
+                                              selectedEmoji,
+                                              style: TextStyle(fontSize: 20),
+                                            ),
                                       onPressed: () {
-                                        TodoModel todo = TodoModel(
-                                            todoName: todoName,
-                                            todoRemainder: todoRemainder,
-                                            todoEmoji: selectedEmoji.toString(),
-                                            isCompleted: false);
-
-                                        if (todo.todoName.length > 2) {
-                                          todoBox.add(todo);
-                                          decrementCount();
-                                          setState(() {});
-                                        }
-
-                                        titleController.clear();
+                                        player.play(
+                                          'sounds/navigation_forward-selection-minimal.wav',
+                                          stayAwake: false,
+                                          mode: PlayerMode.LOW_LATENCY,
+                                        );
+                                        focusNode.unfocus();
+                                        focusNode.canRequestFocus = false;
                                         setState(() {
-                                          selectedEmoji == "";
-                                          todoRemainder == null;
+                                          showEmojiKeyboard =
+                                              !showEmojiKeyboard;
                                         });
-                                        Navigator.pop(context);
-                                        //sleep(Duration(seconds: 1));
+                                      },
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              FadeInRight(
+                                child: FlatButton.icon(
+                                    //hero_decorative-celebration-02.wav
+                                    onPressed: () {
+                                      player.play(
+                                        'sounds/hero_decorative-celebration-02.wav',
+                                        stayAwake: false,
+                                        mode: PlayerMode.LOW_LATENCY,
+                                      );
+
+                                      todo = TodoModel(
+                                          todoName: todoName,
+                                          todoRemainder: rawtodoRemainder,
+                                          todoEmoji: selectedEmoji.toString(),
+                                          isCompleted: false);
+
+                                      if (todo.todoName.length > 2) {
+                                        todoBox.add(todo);
+                                        scheduleAlarm();
+                                        //scheduleAlarm(todoRemainder);
+                                        //scheduleAlarm(DateTime.parse(todoRemainder));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                                 backgroundColor:
@@ -229,42 +244,79 @@ void addTodoBottomSheet(context) {
                                                     // ),
                                                   ],
                                                 )));
-                                      },
-                                      color: Colors.blue,
-                                      icon: Icon(
-                                        CarbonIcons.add,
-                                        color: Colors.white,
-                                      ),
-                                      label: Text(
-                                        "Add Todo",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                ),
-                                Divider(),
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    showEmojiKeyboard ? emojiSelect() : Container(),
-                  ],
-                ),
-                onWillPop: () {
-                  if (showEmojiKeyboard) {
-                    setState(() {
-                      showEmojiKeyboard = false;
-                    });
-                  } else {
-                    Navigator.pop(context);
-                  }
-                  return Future.value(false);
-                },
+
+                                        decrementCount();
+                                        setState(() {});
+                                      }
+
+                                      titleController.clear();
+                                      setState(() {
+                                        todo.todoRemainder = null;
+                                      });
+                                      Navigator.pop(context);
+                                      //sleep(Duration(seconds: 1));
+                                    },
+                                    color: Colors.blue,
+                                    icon: Icon(
+                                      CarbonIcons.add,
+                                      color: Colors.white,
+                                    ),
+                                    label: Text(
+                                      "Add Todo",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ),
+                              Divider(),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  showEmojiKeyboard ? emojiSelect() : Container(),
+                ],
               ),
-            ],
-          ),
+              onWillPop: () {
+                if (showEmojiKeyboard) {
+                  setState(() {
+                    showEmojiKeyboard = false;
+                  });
+                } else {
+                  Navigator.pop(context);
+                }
+                return Future.value(false);
+              },
+            ),
+          ],
         );
       });
     },
   );
+}
+
+void scheduleAlarm() async {
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    '0',
+    'todo_notification',
+    'Channel for Alarm notification',
+    icon: 'toodoleeicon',
+    sound: RawResourceAndroidNotificationSound('alert_simple.wav'),
+    largeIcon: DrawableResourceAndroidBitmap('toodoleeicon'),
+  );
+
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'alert_simple.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true);
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
+
+  await flutterLocalNotificationsPlugin.schedule(
+      0,
+      todo.todoName,
+      "It's time to work on, ${todo.todoName}",
+      DateTime.parse(todo.todoRemainder),
+      platformChannelSpecifics);
 }

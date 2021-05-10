@@ -1,8 +1,12 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
+import 'package:toodo/pages/listspage.dart';
 import 'package:toodo/uis/completedListUi.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/completed_todo_model.dart';
@@ -11,8 +15,10 @@ import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:extended_image/extended_image.dart';
+import 'dart:core';
 
 Box<TodoModel> box;
+
 void incrementCount() {
   totalTodoCount.value++;
 }
@@ -27,6 +33,8 @@ class TodoCard extends StatefulWidget {
 }
 
 class _TodoCardState extends State<TodoCard> {
+  final player = AudioCache();
+
   @override
   void initState() {
     super.initState();
@@ -217,6 +225,7 @@ class _TodoCardState extends State<TodoCard> {
             "work",
             "work",
           ];
+
           String work = randomChoice(workList);
           Map<String, String> imageLists = {
             'assets/bitmojis/battery full.png': "Energy, aaaaaaaa.. Me = Bolt",
@@ -466,6 +475,11 @@ class _TodoCardState extends State<TodoCard> {
                                       // todoBox.put(key, completedTodo);
                                     } else {}
                                   });
+                                  player.play(
+                                      'sounds/notification_simple-02.wav',
+                                      stayAwake: false,
+                                      mode: PlayerMode.LOW_LATENCY,
+                                      isNotification: true);
                                   // setState(() {
                                   //   todo.isCompleted = !todo.isCompleted;
 
@@ -489,36 +503,34 @@ class _TodoCardState extends State<TodoCard> {
                               title: Text(
                                 '${todo.todoName}',
                                 style: TextStyle(
-                                    fontFamily: "WorkSans",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 20,
-                                    decoration: todo.isCompleted == true
-                                        ? TextDecoration.lineThrough
-                                        : null,
-                                    color: Colors.black54),
+                                  fontFamily: "WorkSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 20,
+                                  decoration: todo.isCompleted == true
+                                      ? TextDecoration.lineThrough
+                                      : null,
+                                  // color: Colors.black54
+                                ),
                               ),
                               // subtitle: Text("written on morning"),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
-                            //   // child: Text(
-                            //   //   'Greyhound d ',
-                            //   //   style:
-                            //   //       TextStyle(color: Colors.black.withOpacity(0.6)),
-                            //   // ),
-                            // ),
+
+                            // Divider(thickness: 1.2),
                             ButtonBar(
                               children: [
                                 (todo.todoRemainder) == null
                                     ? Container()
-                                    : Text('${todo.todoRemainder.toString()}'),
-                                (todo.todoRemainder) == null
+                                    : Text(
+                                        '${todo.todoRemainder}'),
+                                (todo.todoRemainder) == null ||
+                                        todo.todoEmoji == "null"
                                     ? Container()
                                     : Text(
                                         "•",
                                         style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black54),
+                                          fontSize: 15,
+                                          //color: Colors.black54
+                                        ),
                                       ),
                                 (todo.todoEmoji) == "null"
                                     ? Container()
@@ -529,6 +541,11 @@ class _TodoCardState extends State<TodoCard> {
                                 IconButton(
                                   color: Colors.blue,
                                   onPressed: () {
+                                    player.play(
+                                      'sounds/ui_tap-variant-01.wav',
+                                      stayAwake: false,
+                                      mode: PlayerMode.LOW_LATENCY,
+                                    );
                                     showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: false,
@@ -553,16 +570,33 @@ class _TodoCardState extends State<TodoCard> {
                                             ),
                                             FlatButton(
                                               onPressed: () {
+                                                player.play(
+                                                  'sounds/ui_tap-variant-01.wav',
+                                                  stayAwake: false,
+                                                  mode: PlayerMode.LOW_LATENCY,
+                                                );
                                                 Navigator.pop(context);
-
-                                                Share.share(
-                                                    """Hey 👋, Todays Todo: 
-                                                  ${todo.todoName} ${todo.todoEmoji}
-                                                  on  ${todo.todoRemainder}⏰
-                                                  
-                                                  Share your Todoos from(playstore Link) I am really Excited 
-                                                  🎉🎉🎉""",
-                                                    subject: "Today's Toodo");
+                                                if (todo.todoEmoji == "null" &&
+                                                    todo.todoRemainder ==
+                                                        null) {
+                                                  Share.share(
+                                                      "Hey 👋, Todays Todo: \n ${todo.todoName} \n \n Share your Todoos from(playstore Link) I am really Excited 🎉🎉🎉",
+                                                      subject: "Today's Toodo");
+                                                } else if (todo.todoRemainder ==
+                                                    null) {
+                                                  Share.share(
+                                                      "Hey 👋, Todays Todo: \n ${todo.todoName} \n ${todo.todoEmoji}  \n \n Share your Todoos from(playstore Link) I am really Excited 🎉🎉🎉",
+                                                      subject: "Today's Toodo");
+                                                }
+                                                if (todo.todoEmoji == "null") {
+                                                  Share.share(
+                                                      "Hey 👋, Todays Todo: \n ${todo.todoName} at  \n ${todo.todoRemainder}⏰ \n \n Share your Todoos from(playstore Link) I am really Excited 🎉🎉🎉",
+                                                      subject: "Today's Toodo");
+                                                } else {
+                                                  Share.share(
+                                                      "Hey 👋, Todays Todo: \n ${todo.todoName} \n ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n Share your Todoos from(playstore Link) I am really Excited 🎉🎉🎉",
+                                                      subject: "Today's Toodo");
+                                                }
                                               },
                                               child: ListTile(
                                                 leading:
@@ -582,7 +616,12 @@ class _TodoCardState extends State<TodoCard> {
                                             FlatButton(
                                               onPressed: () async {
                                                 await box.deleteAt(index);
-                                               incrementCount();
+                                                player.play(
+                                                  'sounds/navigation_transition-left.wav',
+                                                  stayAwake: false,
+                                                  mode: PlayerMode.LOW_LATENCY,
+                                                );
+                                                incrementCount();
                                                 setState(() {});
                                                 Navigator.pop(context);
                                               },

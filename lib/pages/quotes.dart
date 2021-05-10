@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
@@ -20,6 +22,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 
 // import 'package:screenshot/screenshot.dart';
 
@@ -37,6 +40,7 @@ class _QuotesState extends State<Quotes> {
   static GlobalKey _repaintKey = new GlobalKey();
   Uint8List _imageFile;
   var baseFileName = "Quote";
+  final player = AudioCache();
 
   List _items = [];
   Future<void> readJson() async {
@@ -171,7 +175,6 @@ class _QuotesState extends State<Quotes> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
                                 ))),
                         FadeInUp(
                           child: Row(
@@ -184,7 +187,16 @@ class _QuotesState extends State<Quotes> {
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        player.play(
+                                          'sounds/ui_tap-variant-01.wav',
+                                          stayAwake: false,
+                                          mode: PlayerMode.LOW_LATENCY,
+                                        );
+                                        Share.share(
+                                          "${myquotes[rangeofQuotes]["text"]} \n @${myquotes[rangeofQuotes]["author"]}\n \n Get More Quotes while writing toodoos on (play store link)",
+                                        );
+                                      },
                                       icon: Icon(CarbonIcons.share),
                                     ),
                                   )),

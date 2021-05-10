@@ -30,23 +30,30 @@ dependencies:
     sdk: flutter
   
   path: ^1.8.0
+  audioplayers:
   #audioplayers: ^0.15.1
   #pexels: ^0.1.1
+  cron: ^0.3.0
   easy_gradient_text: ^1.0.0
-  flutter_tindercard:
+  #flutter_tindercard:
+  swipe_stack: ^1.0.0
   cupertino_icons: ^1.0.2
   #flutter_gradients: ^1.0.0+3
   gradient_widgets: ^0.6.0
+  search_page: ^2.0.0
   carbon_icons: ^0.0.1+2
   hive: ^2.0.4
+  syncfusion_flutter_charts: ^19.1.59
   flutter_native_splash: ^1.1.8+4
   path_provider:
   sleek_circular_slider: ^2.0.0
-  
+  swipeable_card_stack: ^0.0.2
   share: ^2.0.1
+  swipedetector: ^1.2.0
   page_transition: ^1.1.7+6
   hive_flutter: ^1.0.0
   shared_preferences: 
+  provider:
   emoji_picker:
   flutter_staggered_grid_view: ^0.4.0
   flutter_local_notifications: 
@@ -62,6 +69,13 @@ dependencies:
 dev_dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.0.1
+  flutter_launcher_icons: "^0.9.0"
+
+flutter_icons:
+  image_path: "icon/toodoleeicon.png" 
+  android: true
+  ios: true
+
   flutter_test:
     sdk: flutter
 
@@ -79,6 +93,8 @@ flutter:
     - jsons/quotes.json
     - assets/achievement_bell.wav
     - assets/bitmojis/
+    - assets/sounds/
+    - icon/
       # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

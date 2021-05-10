@@ -6,12 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:search_page/search_page.dart';
 import 'package:toodo/models/completed_todo_model.dart';
+import 'package:toodo/pages/weatherCard.dart';
+import 'package:toodo/pages/weatherCard.dart';
+import 'package:toodo/processes.dart';
+import 'package:toodo/services/notifications.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:toodo/uis/completedListUi.dart';
 import 'package:toodo/models/todo_model.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 //import 'package:toodo/models/todo_model.dart';
-import 'package:toodo/models/weather_model.dart';
+
 import 'package:toodo/pages/more.dart';
 //import 'package:share/share.dart';
 import 'package:toodo/uis/listui.dart';
@@ -27,6 +36,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'models/todo_model.dart';
+import 'pages/weatherCard.dart';
 
 //Home Page
 //Settings
@@ -35,12 +45,15 @@ import 'models/todo_model.dart';
 //Bottom-Sheet
 
 Box<CompletedTodoModel> completedBox;
+int currentedIndex = 0;
 const String todoBoxname = "todo";
 const String weatherBoxname = "weather";
 const String completedtodoBoxname = "completedtodo";
+const String welcomeBoringCardname = "welcomeboringcard";
 //var  = ValueNotifier<int>(2);
 
-ValueNotifier<int> totalTodoCount = ValueNotifier(10);
+ValueNotifier<int> totalTodoCount =
+    ValueNotifier(10 - (todoBox.length + completedBox.length));
 
 //var remainingTodosCount = ValueNotifier(totalTodoCount - todoBox.length);
 
@@ -49,45 +62,76 @@ TimeOfDay time;
 TimeOfDay picked;
 
 // final TextEditingController descriptionController = TextEditingController();
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('toodoleeicon');
+  var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification:
+          (int id, String title, String body, String payload) async {});
+  var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+  });
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
+
   //Registering Adapters
   Hive.registerAdapter(TodoModelAdapter());
-  Hive.registerAdapter(WeatherModelAdapter());
   Hive.registerAdapter(CompletedTodoModelAdapter());
   //Opening Boxes
-  await Hive.openBox<WeatherModel>(weatherBoxname);
+  await Hive.openBox(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
+  await Hive.openBox(welcomeBoringCardname);
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
+  scheduleDeletingofLists();
+
 //Run Main App
   runApp(MyApp()); //dekhke he laglaa hai
 }
 
 class MyApp extends StatelessWidget {
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final player = AudioCache();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 0)),
+        future: Future.delayed(Duration(seconds: 3)),
         builder: (context, AsyncSnapshot snapshot) {
           // Show splash screen while waiting for app resources to load:
           if (snapshot.connectionState == ConnectionState.waiting) {
+            player.play(
+              'sounds/notification_ambient.wav',
+              stayAwake: false,
+              mode: PlayerMode.LOW_LATENCY,
+            );
+
             return MaterialApp(home: Splash());
           } else {
             // Loading is done, return the app:
             return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: TodoApp(),
+                home: DefaultedApp(),
                 title: 'Toodolee',
                 theme: ThemeData(
+                  primaryColor: Colors.blue[200],
+                  brightness: Brightness.light,
                   fontFamily: "WorkSans",
                 ));
           }
@@ -109,17 +153,143 @@ class _SplashState extends State<Splash> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FadeIn(
+            FadeInUpBig(
               duration: Duration(milliseconds: 1200),
               child: Center(
-                  child: Icon(CarbonIcons.checkmark,
-                      size: 90, color: Colors.black87)),
+                child: Image.asset(
+                  "icon/toodoleeicon.png",
+                  height: MediaQuery.of(context).size.width / 2,
+                ),
+              ),
             ),
-            FadeOut(
-                duration: Duration(milliseconds: 1100),
-                child: Center(child: Text("Made by Proco :love"))),
+            FadeInUpBig(
+                //duration: Duration(milliseconds: 1000),
+                duration: Duration(milliseconds: 1200),
+                child: Center(
+                    child: GradientText(
+                  text: "Toodolee",
+                  style: TextStyle(
+                      fontFamily: "WorkSans",
+                      fontSize: MediaQuery.of(context).size.width / 15,
+                      fontWeight: FontWeight.w700),
+                  colors: <Color>[
+                    Colors.blue,
+                    Colors.blue[200],
+                    Colors.lightBlue
+                  ],
+                ))),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DefaultedApp extends StatefulWidget {
+  @override
+  _DefaultedAppState createState() => _DefaultedAppState();
+}
+
+class _DefaultedAppState extends State<DefaultedApp> {
+  final player = AudioCache();
+
+  List<Widget> containers = [
+    TodoApp(),
+    MorePage(),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //Provider.of<NoticationService>(context, listen: false).initialize();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          actions: [
+            SlideInDown(
+              child: IconButton(
+                  icon: Icon(
+                    CarbonIcons.menu,
+                  ),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MorePage()),
+                    );
+                  }),
+            ),
+            SlideInDown(
+              child: IconButton(
+                  icon: Icon(
+                    CarbonIcons.search,
+                  ),
+                  onPressed: () {
+                    player.play(
+                      'sounds/navigation_forward-selection-minimal.wav',
+                      stayAwake: false,
+                      mode: PlayerMode.LOW_LATENCY,
+                    );
+                  }
+                  // showSearch(
+                  //   context: context,
+                  //   delegate: SearchPage<TodoModel>(
+                  //     items:
+                  //     searchLabel: 'Search people',
+                  //     suggestion: Center(
+                  //       child: Text('Filter people by name, surname or age'),
+                  //     ),
+                  //     failure: Center(
+                  //       child: Text('No person found :('),
+                  //     ),
+                  //     filter: (person) => [
+                  //       todoBox.todoName,
+                  //       todoBox.todoRemainder.String(),
+
+                  //     ],
+                  //     builder: (person) => ListTile(
+                  //       title: Text(person.name),
+                  //       subtitle: Text(person.surname),
+                  //       trailing: Text('${person.age} yo'),
+                  //     ),
+                  //   ),
+                  // ),
+                  ),
+            ),
+          ],
+          elevation: 4,
+          title: FadeInDown(
+            duration: Duration(milliseconds: 1000),
+            delay: Duration(milliseconds: 500),
+            child: Text(
+              "Toodolee",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                // color: Colors.blue,
+              ),
+            ),
+          ),
+          //backgroundColor: Colors.white,
+          bottom: TabBar(tabs: [
+            Tab(
+                icon: Icon(
+              CarbonIcons.checkmark,
+              //  color: Colors.black,
+            )),
+            Tab(
+                icon: Icon(
+              CarbonIcons.grid,
+              //color: Colors.black,
+            )),
+          ]),
+        ),
+        body: TabBarView(children: containers),
       ),
     );
   }
@@ -131,15 +301,14 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  int _currentIndex = 0;
   // int index;
+  final player = AudioCache();
 
   @override
   void initState() {
     super.initState();
     completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
     todoBox = Hive.box<TodoModel>(todoBoxname);
-    weatherBox = Hive.box<WeatherModel>(weatherBoxname);
   }
 
   @override
@@ -149,77 +318,23 @@ class _TodoAppState extends State<TodoApp> {
         builder: (context, remainingTodoCount, _) {
           return FadeOut(
             child: Scaffold(
-              bottomNavigationBar: FadeInUp(
-                delay: Duration(milliseconds: 500),
-                duration: Duration(milliseconds: 2000),
-                child: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: _currentIndex,
-                  //backgroundColor: Colors.blue,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  selectedItemColor: Colors.blue,
-                  //unselectedItemColor: Colors.white.withOpacity(.6),
-                  selectedFontSize: 14,
-                  unselectedFontSize: 14,
-                  onTap: (value) {
-                    // Respond to item press.
-                    setState(() => _currentIndex = value);
-                  },
-                  items: [
-                    BottomNavigationBarItem(
-                      title: Text('Favorites'),
-                      icon: Icon(CarbonIcons.grid),
-                    ),
-                    BottomNavigationBarItem(
-                      title: Text('Toodolees'),
-                      icon: Icon(CarbonIcons.checkmark),
-                    ),
-                    BottomNavigationBarItem(
-                      title: Text('Settings'),
-                      icon: Icon(CarbonIcons.settings),
-                    ),
-                  ],
-                ),
-              ),
-              appBar: AppBar(
-                centerTitle: false,
-                actions: [
-                  SlideInDown(
-                    child: IconButton(
-                        icon: Icon(
-                          CarbonIcons.menu,
-                          color: Colors.blue,
-                        ),
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MorePage()),
-                          );
-                        }),
-                  )
-                ],
-                elevation: 0,
-                title: FadeInDown(
-                  child: GradientText(
-                      text: "Toodolee 💙",
-                      colors: <Color>[Colors.blue.shade600, Colors.blue[100]],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        // color: Colors.blue,
-                      )),
-                  duration: Duration(milliseconds: 1000),
-                  delay: Duration(milliseconds: 500),
-                ),
-                backgroundColor: Colors.white24,
-              ),
               floatingActionButton: Visibility(
-                visible: (remainingTodoCount <= 0) ? false : true,
+                visible:
+                    (remainingTodoCount <= 0 || fabScrollingVisibility == false)
+                        ? false
+                        : true,
                 child: FadeInDown(
                   child: FloatingActionButton(
                     onPressed: () {
+                      
+                      player.play(
+                        'sounds/navigation_forward-selection-minimal.wav',
+                        stayAwake: false,
+                        mode: PlayerMode.LOW_LATENCY,
+                      );
                       // showEmojiKeyboard ? emojiSelect() : Container(),
                       addTodoBottomSheet(context);
+
                       print("Add it");
                     },
                     child: Icon(CarbonIcons.add),
@@ -244,12 +359,9 @@ class _TodoAppState extends State<TodoApp> {
                   Padding(
                     padding:
                         EdgeInsets.all(MediaQuery.of(context).size.width / 60),
-                    
                     child: FadeInUp(
                       duration: Duration(milliseconds: 2000),
-                      child: 
-                    
-                      Text(
+                      child: Text(
                           todoBox.isEmpty == true
                               ? ""
                               : "You can add : ${remainingTodoCount} more ",
@@ -279,54 +391,6 @@ class _TodoAppState extends State<TodoApp> {
           );
         });
   }
+
+  Future notificationSelected(String payload) async {}
 }
-
-// class CompletedTodoUI extends StatefulWidget {
-//   const CompletedTodoUI({
-//     Key key,
-//   }) : super(key: key);
-
-//   @override
-//   _CompletedTodoUIState createState() => _CompletedTodoUIState();
-// }
-
-// class _CompletedTodoUIState extends State<CompletedTodoUI> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return ValueListenableBuilder(
-//         valueListenable: Hive.box<TodoModel>(todoBoxname).listenable(),
-//         builder: (context, Box<TodoModel> box, _) {
-//           List<int> keys = box.keys.cast<int>().toList();
-
-//           if (todoBox.isEmpty == true) {
-//             return Align(
-//                 alignment: Alignment.center,
-//                 child: Text(
-//                   'No Data Available',
-//                   style: TextStyle(color: Colors.black26),
-//                 ));
-//           } else if (todoBox.length == todoBox.length) {
-//             return SingleChildScrollView(
-//                 physics: ScrollPhysics(),
-//                 child: ListView.separated(
-//                     physics: NeverScrollableScrollPhysics(),
-//                     //itemCount: box.length,// editing a bit
-//                     itemCount: box.length,
-//                     shrinkWrap: true,
-//                     separatorBuilder: (_, index) => Container(),
-//                     itemBuilder: (_, index) {
-//                       final int key = keys[index];
-//                       final TodoModel completedTodo = box.get(key);
-
-//                       //todo.isCompleted = false;
-//                       return Card(
-//                         child: ListTile(
-//                             trailing: Text("${completedTodo.todoEmoji}"),
-//                             title: Text("${completedTodo.todoName}"),
-//                             subtitle: Text("${completedTodo.todoRemainder}")),
-//                       );
-//                     }));
-//           }
-//         });
-//   }
-// }
