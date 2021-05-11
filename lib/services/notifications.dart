@@ -10,7 +10,7 @@
 //         FlutterLocalNotificationsPlugin();
 
 //     AndroidInitializationSettings androidInitializationSettings =
-//         AndroidInitializationSettings("toodoleeicon");
+//         AndroidInitializationSettings("app_icon");
 
 //     IOSInitializationSettings iosInitializationSettings =
 //         IOSInitializationSettings();
@@ -26,8 +26,8 @@
 //   Future scheduledNotification() async {
 //     var interval = RepeatInterval.everyMinute,
 //         bigPicture = BigPictureStyleInformation(
-//             DrawableResourceAndroidBitmap("toodoleeicon"),
-//             largeIcon: DrawableResourceAndroidBitmap("toodoleeicon"),
+//             DrawableResourceAndroidBitmap("app_icon"),
+//             largeIcon: DrawableResourceAndroidBitmap("app_icon"),
 //             contentTitle: "Hey Do this..",
 //             summaryText: "Hey you seriously need to do it",
 //             htmlFormatContentTitle: true);

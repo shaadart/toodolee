@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cron/cron.dart';
 import 'package:hive/hive.dart';
 import 'package:toodo/main.dart';
 import 'package:toodo/models/Weather Models/weatherDataService.dart';
@@ -15,6 +16,7 @@ import 'package:toodo/pages/more.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:toodo/processes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 //import 'package:http/http.dart' as http;
 
@@ -202,6 +204,7 @@ class _WeathercardState extends State<Weathercard> {
 
                                       weatherBox.put("location",
                                           [user_city, celciusMetric]);
+
                                       // print(
                                       //     "${getWeatherData(weatherBox.get("location")[0])} is the you know that current getweatherData");
 
@@ -225,6 +228,11 @@ class _WeathercardState extends State<Weathercard> {
                                         print(text_description);
                                         print(text_temperature);
                                       });
+
+                                      await weatherBox.put("weatherofuser", [
+                                        text_temperature,
+                                        text_description,
+                                      ]);
                                     })),
                             Container(
                               child: Row(
@@ -284,7 +292,8 @@ class _WeathercardState extends State<Weathercard> {
             : FutureBuilder(
                 future: getWeatherData(weatherBox.get("location")[0]),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (text_description == null) {
+                  if (text_description == null &&
+                      weatherBox.get("weatherofuser")[1] == null) {
                     player.play(
                       'sounds/ui_loading.wav',
                       stayAwake: false,
@@ -457,7 +466,7 @@ class _WeathercardState extends State<Weathercard> {
                                               padding: EdgeInsets.all(2),
                                               child: Container(
                                                 child: Text(
-                                                    "${text_temperature.toInt()}°",
+                                                    "${weatherBox.get("weatherofuser")[0]}°",
                                                     style: TextStyle(
                                                         fontSize: 35)),
                                               ),
@@ -475,7 +484,7 @@ class _WeathercardState extends State<Weathercard> {
                                               textAlign: TextAlign.center,
                                             ),
                                             subtitle: Text(
-                                              "${text_description}",
+                                              "${weatherBox.get("weatherofuser")[1]}",
                                               textAlign: TextAlign.center,
                                             ),
                                           ),
@@ -560,6 +569,11 @@ class _WeathercardState extends State<Weathercard> {
                                           await weatherBox.put("location",
                                               [user_city, celciusMetric]);
 
+                                          await weatherBox.put(
+                                              "weatherofuser", [
+                                            text_temperature,
+                                            text_description
+                                          ]);
                                           getWeatherData(
                                               weatherBox.get("location")[0]);
                                           // getWeatherData(weatherBox
@@ -639,6 +653,7 @@ class _WeathercardState extends State<Weathercard> {
       text_location = response.cityName;
       text_description = response.weatherInfo.description;
       text_temperature = response.tempInfo.temperature;
+      weatherBox.put("weatherofuser", [text_temperature, text_description]);
       // print(response.cityName);
       // print(response.tempInfo.temperature);
       // print(response.weatherInfo.description);
@@ -647,6 +662,7 @@ class _WeathercardState extends State<Weathercard> {
       // print(text_description);
       // print(text_temperature);
     });
+
     // userWeatherBox.put(
     //     "location", weather);
   }

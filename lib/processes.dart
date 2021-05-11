@@ -21,9 +21,18 @@ scheduleDeletingofLists() {
   });
 }
 
-// deletingWeatherData() {
-//   final cron = Cron();
-//   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-//     print("thisis si ${weatherBox.get("weather")}");
-//   });
-// }
+deletingWeatherData() {
+  final cron = Cron();
+  cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+    print("thisis si ${weatherBox.get("weather")[0]}");
+    weatherBox.delete("weatherofuser");
+
+    // print(response.cityName);
+    // print(response.tempInfo.temperature);
+    // print(response.weatherInfo.description);
+
+    // print(text_location);
+    // print(text_description);
+    // print(text_temperature);
+  });
+}

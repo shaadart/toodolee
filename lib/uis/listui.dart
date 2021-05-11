@@ -520,8 +520,7 @@ class _TodoCardState extends State<TodoCard> {
                               children: [
                                 (todo.todoRemainder) == null
                                     ? Container()
-                                    : Text(
-                                        '${todo.todoRemainder}'),
+                                    : Text('${todo.todoRemainder.toString()}'),
                                 (todo.todoRemainder) == null ||
                                         todo.todoEmoji == "null"
                                     ? Container()

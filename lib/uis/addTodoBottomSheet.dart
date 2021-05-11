@@ -13,6 +13,7 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/pages/listspage.dart';
 import 'package:toodo/uis/listui.dart';
+import 'package:intl/intl.dart';
 
 Box<TodoModel> todoBox;
 TodoModel todo;
@@ -26,7 +27,7 @@ int initialTodoItem = 0;
 final TextEditingController titleController = TextEditingController();
 String selectedEmoji;
 String todoName = (titleController.text).toString();
-String rawtodoRemainder;
+String todoRemainder;
 bool isCompleted = false;
 bool showEmojiKeyboard = false;
 void addTodoBottomSheet(context) {
@@ -80,7 +81,7 @@ void addTodoBottomSheet(context) {
 
           if (t != null) {
             setState(() {
-              rawtodoRemainder = t.format(context);
+              todoRemainder = t.format(context);
             });
           }
         }
@@ -110,7 +111,7 @@ void addTodoBottomSheet(context) {
                                 showEmojiKeyboard = false;
                               },
                               focusNode: focusNode,
-                              //autofocus: true,
+                              autofocus: true,
                               autocorrect: true,
                               decoration: InputDecoration(
                                 hoverColor: Colors.amber,
@@ -145,7 +146,7 @@ void addTodoBottomSheet(context) {
                                 children: [
                                   FadeInUp(
                                     child: IconButton(
-                                      icon: (rawtodoRemainder != null)
+                                      icon: (todoRemainder != null)
                                           ? Icon(
                                               CarbonIcons.notification_filled,
                                               color: Colors.blue)
@@ -159,7 +160,7 @@ void addTodoBottomSheet(context) {
                                         );
                                         // todoRemainder = timeChoosen as DateTime;
                                       },
-                                      color: (rawtodoRemainder != null)
+                                      color: (todoRemainder != null)
                                           ? Colors.blue
                                           : Colors.black54,
                                     ),
@@ -202,13 +203,24 @@ void addTodoBottomSheet(context) {
 
                                       todo = TodoModel(
                                           todoName: todoName,
-                                          todoRemainder: rawtodoRemainder,
+                                          todoRemainder: todoRemainder,
                                           todoEmoji: selectedEmoji.toString(),
                                           isCompleted: false);
 
                                       if (todo.todoName.length > 2) {
+                                        setState(() {
+                                          todoRemainder = null;
+                                          titleController.clear();
+                                        });
+                                        Navigator.pop(context);
                                         todoBox.add(todo);
-                                        scheduleAlarm();
+                                        print(
+                                            "${DateFormat("hh:mm").parse(todo.todoRemainder)} is the time you kniw?");
+                                        decrementCount();
+                                        scheduleAlarm(DateFormat("hh:mm")
+                                            .parse(todo.todoRemainder));
+                                        Navigator.pop(context);
+                                        //scheduleAlarm();
                                         //scheduleAlarm(todoRemainder);
                                         //scheduleAlarm(DateTime.parse(todoRemainder));
                                         ScaffoldMessenger.of(context)
@@ -244,16 +256,8 @@ void addTodoBottomSheet(context) {
                                                     // ),
                                                   ],
                                                 )));
-
-                                        decrementCount();
-                                        setState(() {});
                                       }
 
-                                      titleController.clear();
-                                      setState(() {
-                                        todo.todoRemainder = null;
-                                      });
-                                      Navigator.pop(context);
                                       //sleep(Duration(seconds: 1));
                                     },
                                     color: Colors.blue,
@@ -294,14 +298,14 @@ void addTodoBottomSheet(context) {
   );
 }
 
-void scheduleAlarm() async {
+void scheduleAlarm(DateTime timetoBeRemainded) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    '0',
+    "${todoBox.length}",
     'todo_notification',
     'Channel for Alarm notification',
-    icon: 'toodoleeicon',
+    icon: 'app_icon',
     sound: RawResourceAndroidNotificationSound('alert_simple.wav'),
-    largeIcon: DrawableResourceAndroidBitmap('toodoleeicon'),
+    largeIcon: DrawableResourceAndroidBitmap('app_icon'),
   );
 
   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
@@ -314,9 +318,10 @@ void scheduleAlarm() async {
       iOS: iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
-      0,
+      todoBox.length,
       todo.todoName,
       "It's time to work on, ${todo.todoName}",
-      DateTime.parse(todo.todoRemainder),
+      timetoBeRemainded,
+      // DateTime.parse(todo.todoRemainder),
       platformChannelSpecifics);
 }

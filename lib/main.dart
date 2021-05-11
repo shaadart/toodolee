@@ -67,8 +67,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var initializationSettingsAndroid =
-      AndroidInitializationSettings('toodoleeicon');
+  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
   var initializationSettingsIOS = IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -99,7 +98,7 @@ void main() async {
   await Hive.openBox(welcomeBoringCardname);
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
   scheduleDeletingofLists();
-
+  deletingWeatherData();
 //Run Main App
   runApp(MyApp()); //dekhke he laglaa hai
 }
@@ -112,7 +111,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 3)),
+        future: Future.delayed(Duration(seconds: 0)),
         builder: (context, AsyncSnapshot snapshot) {
           // Show splash screen while waiting for app resources to load:
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -124,14 +123,24 @@ class MyApp extends StatelessWidget {
 
             return MaterialApp(home: Splash());
           } else {
+//Ghost White: 0xffF6F8FF
+//Lemon Glacier :0xffFBFB0E
+//Rich Black: 0xff010C13
+// Azure: 0xff4785FF
+
             // Loading is done, return the app:
             return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: DefaultedApp(),
                 title: 'Toodolee',
                 theme: ThemeData(
-                  primaryColor: Colors.blue[200],
+                  primaryColor: Color(0xffFBFB0E),
+                  accentColor: Color(0xff1F69FF),
+                  backgroundColor: Color(0xffF6F8FF),
+                  //checkboxTheme: CheckboxThemeData(checkColor: Color(0xffF6F8FF), fillColor: Color(0xff3377FF)),
                   brightness: Brightness.light,
+                  iconTheme: IconThemeData(color: Colors.black54),
+
                   fontFamily: "WorkSans",
                 ));
           }
@@ -278,15 +287,17 @@ class _DefaultedAppState extends State<DefaultedApp> {
           //backgroundColor: Colors.white,
           bottom: TabBar(tabs: [
             Tab(
+                text: "Toodos",
                 icon: Icon(
-              CarbonIcons.checkmark,
-              //  color: Colors.black,
-            )),
+                  CarbonIcons.checkmark,
+                  //  color: Colors.black,
+                )),
             Tab(
+                text: "Grids",
                 icon: Icon(
-              CarbonIcons.grid,
-              //color: Colors.black,
-            )),
+                  CarbonIcons.grid,
+                  //color: Colors.black,
+                )),
           ]),
         ),
         body: TabBarView(children: containers),
@@ -326,7 +337,6 @@ class _TodoAppState extends State<TodoApp> {
                 child: FadeInDown(
                   child: FloatingActionButton(
                     onPressed: () {
-                      
                       player.play(
                         'sounds/navigation_forward-selection-minimal.wav',
                         stayAwake: false,
