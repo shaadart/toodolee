@@ -5,14 +5,15 @@
 <uses-permission android:name="android.permission.VIBRATE" />
 <uses-permission android:name="android.permission.WAKE_LOCK"/>
    <application
-        android:label="toodo"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Toodolee"
+        android:icon="@mipmap/toodoleeicon">
          <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
-    <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-        </intent-filter>
-    </receiver>
+      <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+    </intent-filter>
+    
+</receiver>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

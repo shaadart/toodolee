@@ -1,17 +1,21 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:audioplayers/audio_cache.dart';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:locally/locally.dart';
+
 import 'package:toodo/main.dart';
+
 import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/todo_model.dart';
+import 'package:flutter/src/widgets/navigator.dart';
 import 'package:toodo/pages/listspage.dart';
+import 'package:toodo/pages/more.dart';
 import 'package:toodo/uis/listui.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +34,7 @@ String todoName = (titleController.text).toString();
 String todoRemainder;
 bool isCompleted = false;
 bool showEmojiKeyboard = false;
-void addTodoBottomSheet(context) {
+void addTodoBottomSheet(BuildContext context) {
   FocusNode focusNode = FocusNode();
 
   showModalBottomSheet(
@@ -44,7 +48,7 @@ void addTodoBottomSheet(context) {
         topRight: Radius.circular(10.0),
       ),
     ),
-    builder: (context) {
+    builder: (BuildContext context) {
       return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         final player = AudioCache();
@@ -155,7 +159,7 @@ void addTodoBottomSheet(context) {
                                         await openTimePicker(context);
                                         player.play(
                                           'sounds/navigation_forward-selection-minimal.wav',
-                                          stayAwake: false,
+                                          stayAwake: true,
                                           mode: PlayerMode.LOW_LATENCY,
                                         );
                                         // todoRemainder = timeChoosen as DateTime;
@@ -196,11 +200,10 @@ void addTodoBottomSheet(context) {
                                     //hero_decorative-celebration-02.wav
                                     onPressed: () {
                                       player.play(
-                                        'sounds/hero_decorative-celebration-02.wav',
+                                        'sounds/navigation_forward-selection-minimal.wav',
                                         stayAwake: false,
                                         mode: PlayerMode.LOW_LATENCY,
                                       );
-
                                       todo = TodoModel(
                                           todoName: todoName,
                                           todoRemainder: todoRemainder,
@@ -208,17 +211,31 @@ void addTodoBottomSheet(context) {
                                           isCompleted: false);
 
                                       if (todo.todoName.length > 2) {
-                                        setState(() {
-                                          todoRemainder = null;
-                                          titleController.clear();
-                                        });
-                                        Navigator.pop(context);
-                                        todoBox.add(todo);
-                                        print(
-                                            "${DateFormat("hh:mm").parse(todo.todoRemainder)} is the time you kniw?");
                                         decrementCount();
-                                        scheduleAlarm(DateFormat("hh:mm")
-                                            .parse(todo.todoRemainder));
+                                        todo.todoRemainder == null ||
+                                                todo.todoRemainder == ""
+                                            ? print("No Remainder Set")
+                                            : setRemainderMethod(
+                                                todo.todoRemainder,
+                                                todo.todoName,
+                                                context);
+                                        setState(() {
+                                          // todoRemainder = null;
+                                          titleController.clear();
+                                          todoRemainder == null;
+                                          selectedEmoji == null;
+                                          
+                                        });
+
+                                        todoBox.add(todo);
+                                        player.play(
+                                          'sounds/hero_decorative-celebration-02.wav',
+                                          stayAwake: false,
+                                          mode: PlayerMode.LOW_LATENCY,
+                                        );
+
+                                        // scheduleAlarm(DateFormat("hh:mm")
+                                        //     .parse(todo.todoRemainder));
                                         Navigator.pop(context);
                                         //scheduleAlarm();
                                         //scheduleAlarm(todoRemainder);
@@ -296,32 +313,4 @@ void addTodoBottomSheet(context) {
       });
     },
   );
-}
-
-void scheduleAlarm(DateTime timetoBeRemainded) async {
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    "${todoBox.length}",
-    'todo_notification',
-    'Channel for Alarm notification',
-    icon: 'app_icon',
-    sound: RawResourceAndroidNotificationSound('alert_simple.wav'),
-    largeIcon: DrawableResourceAndroidBitmap('app_icon'),
-  );
-
-  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-      sound: 'alert_simple.wav',
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true);
-  var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics);
-
-  await flutterLocalNotificationsPlugin.schedule(
-      todoBox.length,
-      todo.todoName,
-      "It's time to work on, ${todo.todoName}",
-      timetoBeRemainded,
-      // DateTime.parse(todo.todoRemainder),
-      platformChannelSpecifics);
 }

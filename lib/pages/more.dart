@@ -10,6 +10,7 @@ import 'package:toodo/pages/bored.dart';
 import 'package:toodo/pages/listspage.dart';
 import 'package:toodo/pages/progressbar.dart';
 import 'package:toodo/pages/quotes.dart';
+import 'package:toodo/pages/tommorownotification.dart';
 import 'package:toodo/pages/weatherCard.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -18,13 +19,11 @@ import 'package:toodo/main.dart';
 //import "package:pexels/pexels.dart";
 //import 'dart:async';
 
-double sizeofBoredTile = 2;
-
 List<StaggeredTile> _cardTile = <StaggeredTile>[
   StaggeredTile.count(2, 2.5),
   StaggeredTile.count(2, 4),
-  StaggeredTile.count(2, 3),
-  StaggeredTile.count(2, 1.5),
+  StaggeredTile.count(2, 2.3),
+  StaggeredTile.count(2, 1.3),
   //StaggeredTile.count(2, 1.5),
 
   StaggeredTile.count(4, 2.6),
@@ -37,13 +36,10 @@ List<StaggeredTile> _cardTile = <StaggeredTile>[
 
 //List of Cards with color and icon
 List<Widget> _listTile = <Widget>[
-  FadeInLeft(child: Weathercard()),
+  Weathercard(),
   Quotes(),
   FadeInUp(child: ProgressBar()),
-  FadeInRight(
-      child: BackGroundTile(
-    backgroundColor: Colors.pink[50],
-  )),
+  FadeInRight(child: TommorowNotification()),
   FadeInUp(child: Bored()),
   FadeInUp(
     child: WithLoveMoreComming(),

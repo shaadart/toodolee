@@ -1,23 +1,28 @@
 //import 'dart:ui';
 
+import 'dart:io';
+
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:locally/locally.dart';
+
 import 'package:provider/provider.dart';
 import 'package:search_page/search_page.dart';
+
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/pages/weatherCard.dart';
 import 'package:toodo/pages/weatherCard.dart';
 import 'package:toodo/processes.dart';
-import 'package:toodo/services/notifications.dart';
+
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:toodo/uis/completedListUi.dart';
 import 'package:toodo/models/todo_model.dart';
-import 'package:audioplayers/audio_cache.dart';
+
 import 'package:audioplayers/audioplayers.dart';
 //import 'package:toodo/models/todo_model.dart';
 
@@ -35,6 +40,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 //import 'package:process/process.dart';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:workmanager/workmanager.dart';
+
 import 'models/todo_model.dart';
 import 'pages/weatherCard.dart';
 
@@ -50,6 +57,7 @@ const String todoBoxname = "todo";
 const String weatherBoxname = "weather";
 const String completedtodoBoxname = "completedtodo";
 const String welcomeBoringCardname = "welcomeboringcard";
+const String quotesCardname = "quotes";
 //var  = ValueNotifier<int>(2);
 
 ValueNotifier<int> totalTodoCount =
@@ -62,26 +70,58 @@ TimeOfDay time;
 TimeOfDay picked;
 
 // final TextEditingController descriptionController = TextEditingController();
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+DateTime now = DateTime.now();
+
+String formattedDate = DateFormat('kk:mm').format(now);
+
+//14:13
+String removeunwantedSymbolsfromCurrentTime =
+    formattedDate.replaceAll(":", ""); //1413
+int currentTime = int.parse(removeunwantedSymbolsfromCurrentTime);
+
+int timeRemaining = 2400 - currentTime;
+
+//
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  var initializationSettingsIOS = IOSInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-      onDidReceiveLocalNotification:
-          (int id, String title, String body, String payload) async {});
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-  });
+  // Workmanager.initialize(deletingWeatherData);
+  // Workmanager.initialize(deletingQuotesData);
+
+  // Workmanager.registerPeriodicTask(
+  //   "1",
+  //   // use the same task name used in callbackDispatcher function for identifying the task
+  //   // Each task must have a unique name if you want to add multiple tasks;
+  //   deleteweatherdata,
+  //   // When no frequency is provided the default 15 minutes is set.
+  //   // Minimum frequency is 15 min.
+  //   // Android will automatically change your frequency to 15 min if you have configured a lower frequency than 15 minutes.
+  //   frequency: Duration(hours: 1), // change duration according to your needs
+  // );
+
+  // Workmanager.registerPeriodicTask(
+  //   "2",
+  //   // use the same task name used in callbackDispatcher function for identifying the task
+  //   // Each task must have a unique name if you want to add multiple tasks;
+  //   deletequotesdata,
+  //   // When no frequency is provided the default 15 minutes is set.
+  //   // Minimum frequency is 15 min.
+  //   // Android will automatically change your frequency to 15 min if you have configured a lower frequency than 15 minutes.
+  //   frequency: Duration(
+  //       minutes: timeRemaining), // change duration according to your needs
+  // );
+
+  // Workmanager.registerOneOffTask(
+  //   "3",
+  //   // use the same task name used in callbackDispatcher function for identifying the task
+  //   // Each task must have a unique name if you want to add multiple tasks;
+  //   deletelistdata,
+  //   initialDelay: Duration(seconds: 20),
+  //   // When no frequency is provided the default 15 minutes is set.
+  //   // Minimum frequency is 15 min.
+  //   // Android will automatically change your frequency to 15 min if you have configured a lower frequency than 15 minutes.
+  //   // change duration according to your needs
+  // );
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -95,10 +135,13 @@ void main() async {
   //Opening Boxes
   await Hive.openBox(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
-  await Hive.openBox(welcomeBoringCardname);
+
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
-  scheduleDeletingofLists();
-  deletingWeatherData();
+  await Hive.openBox(welcomeBoringCardname);
+  await Hive.openBox(quotesCardname);
+  // callbackDispatcher();
+  // deletingWeatherData();
+  // deletingQuotesData();
 //Run Main App
   runApp(MyApp()); //dekhke he laglaa hai
 }
@@ -337,11 +380,15 @@ class _TodoAppState extends State<TodoApp> {
                 child: FadeInDown(
                   child: FloatingActionButton(
                     onPressed: () {
+                      setState(() {
+                        selectedEmoji == null;
+                      });
                       player.play(
                         'sounds/navigation_forward-selection-minimal.wav',
                         stayAwake: false,
                         mode: PlayerMode.LOW_LATENCY,
                       );
+
                       // showEmojiKeyboard ? emojiSelect() : Container(),
                       addTodoBottomSheet(context);
 
@@ -361,6 +408,7 @@ class _TodoAppState extends State<TodoApp> {
                   //     thickness: 0.9,
                   //   ),
                   // ),
+
                   FadeInUp(
                     child: TodoCard(),
                     duration: Duration(milliseconds: 2000),
@@ -383,9 +431,9 @@ class _TodoAppState extends State<TodoApp> {
                     ),
                   ),
                   CompletedTodoCard(),
-                  Container(
-                    height: MediaQuery.of(context).size.width / 4,
-                  ),
+                  (todoBox.length <= 0 || completedBox.length > 0)
+                      ? Container(height: MediaQuery.of(context).size.width / 4)
+                      : Center(),
                   // Align(
                   //     alignment: Alignment.center,
                   //     child: Text(
@@ -401,6 +449,37 @@ class _TodoAppState extends State<TodoApp> {
           );
         });
   }
+}
 
-  Future notificationSelected(String payload) async {}
+setRemainderMethod(time, name, context) {
+  DateTime now = DateTime.now();
+
+  String formattedDate = DateFormat('kk:mm:ss').format(now);
+
+  String removeunwantedSymbolsfromRemainderTime =
+      time.replaceAll(":", ""); //14:13
+  String removeunwantedSymbolsfromCurrentTime =
+      formattedDate.replaceAll(":", ""); //1413
+  int currentTime = int.parse(removeunwantedSymbolsfromCurrentTime);
+  int remainderTime = int.parse(removeunwantedSymbolsfromRemainderTime);
+
+  int timeRemaining = (remainderTime * 60) - currentTime;
+  //
+  Locally locally = Locally(
+    context: context,
+    payload: 'test',
+
+    //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
+    appIcon: 'toodoleeicon',
+
+    pageRoute: MaterialPageRoute(builder: (BuildContext context) {
+      return DefaultedApp();
+    }),
+  );
+
+  locally.schedule(
+      title: '${name} ',
+      message: "${name} Remember to Work today",
+      androidAllowWhileIdle: true,
+      duration: Duration(seconds: timeRemaining));
 }

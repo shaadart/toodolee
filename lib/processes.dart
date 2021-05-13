@@ -1,38 +1,61 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import "package:toodo/main.dart";
-import 'package:cron/cron.dart';
-import 'package:toodo/pages/more.dart';
-import 'package:toodo/pages/more.dart';
-import 'package:toodo/pages/weatherCard.dart';
-import 'package:toodo/uis/addTodoBottomSheet.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
-import 'pages/more.dart';
+const deleteweatherdata = "deletingweatherData";
+const deletequotesdata = "deletingquotesData";
+const deletelistdata = "deletinglistsData";
+// void callbackDispatcher() {
+//   Workmanager.executeTask((task, inputdata) async {
+//     print('Deleting all the Toooooodooolees');
+//     await todoBox.clear();
+//     await completedBox.clear();
+//     print(todoBox.length);
+//     print(completedBox.length);
+//     totalTodoCount.value = 10;
 
-scheduleDeletingofLists() {
-  final cron = Cron();
-  cron.schedule(Schedule.parse('*/1 * * * *'), () async {});
-  cron.schedule(Schedule.parse('* 00 * * *'), () async {
-    print('Deleting all the Toooooodooolees');
-    await todoBox.clear();
-    await completedBox.clear();
-    print(todoBox.length);
-    print(completedBox.length);
-    totalTodoCount.value = 10;
-  });
-}
+//     //Return true when the task executed successfully or not
+//     return Future.value(true);
+//   });
+// }
 
-deletingWeatherData() {
-  final cron = Cron();
-  cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-    print("thisis si ${weatherBox.get("weather")[0]}");
-    weatherBox.delete("weatherofuser");
+// void deletingWeatherData() {
+// // this method will be called every hour
+//   Workmanager.executeTask((task, inputdata) async {
+//     switch (task) {
+//       case deleteweatherdata:
+//         print("thisis si ${weatherBox.get("weather")[0]}");
+//         weatherBox.delete("weatherofuser");
+//         break;
 
-    // print(response.cityName);
-    // print(response.tempInfo.temperature);
-    // print(response.weatherInfo.description);
+//       case Workmanager.iOSBackgroundTask:
+//         print("iOS background fetch delegate ran");
+//         break;
+//     }
 
-    // print(text_location);
-    // print(text_description);
-    // print(text_temperature);
-  });
-}
+//     //Return true when the task executed successfully or not
+//     return Future.value(true);
+//   });
+// }
+
+// void deletingQuotesData() {
+//   Workmanager.executeTask((task, inputdata) async {
+//     switch (task) {
+//       case deletequotesdata:
+//         quotesBox.delete("quote");
+//         print("thisis si ${quotesBox.get("quote")[0]}");
+//         break;
+
+//       case Workmanager.iOSBackgroundTask:
+//         print("iOS background fetch delegate ran");
+//         break;
+//     }
+
+//     //Return true when the task executed successfully or not
+//     return Future.value(true);
+//   });
+// }

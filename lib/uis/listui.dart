@@ -1,8 +1,7 @@
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
@@ -73,6 +72,8 @@ class _TodoCardState extends State<TodoCard> {
             "hoela",
             "yo",
             "yop",
+            "salaaaam",
+            "assalaaam",
             "hui",
             "Anyway",
             "so",
@@ -123,7 +124,10 @@ class _TodoCardState extends State<TodoCard> {
             "heya",
             "hey ya",
             "ho yah",
-            "eye",
+            "hayee",
+            "hoo",
+            "joyyy",
+            "aa-ji",
             "eeh",
             "aayye",
             "heeeye"
@@ -147,7 +151,6 @@ class _TodoCardState extends State<TodoCard> {
             "write them all",
             "move a bit",
             "swimming",
-            "start doing do's",
             "keep learning",
             "do exercising",
             "do meditation",
@@ -196,6 +199,7 @@ class _TodoCardState extends State<TodoCard> {
             "make toodoolee",
             "make music",
             "make beats",
+            "Save Animals",
             "Do personal Develoopment",
             "learn that musical instrument",
             "learn languages",
@@ -221,6 +225,20 @@ class _TodoCardState extends State<TodoCard> {
             "learn cricket",
             "learn basketball",
             "learn home designing",
+            "jogging",
+            "do treckking",
+            "learn French",
+            "learn Spanissssh",
+            "learn Napaaaliii",
+            "learn Thaaaaaai",
+            "learn Bengaaalii",
+            "learn Portugueeeeese",
+            "learn Twi",
+            "learn Englisss",
+            "learn Dutchhhh",
+            "learn Hindiiii",
+            "learn Araaaaaaaabic",
+            "learn Japaneeeseee",
             "work",
             "work",
             "work",
@@ -228,200 +246,225 @@ class _TodoCardState extends State<TodoCard> {
 
           String work = randomChoice(workList);
           Map<String, String> imageLists = {
-            'assets/bitmojis/battery full.png': "Energy, aaaaaaaa.. Me = Bolt",
-            'assets/bitmojis/busy.png': "Get Things done, Nowww...",
-            'assets/bitmojis/cat.png':
+            '🔋': "Energy, aaaaaaaa.. \n Me = Bolt",
+            '🐝': "Get Things done, Nowww...",
+            '🔔🐱':
                 "We Belive in working, goodness comes automatically, do we?",
-            'assets/bitmojis/check.png': "Writing it first then check it",
-            'assets/bitmojis/coffee.png':
+            '✔️': "Writing it first then check it",
+            '☕':
                 "Die hard fan of Coffee, but ${work} is more in caffiiinnnee..",
-            'assets/bitmojis/dog.png':
+            '🗻':
                 "I turn Dreams to Real, after undertanding, i have to ${work} for it",
-            'assets/bitmojis/good.png': "good.. now lift goods..",
-            'assets/bitmojis/guitar.png':
-                "Energy-ised! Now to break all the odds..",
-            'assets/bitmojis/hey 2.png':
+            '👍': "good.. now lift goods..",
+            '🎸⚡': "Energy-ised! Now to break all the odds..",
+            '👋😃':
                 "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
-            'assets/bitmojis/hey bro.png':
+            '😎🌴':
                 "Hey Beauty, do You know? your work of - '${work}' is more beautiful?",
-            'assets/bitmojis/hey hi.png':
-                "Welcome to the realest world... #WorldofWork",
-            'assets/bitmojis/hi 2.png': "Toooooodooooo, hiiiiiiiiiiiis",
-            'assets/bitmojis/hi 3.png':
+            '🐣': "Welcome to the realest world... #WorldofWork",
+            '🎉🎉🎉': "Toooooodooooo, hiiiiiiiiiiiis",
+            '🍩':
                 "if you think, your work is sweeter than any stuff, you are a bolt...",
-            'assets/bitmojis/hi 4.png': "Can't Mail you, So i mailed myself..",
-            'assets/bitmojis/hi 5.png':
+            '📮': "Can't Mail you, So i mailed myself..",
+            '🦍':
                 "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got to ${work}.. ",
-            'assets/bitmojis/hi 6.png':
+            '🐓😃':
                 "I am going to ${work} on this chicken, you can also join me...",
-            'assets/bitmojis/hi 7.png':
-                "hewwwwww.. to the 'work'-'shipper', - Who ships work, to its Destination",
-            'assets/bitmojis/hi 8.png':
-                "Going to space... to see what stars you will make",
-            'assets/bitmojis/hi 9.png':
+            '📦':
+                "hew.. to the \n work-shipper, - Who ships work, to its Destination",
+            '🚀': "Going to space... to see what stars you will make",
+            '🌞':
                 "Hey.. hey.. hey.. Today is Blessed to see you.. yes 'today'.",
-            'assets/bitmojis/hi 10.png':
+            '🤝':
                 "Let me Greet you with all the greetings i have, so that you greet your urgues to $work, like toodles",
-            'assets/bitmojis/hi 11.png':
+            '🐿️🌰':
                 "Going to the operator, to ask them to Kill the Subscription of my 'Nut-Flix'..",
-            'assets/bitmojis/hi 12.png':
+            '🦕🌕':
                 "Will you join? We are going to the astronauts in space, so to check what Computers they use in space? it's certainly not windows.",
-            'assets/bitmojis/hi 13.png':
-                "Me = says, good. and spreading lucks to all of you.",
-            'assets/bitmojis/hi 14.png':
+            '🌻': "Me = says, good. and spreading lucks to all of you.",
+            '🌵':
                 "Stick with me...We will go to different places after the Work",
-            'assets/bitmojis/hi 15.png': "This Origami can fly...",
-            'assets/bitmojis/hi 16.png':
+            '🕊️': "Voilaa.. Fleeeee...",
+            '🐍😛':
                 "This Boi, is really good at tongue Twisting, i need to ${work} and learn tounge-twisting hard from now... - Bro I will seeeeee you next time",
-            'assets/bitmojis/hi 18.png':
-                "Saaalaaaaaaaaaaaaaaam.... to all revolutionaries",
-            'assets/bitmojis/hi 19.png': "Halloo, unlimited times, Haloo ++",
-            'assets/bitmojis/hi 20.png':
+            '🙌': "Salaaaaam .... to all revolutionaries",
+            '🔥': "Fireeeee....., \n Let's make our Head and Chests to ${work}",
+            '🌺💐':
                 "Aloha.. I am in Hawaii, yeah, but still got to ${work} here..",
-            'assets/bitmojis/hi 21.png':
-                "best time to enjoy, live, and schedule... Lemme schedule this day",
-            'assets/bitmojis/hi 22.png':
+            '🌅':
+                "Best time to enjoy, live, and schedule... Lemme schedule this day",
+            '☕👱':
                 "I drink so much coffee at Work, I consider it part of my daily grind.",
-            'assets/bitmojis/hi 23.png':
+            '🚀🌱':
+                //🏖️
                 "Going to the Space to plant this, so it will see your progress when i will not be there. ",
-            'assets/bitmojis/hi 24.png':
+            '🐬':
                 "Under the sea... (in a Vacation). Yeah, i will ${work} here too..",
-            'assets/bitmojis/hi bush.png':
+            '🌳':
                 "It's my Dream to make this bush a big tree, lemme ${work} for it",
-            'assets/bitmojis/hi.png': "Hi.. (Swwwwwwwwwwwwwing....)",
-            'assets/bitmojis/kite.png':
+            '✨': "Hi.. (Swwwwwing....)",
+            '💨':
                 "I realised, Dreams also needs a push of focused work to get a flight.",
-            "assets/bitmojis/let's start.png":
-                "Letsssssss. Staaaaaaaaaaaart.....",
-            'assets/bitmojis/mario.png':
-                "Comming out of the loop, so to ${work}...",
-            'assets/bitmojis/melon.png':
-                "Staaaaaaaaaaaaaaaaaaaaaaaaarted now.... but melons first..",
-            'assets/bitmojis/morning.png':
-                "Dance with me... from whereever you are..",
-            'assets/bitmojis/parachute hi.png':
-                "To all.. Come, Let's Fly together and make the history..",
-            'assets/bitmojis/piano.png':
+            "🏁": "Letsssssss. Staaaaaaaaaaaart.....",
+            '➰': "Comming out of the loop, so to ${work}...",
+            '🍉': "Staaaaaaaaaaaaaaaaaaaaaaaaarted now.... but melons first..",
+            '🎶🕺🏻': "Dance with me... from whereever you are..",
+            '🛫': "To all.. Come, Let's Fly together and make the history..",
+            '🎹':
                 "Can you name Something? which is better than composing your own music..",
-            'assets/bitmojis/proud.png':
-                "Glory is yet to be come.. Prepare for the day",
-            'assets/bitmojis/run energy.png':
-                "On the work-path... or to $work paathh..",
-            'assets/bitmojis/skipping.png':
+            '🏆': "Glory is yet to be come.. Prepare for the day 🌟",
+            '🏃💨': "On the work-path... or to $work paathh..",
+            '⭐': "When i come forward to $work a New Star borns..",
+            '🦘':
                 "Skipping just before writing tooodooolee, not for skip-ing the work.. hehe",
-            'assets/bitmojis/tann.png':
-                "Tann!... Now I know.. How zombies gets to feel in the 'PlantsVsZombies' game",
-            'assets/bitmojis/tea 2.png':
+            '👨🏻‍🌾': "Your own successful biz, that's what your best job is!",
+            '🎊🎁':
                 "Stick with me.. We will Enjoy every world after this last piece of work",
-            'assets/bitmojis/tea.png':
+            '🍵':
                 "Yums...Together we all Will Drink it just after swimming on the waves of lilly-lil bits of work..",
-            'assets/bitmojis/work.png':
+            '🏇🏻':
                 "Lazies will say I am Phsyco-path.. But I am On the ${work}-path...",
-            'assets/bitmojis/yeah.png':
+            '👻':
                 "Yeah... yeah... yeah... Now you know, (${work}) is Important for the whole life.. hmm..",
-            'assets/bitmojis/easy.png':
-                "Look it's as easy as it is looking hard",
-            'assets/bitmojis/happy.png':
+            '💡': "It's as easy as it is looking hard",
+            '😄':
                 "Look... Everytime we all are happy or we 'am' happy, #WeareOne",
-            'assets/bitmojis/happy 2.png':
+            '😌':
                 "Things sometimes gets tough, but its good to see we are for one another, #WeareOne",
-            'assets/bitmojis/happy 3.png':
+            '🌌':
                 "Look the work you did yesterday has became a star in our Silky Bay Galaxy,",
-            'assets/bitmojis/dinosaur.png':
+            '🦖👦':
                 "We Found some strawberry under the cave... Let me make a Jam out of it..",
-            'assets/bitmojis/green light.png':
-                "It's all green, why don't we start to $work now..",
-            'assets/bitmojis/morning3.png':
+            '🚦':
+                "It's all green, why don't we engage ourselves to $work now..",
+            '​🏀​🍩​☕​':
                 "Fresh Mornings is best among all times of the day, let's create this time best day of the whole life.. lemme write that i need to '$work' for today.",
-            'assets/bitmojis/team awesome.png':
-                "Team........ Awesome.......... (ENERGY)",
-            'assets/bitmojis/love.png':
+            '⚡⚡⚡': "Team... Awesome. (ENERGY)",
+            '💙🎨':
                 "I colored my heart Blue from Red.. and it was the best of all descissions",
-            'assets/bitmojis/rainbow.png':
-                "Swiiiiiing... in dreams and in real tooo...",
-            'assets/bitmojis/diamond.png':
+            '🌈⚽': "Swiiiiiing... in dreams and in real tooo...",
+            '👤💰':
                 "Shhh.. Un-Stealing the lucks and Stealing the Urgues to ${work}",
-            'assets/bitmojis/hey 3.png':
-                "Hey <3000.. and ${work} > 30000000000",
-            'assets/bitmojis/bird.png':
-                "Chu..Chu.. All - Aboard Next Stop to the ${work}'s Zone.",
-            'assets/bitmojis/workhard.png':
-                "Preparing to ${work}, You can also join the Grind. heh",
-            'assets/bitmojis/rainbow2.png':
-                "Aaaye, I am not Unicorn, i am just, uniquely-born :)",
-            'assets/bitmojis/good heart.png':
+            '👋✨': "Hey <3000..\n and \n ${work} > 3000000",
+            '🐦': "Chu..Chu.. All - Aboard Next Stop to the ${work}'s Zone.",
+            '🥊👊': "Preparing to ${work}, You can also join the Grind. heh",
+            '🦄': "Aaaye, I am not Unicorn, i am just, uniquely-born :)",
+            '💪❤️':
                 "Me: Training the heart hard.... and discard the rest of the taaaask..",
-            'assets/bitmojis/pressplus.png':
+            '➕':
                 "Pressssssssss the Plussssssssss... it will make you surplus. 💪💪💪",
-            'assets/bitmojis/chill.png':
+            '😎🍹':
                 "Chillling.. Yeah also got some killing stuffs, Yeah to $work ... and you?",
           };
-          var listImageKeys = imageLists.keys;
-          var randomImage = randomChoice(listImageKeys);
-          var paddingOfText = MediaQuery.of(context).size.width / 20;
-          var listImageValues = imageLists["$randomImage"];
+          /*
+          🧑‍ Heey Developers b...b.b..break;, 
+          You can Run your Creative Muscles,
+          You can Add more First Screen Stuffs as a Map, 
+          (template : {"Emoji" : "Amazing Text"});
+          You can Always Contribute, 
+          Just Download the Code and Punch the Push it..
+
+        TARGET: We can together Achieve ATLeast 30 First-Screens Welcomes..
+        Also You can Ask me to Remove this all, if you got any good Ideas, that we can Paste it inside the First Screen 
+        This, This Whole lot of Code just belongs just to you and Humanity...
+
+        BTW, Lets Continue the Code..   
+         */
+
+          var listEmojiKeys = imageLists.keys;
+          var randomImage = randomChoice(listEmojiKeys);
+
+          var listEmojisValues = imageLists["$randomImage"];
+
           // var randomValue = randomChoice(listImageValues);
 
           if (todoBox.isEmpty == true) {
-            return Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 1.7,
-                  child: ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                        Colors.white.withOpacity(0.3), BlendMode.colorDodge),
-                    child: Container(
-                      // width: MediaQuery.of(context).size.width / 1.1,
-                      child: Center(
-                        child: ExtendedImage.asset(
-                          "${randomImage}",
-                          mode: ExtendedImageMode.gesture,
-                          initGestureConfigHandler: (state) {
-                            return GestureConfig(
-                              minScale: 1,
-                              //animationMinScale: 0.7,
-                              maxScale: 1,
-                              animationMaxScale: 1.3,
-                              speed: 1,
-                              inertialSpeed: 10.0,
-                              initialScale: 1.0,
-                              inPageView: false,
-                              initialAlignment: InitialAlignment.center,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.all(paddingOfText),
-                      child: Center(
-                        child: Text(
-                          '"$listImageValues"',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black26,
-                            fontSize: 15,
+            return SafeArea(
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: MediaQuery.of(context).size.height / 2,
+                  height: listEmojisValues.length > 90
+                      ? MediaQuery.of(context).size.height / 0.5
+                      : MediaQuery.of(context).size.height / 2,
+                  padding: const EdgeInsets.all(0.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Card(
+                          child: FlatButton(
+                            splashColor: Colors.white60,
+                            onPressed: () {
+                              addTodoBottomSheet(context);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                0,
+                                MediaQuery.of(context).size.height / 30,
+                                0,
+                                0,
+                              ),
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Center(
+                                      child: Text(
+                                        "${randomImage}",
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              22,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          8,
+                                          0,
+                                          8,
+                                          MediaQuery.of(context).size.height /
+                                              40),
+                                      child: Text(
+                                        '$listEmojisValues',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              35,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    )),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      8, 0, 8, MediaQuery.of(context).size.height / 40),
-                  child: Text(
-                    "$randomHeyss, To Start press +",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black26,
-                        fontSize: 15,
-                        fontStyle: FontStyle.italic),
+                      Center(
+                        child: ListTile(
+                          subtitle: Text(
+                            "$randomHeyss, To Start press +",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black26,
+                                fontSize: 15,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
+                ),
+              ),
             );
           } else if (todoBox.length == todoBox.length) {
             return SingleChildScrollView(

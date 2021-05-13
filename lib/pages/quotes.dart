@@ -4,12 +4,13 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:audioplayers/audio_cache.dart';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,11 @@ import 'package:flutter/services.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
+import 'package:toodo/main.dart';
 
-// import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart'
+
+var quotesBox = Hive.box(quotesCardname);
 
 class Quotes extends StatefulWidget {
   const Quotes({
@@ -42,13 +46,8 @@ class _QuotesState extends State<Quotes> {
   var baseFileName = "Quote";
   final player = AudioCache();
 
-  List _items = [];
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/quotes.json');
-    final data = await json.decode(response);
-    setState(() {
-      _items = data["items"];
-    });
   }
 
   @override
@@ -76,7 +75,11 @@ class _QuotesState extends State<Quotes> {
             var myquotes = json.decode(snapshot.data.toString());
             int lengthofJSON = 1643;
             var rangeofQuotes = random(0, lengthofJSON);
-
+            quotesBox.put("quote", [
+              myquotes[rangeofQuotes]["text"],
+              myquotes[rangeofQuotes]["author"]
+            ]);
+            print(quotesBox.get("quote")[0]);
             //var randomMyQuotes = myquotes[0].shuffle().first;
             return FlipCard(
               direction: FlipDirection.HORIZONTAL,
@@ -115,8 +118,7 @@ class _QuotesState extends State<Quotes> {
                                 child: Container(
                                     padding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width / 30),
-                                    child: Text(
-                                        "${myquotes[rangeofQuotes]["text"]}",
+                                    child: Text("${quotesBox.get("quote")[0]}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: (myquotes[rangeofQuotes]
@@ -133,10 +135,9 @@ class _QuotesState extends State<Quotes> {
                                     padding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width / 30),
                                     child: Text(
-                                        myquotes[rangeofQuotes]["author"] ==
-                                                null
+                                        quotesBox.get("quote")[1] == null
                                             ? "..."
-                                            : "@${myquotes[rangeofQuotes]["author"]}",
+                                            : "@${quotesBox.get("quote")[1]}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,

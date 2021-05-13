@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'dart:ui';
+//import 'dart:convert';
+//import 'dart:ui';
 
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cron/cron.dart';
 import 'package:hive/hive.dart';
@@ -136,6 +135,7 @@ class _WeathercardState extends State<Weathercard> {
     print("${weatherBox.values} = are values");
     print("${weatherBox.keys} = are keys");
     print('${weatherBox.get("location")} is the value of location');
+
     //print((weatherinDb.user_city));
     return ValueListenableBuilder(
         valueListenable: Hive.box(weatherBoxname).listenable(),
@@ -188,16 +188,7 @@ class _WeathercardState extends State<Weathercard> {
                                         stayAwake: false,
                                         mode: PlayerMode.LOW_LATENCY,
                                       );
-                                      //  print(initial_text_location);
 
-                                      // print(initial_text_location);
-                                      // print(initial_text_description);
-                                      // print(initial_text_temperature);
-
-                                      // print(
-                                      //     "$always_text_location always is the running now");
-                                      // print(
-                                      //     "$initial_text_location initial one is the running now");
                                       String user_city;
                                       user_city =
                                           getinitialweatherofLocation.text;
@@ -293,7 +284,7 @@ class _WeathercardState extends State<Weathercard> {
                 future: getWeatherData(weatherBox.get("location")[0]),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (text_description == null &&
-                      weatherBox.get("weatherofuser")[1] == null) {
+                      weatherBox.get("weatherofuser") == null) {
                     player.play(
                       'sounds/ui_loading.wav',
                       stayAwake: false,
@@ -301,6 +292,7 @@ class _WeathercardState extends State<Weathercard> {
                     );
                     return Center(
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
                             child: Center(
@@ -333,15 +325,18 @@ class _WeathercardState extends State<Weathercard> {
                       front: Card(
                         // color: Colors.transparent,
                         child: GradientCard(
+                          semanticContainer: false,
                           gradient: (() {
-                            if (text_description == "clear sky") {
+                            if (weatherBox.get("weatherofuser")[1] ==
+                                "clear sky") {
                               return Gradients.buildGradient(
                                   Alignment.topLeft, Alignment.bottomRight, [
                                 Colors.yellowAccent[100],
                                 Colors.amberAccent[100],
                                 Colors.amber[300]
                               ]);
-                            } else if (_clouds.contains(text_description)) {
+                            } else if (_clouds
+                                .contains(weatherBox.get("weatherofuser")[1])) {
                               return Gradients.buildGradient(
                                   Alignment.topRight, Alignment.topLeft, [
                                 //Colors.blueAccent[400],
@@ -352,7 +347,8 @@ class _WeathercardState extends State<Weathercard> {
                                 Colors.blue[100],
                                 Colors.blue[50],
                               ]);
-                            } else if (_rain.contains(text_description)) {
+                            } else if (_rain
+                                .contains(weatherBox.get("weatherofuser")[1])) {
                               return Gradients.buildGradient(
                                   Alignment.topLeft, Alignment.topRight, [
                                 //Colors.blueAccent[400],
@@ -363,7 +359,7 @@ class _WeathercardState extends State<Weathercard> {
                                 Colors.blue[100]
                               ]);
                             } else if (_thunderstorm
-                                .contains(text_description)) {
+                                .contains(weatherBox.get("weatherofuser")[1])) {
                               return Gradients.buildGradient(
                                   Alignment.topLeft, Alignment.topRight, [
                                 //Colors.blueAccent[400],
@@ -372,7 +368,8 @@ class _WeathercardState extends State<Weathercard> {
                                 Colors.indigo[100],
                                 Colors.indigo[200],
                               ]);
-                            } else if (_snow.contains(text_description)) {
+                            } else if (_snow
+                                .contains(weatherBox.get("weatherofuser")[1])) {
                               return Gradients.buildGradient(
                                   Alignment.topLeft, Alignment.topRight, [
                                 //Colors.blueAccent[400],
@@ -386,7 +383,8 @@ class _WeathercardState extends State<Weathercard> {
                                 Colors.green[50],
                                 Colors.white,
                               ]);
-                            } else if (_atmosphere.contains(text_description)) {
+                            } else if (_atmosphere
+                                .contains(weatherBox.get("weatherofuser")[1])) {
                               return Gradients.buildGradient(
                                   Alignment.topLeft, Alignment.topRight, [
                                 //Colors.blueAccent[400],
@@ -402,8 +400,7 @@ class _WeathercardState extends State<Weathercard> {
                             children: [
                               Center(
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     if (_response != null)
                                       Padding(
@@ -414,31 +411,35 @@ class _WeathercardState extends State<Weathercard> {
                                                   20)),
                                     Container(
                                       child: Icon((() {
-                                        if (text_description == "clear sky") {
+                                        if (weatherBox
+                                                .get("weatherofuser")[1] ==
+                                            "clear sky") {
                                           return CarbonIcons.sun;
-                                          // } else if (text_description == "heavy intensity rain") {
+                                          // } else if (weatherBox.get("location")[1] == "heavy intensity rain") {
                                           //   return CarbonIcons.rain_scattered;
-                                        } else if (_clouds
-                                            .contains(text_description)) {
+                                        } else if (_clouds.contains(weatherBox
+                                            .get("weatherofuser")[1])) {
                                           return CarbonIcons.partly_cloudy;
-                                          // } else if (text_description == "scattered clouds") {
+                                          // } else if (weatherBox.get("location")[1] == "scattered clouds") {
                                           //   return CarbonIcons.cloud;
-                                          // } else if (text_description == "broken clouds") {
+                                          // } else if (weatherBox.get("location")[1] == "broken clouds") {
                                           //   return CarbonIcons.cloudy;
-                                        } else if (_rain
-                                            .contains(text_description)) {
+                                        } else if (_rain.contains(weatherBox
+                                            .get("weatherofuser")[1])) {
                                           return CarbonIcons.rain_heavy;
-                                        } else if (_rain
-                                            .contains(text_description)) {
+                                        } else if (_rain.contains(weatherBox
+                                            .get("weatherofuser")[1])) {
                                           return CarbonIcons.rain_scattered;
-                                        } else if (_thunderstorm
-                                            .contains(text_description)) {
+                                        } else if (_thunderstorm.contains(
+                                            weatherBox
+                                                .get("weatherofuser")[1])) {
                                           return CarbonIcons.lightning;
-                                        } else if (_snow
-                                            .contains(text_description)) {
+                                        } else if (_snow.contains(weatherBox
+                                            .get("weatherofuser")[1])) {
                                           return CarbonIcons.snowflake;
-                                        } else if (_atmosphere
-                                            .contains(text_description)) {
+                                        } else if (_atmosphere.contains(
+                                            weatherBox
+                                                .get("weatherofuser")[1])) {
                                           return CarbonIcons.fog;
                                         }
 
@@ -466,15 +467,13 @@ class _WeathercardState extends State<Weathercard> {
                                               padding: EdgeInsets.all(2),
                                               child: Container(
                                                 child: Text(
-                                                    "${weatherBox.get("weatherofuser")[0]}°",
+                                                    "${weatherBox.get("weatherofuser")[0].toInt()}°",
                                                     style: TextStyle(
                                                         fontSize: 35)),
                                               ),
                                             ))),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      // mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Card(
                                           child: ListTile(
@@ -521,7 +520,7 @@ class _WeathercardState extends State<Weathercard> {
                             Colors.yellow[300],
                             Colors.yellow[300],
                           ]),
-                          semanticContainer: false,
+                          //semanticContainer: false,
                           child: Wrap(
                             children: [
                               Center(
@@ -576,6 +575,8 @@ class _WeathercardState extends State<Weathercard> {
                                           ]);
                                           getWeatherData(
                                               weatherBox.get("location")[0]);
+
+                                          cardKey.currentState.toggleCard();
                                           // getWeatherData(weatherBox
                                           //     .get("location")[0]
                                           //     .toString());
@@ -598,6 +599,7 @@ class _WeathercardState extends State<Weathercard> {
                                                   stayAwake: false,
                                                   mode: PlayerMode.LOW_LATENCY,
                                                 );
+
                                                 setState(() {
                                                   user_units = "metric";
                                                 });
@@ -653,7 +655,7 @@ class _WeathercardState extends State<Weathercard> {
       text_location = response.cityName;
       text_description = response.weatherInfo.description;
       text_temperature = response.tempInfo.temperature;
-      weatherBox.put("weatherofuser", [text_temperature, text_description]);
+
       // print(response.cityName);
       // print(response.tempInfo.temperature);
       // print(response.weatherInfo.description);
@@ -662,7 +664,7 @@ class _WeathercardState extends State<Weathercard> {
       // print(text_description);
       // print(text_temperature);
     });
-
+    weatherBox.put("weatherofuser", [text_temperature, text_description]);
     // userWeatherBox.put(
     //     "location", weather);
   }
