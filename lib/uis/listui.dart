@@ -1,9 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:toodo/main.dart';
 import 'package:toodo/pages/listspage.dart';
 import 'package:toodo/uis/completedListUi.dart';
@@ -13,7 +17,7 @@ import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
-import 'package:extended_image/extended_image.dart';
+
 import 'dart:core';
 
 Box<TodoModel> box;
@@ -33,6 +37,13 @@ class TodoCard extends StatefulWidget {
 
 class _TodoCardState extends State<TodoCard> {
   final player = AudioCache();
+  GlobalKey previewContainer = GlobalKey();
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
   @override
   void initState() {
@@ -378,91 +389,70 @@ class _TodoCardState extends State<TodoCard> {
 
           // var randomValue = randomChoice(listImageValues);
 
-          if (todoBox.isEmpty == true) {
+          if (todoBox.isEmpty == true && completedBox.isEmpty == true) {
             return SafeArea(
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: MediaQuery.of(context).size.height / 2,
-                  height: listEmojisValues.length > 90
-                      ? MediaQuery.of(context).size.height / 0.5
-                      : MediaQuery.of(context).size.height / 2,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Card(
-                          child: FlatButton(
-                            splashColor: Colors.white60,
-                            onPressed: () {
-                              addTodoBottomSheet(context);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                0,
-                                MediaQuery.of(context).size.height / 30,
-                                0,
-                                0,
-                              ),
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title: Center(
-                                      child: Text(
-                                        "${randomImage}",
-                                        style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              22,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  ListTile(
-                                    title: Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          8,
-                                          0,
-                                          8,
+              child: Container(
+                width: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height / 2,
+                padding: const EdgeInsets.all(0.0),
+                child: Column(
+                  children: [
+                    Card(
+                      child: FlatButton(
+                        splashColor: Colors.white60,
+                        onPressed: () {
+                          addTodoBottomSheet(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            0,
+                            MediaQuery.of(context).size.height / 30,
+                            0,
+                            0,
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Center(
+                                  child: Text(
+                                    "${randomImage}",
+                                    style: TextStyle(
+                                      fontSize:
                                           MediaQuery.of(context).size.height /
-                                              40),
-                                      child: Text(
-                                        '$listEmojisValues',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black45,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              35,
-                                        ),
-                                      ),
+                                              22,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              ListTile(
+                                title: Padding(
+                                  padding: EdgeInsets.fromLTRB(8, 0, 8,
+                                      MediaQuery.of(context).size.height / 40),
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Text(
+                                      '$listEmojisValues',
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Center(
-                        child: ListTile(
-                          subtitle: Text(
-                            "$randomHeyss, To Start press +",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.black26,
-                                fontSize: 15,
-                                fontStyle: FontStyle.italic),
-                          ),
+                    ),
+                    Center(
+                      child: ListTile(
+                        subtitle: Text(
+                          "$randomHeyss, To Start press +",
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -521,7 +511,7 @@ class _TodoCardState extends State<TodoCard> {
                                   player.play(
                                       'sounds/notification_simple-02.wav',
                                       stayAwake: false,
-                                      mode: PlayerMode.LOW_LATENCY,
+                                      // mode: PlayerMode.LOW_LATENCY,
                                       isNotification: true);
                                   // setState(() {
                                   //   todo.isCompleted = !todo.isCompleted;
@@ -543,16 +533,18 @@ class _TodoCardState extends State<TodoCard> {
                                 color: Colors.blue,
                               ),
 
-                              title: Text(
-                                '${todo.todoName}',
-                                style: TextStyle(
-                                  fontFamily: "WorkSans",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 20,
-                                  decoration: todo.isCompleted == true
-                                      ? TextDecoration.lineThrough
-                                      : null,
-                                  // color: Colors.black54
+                              title: Opacity(
+                                opacity: 0.8,
+                                child: Text(
+                                  '${todo.todoName}',
+                                  style: TextStyle(
+                                    fontFamily: "WorkSans",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+
+                                    // color: Colors.black54
+                                  ),
                                 ),
                               ),
                               // subtitle: Text("written on morning"),
@@ -567,11 +559,14 @@ class _TodoCardState extends State<TodoCard> {
                                 (todo.todoRemainder) == null ||
                                         todo.todoEmoji == "null"
                                     ? Container()
-                                    : Text(
-                                        "•",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          //color: Colors.black54
+                                    : Opacity(
+                                        opacity: 0.5,
+                                        child: Text(
+                                          "•",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            //color: Colors.black54
+                                          ),
                                         ),
                                       ),
                                 (todo.todoEmoji) == "null"
@@ -586,7 +581,7 @@ class _TodoCardState extends State<TodoCard> {
                                     player.play(
                                       'sounds/ui_tap-variant-01.wav',
                                       stayAwake: false,
-                                      mode: PlayerMode.LOW_LATENCY,
+                                      // mode: PlayerMode.LOW_LATENCY,
                                     );
                                     showModalBottomSheet(
                                       context: context,
@@ -615,7 +610,7 @@ class _TodoCardState extends State<TodoCard> {
                                                 player.play(
                                                   'sounds/ui_tap-variant-01.wav',
                                                   stayAwake: false,
-                                                  mode: PlayerMode.LOW_LATENCY,
+                                                  // mode: PlayerMode.LOW_LATENCY,
                                                 );
                                                 Navigator.pop(context);
                                                 if (todo.todoEmoji == "null" &&
@@ -640,14 +635,19 @@ class _TodoCardState extends State<TodoCard> {
                                                       subject: "Today's Toodo");
                                                 }
                                               },
-                                              child: ListTile(
-                                                leading:
-                                                    Icon(CarbonIcons.share),
-                                                title: Text("Share"),
+                                              child: RepaintBoundary(
+                                                key: previewContainer,
+                                                child: ListTile(
+                                                  leading:
+                                                      Icon(CarbonIcons.share),
+                                                  title: Text("Share"),
+                                                ),
                                               ),
                                             ),
                                             FlatButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                takeScreenShot();
+                                              },
                                               child: ListTile(
                                                 leading:
                                                     Icon(CarbonIcons.download),
@@ -658,12 +658,13 @@ class _TodoCardState extends State<TodoCard> {
                                             FlatButton(
                                               onPressed: () async {
                                                 await box.deleteAt(index);
+                                                incrementCount();
                                                 player.play(
                                                   'sounds/navigation_transition-left.wav',
                                                   stayAwake: false,
-                                                  mode: PlayerMode.LOW_LATENCY,
+                                                  // mode: PlayerMode.LOW_LATENCY,
                                                 );
-                                                incrementCount();
+
                                                 setState(() {});
                                                 Navigator.pop(context);
                                               },
@@ -694,46 +695,17 @@ class _TodoCardState extends State<TodoCard> {
                     }));
           }
         });
+  }
 
-//     return Card(
-//       color: Colors.white,
-//       child: Wrap(
-//         children: [
-//           ListTile(
-//             leading:
-//                 IconButton(icon: Icon(CarbonIcons.checkbox), onPressed: () {}),
-//             title: Text("Ride the Cycle, wooo!"),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
-//             child: Text(
-//               'Greyhound divisively hello coldly wonderfully marginally far upon excluding. Greyhound divisively hello coldly wonderfully marginally far upon excluding, ',
-//               style: TextStyle(color: Colors.black.withOpacity(0.6)),
-//             ),
-//           ),
-//           ButtonBar(
-//             children: [
-//               Text("4 am"),
-//               Text(
-//                 "•",
-//                 style: TextStyle(fontSize: 20),
-//               ),
-//               Text(
-//                 "😃",
-//                 style: TextStyle(fontSize: 20),
-//               ),
-//               IconButton(
-//                 onPressed: () {
-//                   listMoreOptions(context);
-//                 },
-//                 icon: Icon(CarbonIcons.overflow_menu_vertical),
-//               ),
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
+  takeScreenShot() async {
+    RenderRepaintBoundary boundary =
+        previewContainer.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    print(pngBytes);
+    File imgFile = File('$directory/screenshot.png');
+    imgFile.writeAsBytes(pngBytes);
   }
 }

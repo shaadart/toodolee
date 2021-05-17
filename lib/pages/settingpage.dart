@@ -22,7 +22,9 @@ class SplashScreen extends StatelessWidget {
               duration: Duration(milliseconds: 1200),
               child: Center(
                   child: Icon(CarbonIcons.checkmark,
-                      size: 90, color: Colors.black87)),
+                      size: 90, 
+                      //color: Colors.black87
+                      )),
             ),
             FadeOut(
                 duration: Duration(milliseconds: 1100),

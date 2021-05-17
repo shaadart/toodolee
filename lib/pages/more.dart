@@ -20,13 +20,14 @@ import 'package:toodo/main.dart';
 //import 'dart:async';
 
 List<StaggeredTile> _cardTile = <StaggeredTile>[
+  StaggeredTile.count(2, 3.5), //QuotesCard
   StaggeredTile.count(2, 2.5),
-  StaggeredTile.count(2, 4),
-  StaggeredTile.count(2, 2.3),
-  StaggeredTile.count(2, 1.3),
+
+  StaggeredTile.count(2, 3),
+  StaggeredTile.count(2, 2),
   //StaggeredTile.count(2, 1.5),
 
-  StaggeredTile.count(4, 2.6),
+  StaggeredTile.count(4, 2.6), //Text
   StaggeredTile.count(5, 2),
   // StaggeredTile.count(15, 1),
   // StaggeredTile.count(15, 1),
@@ -36,8 +37,8 @@ List<StaggeredTile> _cardTile = <StaggeredTile>[
 
 //List of Cards with color and icon
 List<Widget> _listTile = <Widget>[
-  Weathercard(),
   Quotes(),
+  Weathercard(),
   FadeInUp(child: ProgressBar()),
   FadeInRight(child: TommorowNotification()),
   FadeInUp(child: Bored()),
@@ -56,13 +57,16 @@ class WithLoveMoreComming extends StatelessWidget {
     return Center(
         child: Padding(
       padding: EdgeInsets.all(MediaQuery.of(context).size.width / 10),
-      child: Text(" - With ❤️ More Cards are on the way ",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-            color: Colors.black54,
-            fontSize: 15,
-          )),
+      child: Opacity(
+        opacity: 0.7,
+        child: Text(" - With ❤️ More Cards are on the way ",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              //color: Colors.black54,
+              fontSize: 15,
+            )),
+      ),
     ));
   }
 }

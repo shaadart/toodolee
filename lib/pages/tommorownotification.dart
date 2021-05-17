@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:extended_image/extended_image.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
@@ -19,8 +19,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:toodo/main.dart';
 import 'package:toodo/pages/more.dart';
+import 'package:toodo/processes.dart';
 
 String dailyRemainder = "6:30";
+var dailyRemainderBox = Hive.box(dailyRemainderBoxName);
 
 class TommorowNotification extends StatefulWidget {
   const TommorowNotification({
@@ -39,22 +41,43 @@ class _TommorowNotificationState extends State<TommorowNotification> {
     if (t != null) {
       setState(() {
         dailyRemainder = t.format(context);
+        dailyRemainderBox.put("remainderTime", dailyRemainder);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Wrap(
       children: [
         ListTile(
-            title: ElevatedButton.icon(
-                icon: Icon(CarbonIcons.time),
-                onPressed: () {
-                  openTimePickerDaily(context);
-                },
-                label: Text("$dailyRemainder"))),
-       
+          title: Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width / 30,
+                  MediaQuery.of(context).size.width / 30,
+                  MediaQuery.of(context).size.width / 30,
+                  0),
+              child: Text('Hey 😃, Tommorow, Remind me to Write Toodolees at ',
+                  style: TextStyle(fontFamily: "WorkSans")),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).size.width / 25, 0, 0, 0),
+          child: FlatButton(
+              onPressed: () {
+                openTimePickerDaily(context);
+                //setDailyRemainderMethod(dailyRemainder, context);
+              },
+              child: Text(
+                  dailyRemainderBox.get("remainderTime") == null
+                      ? "$dailyRemainder"
+                      : "${dailyRemainderBox.get('remainderTime')}",
+                  style:
+                      TextStyle(color: Colors.blue, fontFamily: "WorkSans"))),
+        ),
       ],
     );
   }

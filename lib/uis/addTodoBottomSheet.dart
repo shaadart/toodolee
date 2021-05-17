@@ -120,10 +120,11 @@ void addTodoBottomSheet(BuildContext context) {
                               decoration: InputDecoration(
                                 hoverColor: Colors.amber,
                                 border: InputBorder.none,
-                                prefixIcon: Icon(CarbonIcons.pen_fountain),
+                                prefixIcon: Icon(CarbonIcons.pen_fountain,
+                                    color: Theme.of(context).accentColor),
                                 hintText: "What toodo?",
                                 hintStyle: TextStyle(
-                                    color: Colors.black54,
+                                    // color: Colors.black54,
                                     fontWeight: FontWeight.w200),
                                 contentPadding: EdgeInsets.all(20.0),
                               ),
@@ -154,25 +155,34 @@ void addTodoBottomSheet(BuildContext context) {
                                           ? Icon(
                                               CarbonIcons.notification_filled,
                                               color: Colors.blue)
-                                          : Icon(CarbonIcons.notification),
+                                          : Opacity(
+                                              opacity: 0.6,
+                                              child: Icon(
+                                                  CarbonIcons.notification,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface)),
                                       onPressed: () async {
                                         await openTimePicker(context);
                                         player.play(
                                           'sounds/navigation_forward-selection-minimal.wav',
                                           stayAwake: true,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
                                         // todoRemainder = timeChoosen as DateTime;
                                       },
-                                      color: (todoRemainder != null)
-                                          ? Colors.blue
-                                          : Colors.black54,
                                     ),
                                   ),
                                   FadeInUp(
                                     child: IconButton(
                                       icon: selectedEmoji == null
-                                          ? Icon(CarbonIcons.face_add)
+                                          ? Opacity(
+                                              opacity: 0.6,
+                                              child: Icon(CarbonIcons.face_add,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface),
+                                            )
                                           : Text(
                                               selectedEmoji,
                                               style: TextStyle(fontSize: 20),
@@ -181,7 +191,7 @@ void addTodoBottomSheet(BuildContext context) {
                                         player.play(
                                           'sounds/navigation_forward-selection-minimal.wav',
                                           stayAwake: false,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
                                         focusNode.unfocus();
                                         focusNode.canRequestFocus = false;
@@ -190,7 +200,7 @@ void addTodoBottomSheet(BuildContext context) {
                                               !showEmojiKeyboard;
                                         });
                                       },
-                                      color: Colors.black54,
+                                      //color: Colors.black54,
                                     ),
                                   ),
                                 ],
@@ -202,7 +212,7 @@ void addTodoBottomSheet(BuildContext context) {
                                       player.play(
                                         'sounds/navigation_forward-selection-minimal.wav',
                                         stayAwake: false,
-                                        mode: PlayerMode.LOW_LATENCY,
+                                        // mode: PlayerMode.LOW_LATENCY,
                                       );
                                       todo = TodoModel(
                                           todoName: todoName,
@@ -222,16 +232,15 @@ void addTodoBottomSheet(BuildContext context) {
                                         setState(() {
                                           // todoRemainder = null;
                                           titleController.clear();
-                                          todoRemainder == null;
-                                          selectedEmoji == null;
-                                          
+                                          todoRemainder = null;
+                                          selectedEmoji = null;
                                         });
 
                                         todoBox.add(todo);
                                         player.play(
                                           'sounds/hero_decorative-celebration-02.wav',
                                           stayAwake: false,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
 
                                         // scheduleAlarm(DateFormat("hh:mm")

@@ -170,7 +170,7 @@ class _WeathercardState extends State<Weathercard> {
                                     // prefixIcon: Icon(CarbonIcons.pen),
                                     hintText: "Type City Name",
                                     hintStyle: TextStyle(
-                                        color: Colors.black54,
+                                        //color: Colors.black54,
                                         fontWeight: FontWeight.w200),
                                     contentPadding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width /
@@ -186,7 +186,7 @@ class _WeathercardState extends State<Weathercard> {
                                       player.play(
                                         'sounds/navigation_forward-selection-minimal.wav',
                                         stayAwake: false,
-                                        mode: PlayerMode.LOW_LATENCY,
+                                        // mode: PlayerMode.LOW_LATENCY,
                                       );
 
                                       String user_city;
@@ -237,7 +237,7 @@ class _WeathercardState extends State<Weathercard> {
                                         player.play(
                                           'sounds/navigation_forward-selection-minimal.wav',
                                           stayAwake: false,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
                                         setState(() {
                                           user_units = "metric";
@@ -247,7 +247,9 @@ class _WeathercardState extends State<Weathercard> {
                                       child: Text("°C"),
                                     ),
                                   ),
-                                  VerticalDivider(color: Colors.black54),
+                                  VerticalDivider(
+                                      //color: Colors.black54
+                                      ),
                                   Expanded(
                                     child: FlatButton(
                                       color: (user_units == "imperial")
@@ -257,7 +259,7 @@ class _WeathercardState extends State<Weathercard> {
                                         player.play(
                                           'sounds/navigation_forward-selection-minimal.wav',
                                           stayAwake: false,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
                                         setState(() {
                                           user_units = "imperial";
@@ -288,7 +290,7 @@ class _WeathercardState extends State<Weathercard> {
                     player.play(
                       'sounds/ui_loading.wav',
                       stayAwake: false,
-                      mode: PlayerMode.LOW_LATENCY,
+                      // mode: PlayerMode.LOW_LATENCY,
                     );
                     return Center(
                       child: Column(
@@ -311,7 +313,7 @@ class _WeathercardState extends State<Weathercard> {
                                 player.play(
                                   'sounds/navigation_forward-selection-minimal.wav',
                                   stayAwake: false,
-                                  mode: PlayerMode.LOW_LATENCY,
+                                  // mode: PlayerMode.LOW_LATENCY,
                                 );
                                 weatherBox.delete("location");
                               })
@@ -374,13 +376,14 @@ class _WeathercardState extends State<Weathercard> {
                                   Alignment.topLeft, Alignment.topRight, [
                                 //Colors.blueAccent[400],
 
-                                Colors.indigo[50],
-                                Colors.deepPurple[50],
-                                Colors.orange[50],
+                                Colors.yellow[50],
+                                Colors.yellow[50],
+                                Colors.yellow[50],
+                                Colors.yellow[50],
+                                Colors.yellow[50],
                                 Colors.yellow[50],
                                 Colors.amber[50],
-                                Colors.blue[50],
-                                Colors.green[50],
+
                                 Colors.white,
                               ]);
                             } else if (_atmosphere
@@ -540,7 +543,8 @@ class _WeathercardState extends State<Weathercard> {
                                             // prefixIcon: Icon(CarbonIcons.pen),
                                             hintText: "City Name",
                                             hintStyle: TextStyle(
-                                                color: Colors.black54,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontWeight: FontWeight.w200),
                                             contentPadding: EdgeInsets.all(
                                                 MediaQuery.of(context)
@@ -552,14 +556,14 @@ class _WeathercardState extends State<Weathercard> {
                                     Container(
                                       child: FlatButton.icon(
                                         label: Text("Add City"),
-                                        color: Colors.white60,
+                                        color: Theme.of(context).primaryColor,
                                         icon: Icon(CarbonIcons.add),
                                         onPressed: () async {
                                           //Temporary
                                           player.play(
                                             'sounds/navigation_forward-selection-minimal.wav',
                                             stayAwake: false,
-                                            mode: PlayerMode.LOW_LATENCY,
+                                            // mode: PlayerMode.LOW_LATENCY,
                                           );
                                           String user_city;
 
@@ -591,13 +595,14 @@ class _WeathercardState extends State<Weathercard> {
                                           Expanded(
                                             child: FlatButton(
                                               color: (user_units == "metric")
-                                                  ? Colors.white70
+                                                  ? Theme.of(context)
+                                                      .primaryColor
                                                   : Colors.transparent,
                                               onPressed: () {
                                                 player.play(
                                                   'sounds/navigation_forward-selection-minimal.wav',
                                                   stayAwake: false,
-                                                  mode: PlayerMode.LOW_LATENCY,
+                                                  // mode: PlayerMode.LOW_LATENCY,
                                                 );
 
                                                 setState(() {
@@ -608,17 +613,19 @@ class _WeathercardState extends State<Weathercard> {
                                             ),
                                           ),
                                           VerticalDivider(
-                                              color: Colors.black54),
+                                              //   color: Colors.black54
+                                              ),
                                           Expanded(
                                             child: FlatButton(
                                               color: (user_units == "imperial")
-                                                  ? Colors.white70
+                                                  ? Theme.of(context)
+                                                      .primaryColor
                                                   : Colors.transparent,
                                               onPressed: () {
                                                 player.play(
                                                   'sounds/navigation_forward-selection-minimal.wav',
                                                   stayAwake: false,
-                                                  mode: PlayerMode.LOW_LATENCY,
+                                                  // mode: PlayerMode.LOW_LATENCY,
                                                 );
                                                 setState(() {
                                                   user_units = "imperial";
@@ -650,20 +657,20 @@ class _WeathercardState extends State<Weathercard> {
     print(response.tempInfo.temperature);
     print(response.weatherInfo.description);
     // print(response.weatherInfo.description);
-    setState(() {
-      _response = response;
-      text_location = response.cityName;
-      text_description = response.weatherInfo.description;
-      text_temperature = response.tempInfo.temperature;
 
-      // print(response.cityName);
-      // print(response.tempInfo.temperature);
-      // print(response.weatherInfo.description);
+    _response = response;
+    text_location = response.cityName;
+    text_description = response.weatherInfo.description;
+    text_temperature = response.tempInfo.temperature;
 
-      // print(text_location);
-      // print(text_description);
-      // print(text_temperature);
-    });
+    // print(response.cityName);
+    // print(response.tempInfo.temperature);
+    // print(response.weatherInfo.description);
+
+    // print(text_location);
+    // print(text_description);
+    // print(text_temperature);
+
     weatherBox.put("weatherofuser", [text_temperature, text_description]);
     // userWeatherBox.put(
     //     "location", weather);

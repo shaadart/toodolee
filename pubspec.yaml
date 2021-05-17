@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependency_overrides:
+  
   #audioplayers: 
   
   
@@ -30,7 +31,10 @@ dependencies:
     sdk: flutter
   
   path: ^1.8.0
-  audioplayers:
+  adaptive_theme: ^2.2.0
+  audioplayers: any
+  expansion_card: ^0.1.0
+  flutter_overboard:
   #audioplayers: 
   #pexels: ^0.1.1
   cron: ^0.3.0
@@ -49,22 +53,25 @@ dependencies:
   sleek_circular_slider: ^2.0.0
   swipeable_card_stack: ^0.0.2
   share: ^2.0.1
- 
+  #in_app_review: ^2.0.2
   page_transition: ^1.1.7+6
-  hive_flutter: ^1.0.0
+  hive_flutter: 
   shared_preferences: 
   intl: ^0.17.0
   provider:
   emoji_picker:
   flutter_staggered_grid_view: ^0.4.0
-  #flutter_local_notifications: 
+  flutter_local_notifications: 
   dart_random_choice: ^0.0.2
-  extended_image: ^4.0.1
+  #extended_image: ^4.0.1
   flip_card: ^0.5.0
   http: ^0.13.2
   animate_do: ^2.0.0
   workmanager: ^0.2.0
-  #permission_handler: ^5.0.1+1
+  #shot_widget: ^1.0.0
+  
+  
+  
   carousel_slider: ^3.0.0
   url_launcher: ^6.0.3
   locally: ^1.0.5

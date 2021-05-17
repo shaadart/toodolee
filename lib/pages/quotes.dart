@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:extended_image/extended_image.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +23,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'package:share/share.dart';
+
 import 'package:toodo/main.dart';
 
 // import 'package:screenshot/screenshot.dart'
@@ -49,6 +51,8 @@ class _QuotesState extends State<Quotes> {
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/quotes.json');
   }
+
+  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   @override
   void initState() {
@@ -82,9 +86,8 @@ class _QuotesState extends State<Quotes> {
             print(quotesBox.get("quote")[0]);
             //var randomMyQuotes = myquotes[0].shuffle().first;
             return FlipCard(
-              direction: FlipDirection.HORIZONTAL,
+              key: cardKey,
               front: RepaintBoundary(
-                key: _repaintKey,
                 child: Card(
                   // color: Colors.transparent,
                   child: GradientCard(
@@ -125,8 +128,8 @@ class _QuotesState extends State<Quotes> {
                                                             ["text"]) //161
                                                         .length >
                                                     90
-                                                ? 12
-                                                : 16))),
+                                                ? 13
+                                                : 15))),
                               ),
                               FadeIn(
                                 delay: Duration(milliseconds: 1000),
@@ -192,7 +195,7 @@ class _QuotesState extends State<Quotes> {
                                         player.play(
                                           'sounds/ui_tap-variant-01.wav',
                                           stayAwake: false,
-                                          mode: PlayerMode.LOW_LATENCY,
+                                          // mode: PlayerMode.LOW_LATENCY,
                                         );
                                         Share.share(
                                           "${myquotes[rangeofQuotes]["text"]} \n @${myquotes[rangeofQuotes]["author"]}\n \n Get More Quotes while writing toodoos on (play store link)",
@@ -211,7 +214,21 @@ class _QuotesState extends State<Quotes> {
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                     child: IconButton(
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        cardKey.currentState.toggleCard();
+                                        // String imagespath = "";
+
+                                        // try {
+                                        //   imagespath = await StoragePath.imagesPath;
+                                        //   var response = jsonDecode(imagespath);
+                                        //   print(response);
+
+                                        //   setState(() {});
+                                        // } on PlatformException {
+                                        //   imagespath = 'Failed to get path';
+                                        // }
+                                        // return imagespath;
+
                                         // ScreenShot();
                                         print("Quote Captured");
                                         ScaffoldMessenger.of(context)

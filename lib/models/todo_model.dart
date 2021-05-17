@@ -1,18 +1,18 @@
 //import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive/hive.dart'; //Local Database, Easy....
 
 part 'todo_model.g.dart';
 
 @HiveType(typeId: 0)
 class TodoModel {
   @HiveField(0)
-  String todoName;
+  String todoName; //Name of Toooooooooooooooooodoooooooooooleeeeeeeeeee
   @HiveField(1)
-  String todoEmoji;
+  String todoEmoji; // Emoji (TAG)
   @HiveField(2)
-  String todoRemainder;
+  String todoRemainder; //Remainder
   @HiveField(3)
-  bool isCompleted;
+  bool isCompleted; //True or False, 
 
   TodoModel(
       {this.todoName,
