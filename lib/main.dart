@@ -1,54 +1,37 @@
 //import 'dart:ui';
-
-import 'dart:io';
-
+//import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
-
+import 'dart:async';
 import 'package:easy_gradient_text/easy_gradient_text.dart'; // Text To Gradients
 import 'package:flutter/foundation.dart';
-import 'package:flutter_overboard/flutter_overboard.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'package:intl/intl.dart'; //Date - Time
 import 'package:locally/locally.dart'; // Sends Push Notifications, Amazingly.
 import 'package:search_page/search_page.dart';
-import 'package:provider/provider.dart';
 
 import 'package:toodo/models/completed_todo_model.dart';
-import 'package:toodo/pages/onboardingScreen.dart';
-import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
-import 'package:toodo/pages/tommorownotification.dart';
-import 'package:toodo/pages/weatherCard.dart';
-import 'package:toodo/pages/weatherCard.dart';
-import 'package:toodo/processes.dart';
+import 'package:toodo/pages/adTest.dart';
+import 'package:toodo/pages/settingsPage/ad-state.dart';
 
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
+import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/completedListUi.dart';
 import 'package:toodo/models/todo_model.dart';
-
-//import 'package:toodo/models/todo_model.dart';
-
 import 'package:toodo/pages/more.dart';
-//import 'package:share/share.dart';
 import 'package:toodo/uis/listui.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
-//import 'package:toodo/uis/completedListUi.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-//import 'package:camera/camera.dart';
-
-//import 'package:process/process.dart';
-
 import 'package:animate_do/animate_do.dart';
-import 'package:workmanager/workmanager.dart';
-
 import 'models/todo_model.dart';
-import 'pages/weatherCard.dart';
+
+//import 'pages/weatherCard.dart';
 
 //Home Page
 //Settings
@@ -65,6 +48,7 @@ const String welcomeBoringCardname = "welcomeboringcard";
 const String quotesCardname = "quotes";
 const String dailyRemainderBoxName = "dailyremainder";
 const String boringcardName = "boringcard";
+const String settingsName = "settings";
 //var  = ValueNotifier<int>(2);
 
 ValueNotifier<int> totalTodoCount =
@@ -92,6 +76,7 @@ int timeRemaining = 2400 - currentTime;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //AdMobService.initialize();
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -111,6 +96,7 @@ void main() async {
   await Hive.openBox(quotesCardname);
   await Hive.openBox(dailyRemainderBoxName);
   await Hive.openBox(boringcardName);
+  await Hive.openBox(settingsName);
   // callbackDispatcher();
   // deletingWeatherData();
   // deletingQuotesData();
@@ -134,7 +120,7 @@ class MyApp extends StatelessWidget {
               'sounds/notification_ambient.wav',
               mode: PlayerMode.MEDIA_PLAYER,
               // stayAwake: false,
-              //// mode: PlayerMode.LOW_LATENCY,
+              // mode: PlayerMode.LOW_LATENCY,
             );
 
             return MaterialApp(home: Splash());
@@ -177,15 +163,6 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 primaryColor: Color(0xff4785FF),
                 accentColor: Color(0xffFBFB0E),
-                // textTheme: TextTheme(
-                //     headline1: TextStyle(
-                //         fontSize: 72.0, fontWeight: FontWeight.bold),
-                //     headline6: TextStyle(
-                //         fontSize: 36.0, fontStyle: FontStyle.italic),
-                //     bodyText2: TextStyle(fontSize: 14.0,),
-                //     headline4: TextStyle(color: Colors.black87),
-                //     subtitle:
-                //         TextStyle(color: Colors.white54, fontSize: 15))
               ),
               initial: AdaptiveThemeMode.light,
               builder: (theme, darkTheme) => MaterialApp(
@@ -206,6 +183,14 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
+    todoBox = Hive.box<TodoModel>(todoBoxname);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,7 +238,10 @@ class DefaultedApp extends StatefulWidget {
 
 class _DefaultedAppState extends State<DefaultedApp> {
   //Name, Reminader Emoji
-  // var keys = todoBox.keys.toList();
+  // var todoLists = todoBox.values.toList();
+  // var completedLists = completedBox.values.toList();
+
+  // new List.from(list1)..addAll(list2);
 
   final player = AudioCache();
 
@@ -280,18 +268,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
             SlideInDown(
               child: IconButton(
                   icon: Icon(
-                    CarbonIcons.menu,
-                  ),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingPage()),
-                    );
-                  }),
-            ),
-            SlideInDown(
-              child: IconButton(
-                  icon: Icon(
                     CarbonIcons.search,
                   ),
                   onPressed: () {
@@ -300,31 +276,19 @@ class _DefaultedAppState extends State<DefaultedApp> {
                       stayAwake: false,
                       // mode: PlayerMode.LOW_LATENCY,
                     );
-                    // showSearch(
-                    //   context: context,
-                    //   delegate: SearchPage<TodoModel>(
-                    //     onQueryUpdate: (s) => print(s),
-                    //     items: keys,
-                    //     searchLabel: 'Search Todos',
-                    //     suggestion: Center(
-                    //       child:
-                    //           Text('Filter Todo by name, Remainder or Emoji'),
-                    //     ),
-                    //     failure: Center(
-                    //       child: Text('No person found :('),
-                    //     ),
-                    //     filter: (keys) => [
-                    //       keys.todoName,
-                    //       keys.todoRemainder,
-                    //       keys.todoEmoji.toString(),
-                    //     ],
-                    //     builder: (keys) => ListTile(
-                    //       title: Text("${keys.todoName}"),
-                    //       subtitle: Text("${keys.todoRemainder}"),
-                    //       trailing: Text('${keys.todoEmoji.toString()} yo'),
-                    //     ),
-                    //   ),
-                    //);
+                    showSearchPage(context);
+                  }),
+            ),
+            SlideInDown(
+              child: IconButton(
+                  icon: Icon(
+                    CarbonIcons.menu,
+                  ),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingPage()),
+                    );
                   }),
             ),
           ],
@@ -360,6 +324,72 @@ class _DefaultedAppState extends State<DefaultedApp> {
       ),
     );
   }
+
+  showSearchPage(BuildContext context) async {
+    showSearch(
+      context: context,
+      delegate: SearchPage(
+        items: todoBox.values.toList(),
+        searchLabel: 'Search Todoo',
+        suggestion: Center(
+          child: Text('Filter runnig toodos by\n name, time or emoji'),
+        ),
+        failure: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'No Running todos found',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+              ),
+              Padding(
+                padding: EdgeInsets.all(
+                    MediaQuery.of(context).size.shortestSide / 50),
+                child: Text("it is may be not written or is completed"),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.shortestSide / 30,
+                    0,
+                    MediaQuery.of(context).size.shortestSide / 30,
+                    MediaQuery.of(context).size.shortestSide / 30),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      addTodoBottomSheet(context);
+                    },
+                    child: Text("Tap to Write it")),
+              )
+            ],
+          ),
+        ),
+        filter: (todoBox) => [
+          todoBox.todoName,
+          todoBox.todoRemainder,
+          todoBox.todoEmoji.toString(),
+        ],
+        builder: (todoBox) => FlatButton(
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DefaultedApp()),
+            );
+          },
+          child: ListTile(
+            title: Text(todoBox.todoName),
+            subtitle: Text("yes it's there, tap to work"),
+            leading: todoBox.todoEmoji == "null"
+                ? Icon(CarbonIcons.thumbs_up)
+                : Text('${todoBox.todoEmoji}'),
+            trailing: todoBox.todoRemainder == null
+                ? Text("")
+                : Text('${todoBox.todoRemainder}'),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class TodoApp extends StatefulWidget {
@@ -368,16 +398,7 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  // int index;
   final player = AudioCache();
-
-  @override
-  void initState() {
-    super.initState();
-    completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
-    todoBox = Hive.box<TodoModel>(todoBoxname);
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
@@ -415,18 +436,28 @@ class _TodoAppState extends State<TodoApp> {
                   FloatingActionButtonLocation.endFloat,
               body: ListView(
                 children: [
-                  // SlideInRightBig(
-                  //   child: Divider(
-                  //     indent: 85,
-                  //     thickness: 0.9,
-                  //   ),
-                  // ),
+                  // TODO: Display a banner when ready
 
                   SlideInUp(
                     child: TodoCard(),
                     duration: Duration(milliseconds: 2000),
                     //delay: Duration(milliseconds: 200),
                   ),
+                  // Column(
+                  //   children: [
+                  //     Align(
+                  //       alignment: FractionalOffset.topCenter,
+                  //       child: Padding(
+                  //           padding: EdgeInsets.only(top: 10.0),
+                  //           child: Container(
+                  //             alignment: Alignment.center,
+                  //             child: adWidget,
+                  //             width: _bannerAd.size.width.toDouble(),
+                  //             height: _bannerAd.size.height.toDouble(),
+                  //           )),
+                  //     )
+                  //   ],
+                  // ),
 
                   CompletedTodoCard(),
 
@@ -476,7 +507,7 @@ class _TodoAppState extends State<TodoApp> {
 }
 
 setRemainderMethod(time, name, context) {
-  if (remainderNotifications == true) {
+  if (settingsBox.get("remainderNotifications") == true) {
     DateTime now = DateTime.now();
 
     String formattedDate = DateFormat('kk:mm').format(now); // 10:43 => "10:43"

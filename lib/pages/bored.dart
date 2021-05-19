@@ -118,7 +118,7 @@ class _BoredState extends State<Bored> {
           } else {
             if (boredBox.get("showedNotification") == false ||
                 boredBox.get("showedNotification") == null) {
-              if (boredNotifications == true) {
+              if (settingsBox.get("boringNotifications") == true) {
                 Locally locally = Locally(
                   context: context,
                   payload: 'test2',

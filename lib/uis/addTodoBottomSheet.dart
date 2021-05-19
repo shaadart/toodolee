@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 
 Box<TodoModel> todoBox;
 TodoModel todo;
+
 void decrementCount() {
   totalTodoCount.value--;
 }
@@ -235,8 +236,9 @@ void addTodoBottomSheet(BuildContext context) {
                                           todoRemainder = null;
                                           selectedEmoji = null;
                                         });
-
+                           
                                         todoBox.add(todo);
+
                                         player.play(
                                           'sounds/hero_decorative-celebration-02.wav',
                                           stayAwake: false,

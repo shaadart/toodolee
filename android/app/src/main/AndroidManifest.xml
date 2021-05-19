@@ -44,9 +44,13 @@
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java  ca-app-pub-3388943164060824~4602546024 -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+             <meta-data
+      android:name="com.google.android.gms.ads.APPLICATION_ID"
+      android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
 </manifest>

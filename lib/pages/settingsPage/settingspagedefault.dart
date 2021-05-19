@@ -2,13 +2,18 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter/material.dart';
-
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/main.dart';
 
-bool dailyNotifications = true;
+import '../adTest.dart';
+
+// bool dailyNotifications = true;
 bool remainderNotifications = true;
 bool quotesNotifications = false;
 bool boredNotifications = false;
+
+var settingsBox = Hive.box(settingsName);
 
 class SettingPage extends StatefulWidget {
   @override
@@ -18,6 +23,11 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
+    // settingsBox.put("dailyNotifications", dailyNotifications);
+
+    // settingsBox.put("remainderNotifications", true);
+    // settingsBox.put("quotesNotifications", false);
+    //settingsBox.put("boredNotifications", false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings Page"),
@@ -36,17 +46,27 @@ class _SettingPageState extends State<SettingPage> {
             children: <Widget>[
               Column(children: [
                 // <-- Collapses when tapped on
-                ListTile(
-                  title: Text("Send Instant Invites"),
+                FlatButton(
+                  onPressed: () {},
+                  child: ListTile(
+                    leading: Icon(CarbonIcons.user_follow),
+                    title: Text("Send Instant Invites"),
+                  ),
                 ),
-                ListTile(
-                  title: Text("Copy the Link"),
+                FlatButton(
+                  onPressed: () {},
+                  child: ListTile(
+                    leading: Icon(CarbonIcons.copy),
+                    title: Text("Copy the Link"),
+                  ),
                 ),
-                ListTile(
-                  title: Text("Rate the App"),
+                FlatButton(
+                  onPressed: () {},
+                  child: ListTile(
+                    leading: Icon(CarbonIcons.star),
+                    title: Text("Rate the App"),
+                  ),
                 ),
-
-                Divider(),
               ]),
             ],
           ),
@@ -66,49 +86,103 @@ class _SettingPageState extends State<SettingPage> {
                 // <-- Collapses when tapped on
                 Column(
                   children: [
-                    SwitchListTile(
-                      title: Text("Daily Notifications"),
-                      value: dailyNotifications,
-                      activeColor: Theme.of(context).primaryColor,
-                      onChanged: (bool value) {
-                        setState(() {
-                          dailyNotifications = value;
-                        });
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box(settingsName).listenable(),
+                      builder: (context, dailyNotification, child) {
+                        var switchValue = dailyNotification
+                            .get("dailyNotifications", defaultValue: true);
+                        return SwitchListTile(
+                          title: Text("Daily Notifications"),
+                          value: switchValue,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (val) {
+                            //boredNotifications = value;
+                            //dailyNotifications = value;
+
+                            dailyNotification.put(
+                                "dailyNotifications", !switchValue);
+                            //dailyNotification = !dailyNotification;
+                            print(val);
+
+                            print(
+                                "$dailyNotification is value of dailyNotification");
+
+                            //print(settingsBox.get("dailyNotifications"));
+                          },
+                        );
                       },
                     ),
-                    SwitchListTile(
-                      title: Text("Remainder Notifications"),
-                      value: remainderNotifications,
-                      activeColor: Theme.of(context).primaryColor,
-                      onChanged: (bool value) {
-                        setState(() {
-                          remainderNotifications = value;
-                        });
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box(settingsName).listenable(),
+                      builder: (context, remainderNotification, child) {
+                        var switchValue = remainderNotification
+                            .get("remainderNotifications", defaultValue: true);
+                        return SwitchListTile(
+                          title: Text("Remainder Notifications"),
+                          value: switchValue,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (val) {
+                            //boredNotifications = value;
+                            //dailyNotifications = value;
+
+                            remainderNotification.put(
+                                "remainderNotifications", !switchValue);
+                            //dailyNotification = !dailyNotification;
+                            print(val);
+
+                            //print(settingsBox.get("dailyNotifications"));
+                          },
+                        );
                       },
                     ),
-                    SwitchListTile(
-                      title: Text("Quotes Notifications"),
-                      value: quotesNotifications,
-                      activeColor: Theme.of(context).primaryColor,
-                      onChanged: (bool value) {
-                        setState(() {
-                          quotesNotifications = value;
-                        });
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box(settingsName).listenable(),
+                      builder: (context, quotesNotification, child) {
+                        var switchValue = quotesNotification
+                            .get("quotesNotifications", defaultValue: false);
+                        return SwitchListTile(
+                          title: Text("Quotes Notifications"),
+                          value: switchValue,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (val) {
+                            //boredNotifications = value;
+                            //dailyNotifications = value;
+
+                            quotesNotification.put(
+                                "quotesNotifications", !switchValue);
+                            //dailyNotification = !dailyNotification;
+                            print(val);
+
+                            //print(settingsBox.get("dailyNotifications"));
+                          },
+                        );
                       },
                     ),
-                    SwitchListTile(
-                      title: Text("Bored Card Notifications"),
-                      value: boredNotifications,
-                      activeColor: Theme.of(context).primaryColor,
-                      onChanged: (bool value) {
-                        setState(() {
-                          boredNotifications = value;
-                        });
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box(settingsName).listenable(),
+                      builder: (context, boredNotification, child) {
+                        var switchValue = boredNotification
+                            .get("boredNotifications", defaultValue: false);
+                        return SwitchListTile(
+                          title: Text("Bored Card Notifications"),
+                          value: switchValue,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (val) {
+                            //boredNotifications = value;
+                            //dailyNotifications = value;
+
+                            boredNotification.put(
+                                "boredNotifications", !switchValue);
+                            //dailyNotification = !dailyNotification;
+                            print(val);
+
+                            //print(settingsBox.get("dailyNotifications"));
+                          },
+                        );
                       },
                     ),
                   ],
                 ),
-                Divider()
               ]),
             ],
           ),
@@ -145,23 +219,34 @@ class _SettingPageState extends State<SettingPage> {
                         });
                       },
                     ),
-                    Divider()
                   ],
                 ),
               ]),
             ],
           ),
           Divider(),
-          ExpansionCard(
-            title: Text(
-              "Ads - You May like",
-              style: Theme.of(context).textTheme.subtitle1,
+          FlatButton(
+            onPressed: () {},
+            child: ExpansionCard(
+              onExpansionChanged: (bool value) {
+                
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => AdTest(),
+                  ),
+                );
+              },
+              title: Text(
+                "Ads - You May like",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              leading: Icon(
+                CarbonIcons.thumbs_up,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              trailing: Icon(Icons.expand_more),
             ),
-            leading: Icon(
-              CarbonIcons.thumbs_up,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            trailing: Icon(Icons.expand_more),
           ),
           Divider(),
           Card(

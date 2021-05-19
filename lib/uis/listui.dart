@@ -21,7 +21,7 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'dart:core';
 
 Box<TodoModel> box;
-
+var todoList = [];
 void incrementCount() {
   totalTodoCount.value++;
 }
@@ -471,6 +471,7 @@ class _TodoCardState extends State<TodoCard> {
                       String completedTodoName = todo.todoName;
                       String completedTodoEmoji = todo.todoEmoji;
                       String completedTodoRemainder = todo.todoRemainder;
+
                       //todo.isCompleted = false;
                       return Card(
                         // color: Colors.white,
@@ -479,6 +480,10 @@ class _TodoCardState extends State<TodoCard> {
                           children: [
                             ListTile(
                               onLongPress: () {
+                                print("${todoBox.keys} are keys");
+
+                                print("${todoList} are values");
+                                print("${todoBox.toMap()} is to map");
                                 print("object");
                               },
                               leading: IconButton(

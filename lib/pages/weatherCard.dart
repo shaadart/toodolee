@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:toodo/models/Weather Models/weatherFromJson.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
-
+import 'dart:async';
 import 'package:toodo/pages/more.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
@@ -541,10 +541,11 @@ class _WeathercardState extends State<Weathercard> {
                                             hoverColor: Colors.amber,
                                             border: InputBorder.none,
                                             // prefixIcon: Icon(CarbonIcons.pen),
-                                            hintText: "City Name",
+                                            hintText: "Write City Name",
                                             hintStyle: TextStyle(
                                                 color: Theme.of(context)
-                                                    .primaryColor,
+                                                    .colorScheme
+                                                    .onSurface,
                                                 fontWeight: FontWeight.w200),
                                             contentPadding: EdgeInsets.all(
                                                 MediaQuery.of(context)

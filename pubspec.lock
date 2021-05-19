@@ -49,7 +49,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   audioplayers:
     dependency: "direct main"
     description:
@@ -91,7 +91,7 @@ packages:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   build_runner:
     dependency: "direct dev"
     description:
@@ -273,7 +273,7 @@ packages:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.0"
+    version: "6.1.1"
   fixnum:
     dependency: transitive
     description:
@@ -293,6 +293,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_admob:
+    dependency: "direct main"
+    description:
+      name: flutter_admob
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.8"
   flutter_local_notifications:
     dependency: "direct main"
     description:
@@ -352,6 +359,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  google_mobile_ads:
+    dependency: "direct main"
+    description:
+      name: google_mobile_ads
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.0+4"
   gradient_widgets:
     dependency: "direct main"
     description:
@@ -610,7 +624,7 @@ packages:
       name: search_page
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.0+1"
   share:
     dependency: "direct main"
     description:
@@ -666,7 +680,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.4"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -706,7 +720,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -755,14 +769,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.59"
+    version: "19.1.64"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.59"
+    version: "19.1.64"
   term_glyph:
     dependency: transitive
     description:
@@ -776,7 +790,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   timezone:
     dependency: transitive
     description:
@@ -881,7 +895,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.0"
   workmanager:
     dependency: "direct main"
     description:
@@ -911,5 +925,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.12.0 <3.0.0"
+  dart: ">=2.13.0 <3.0.0"
   flutter: ">=2.0.0"

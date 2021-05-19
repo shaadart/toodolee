@@ -2,7 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:toodo/pages/listspage.dart';
+
+
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({
