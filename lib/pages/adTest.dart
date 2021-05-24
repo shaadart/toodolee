@@ -1,144 +1,140 @@
-//  Container(
-//                 child: AdWidget(
-//                   key: UniqueKey(),
-//                   ad: AdMobService.createBannerAd()..load,
-//                 ),
-//                 height: 50,
+
+// class TodoCard extends StatefulWidget {
+//   const TodoCard({
+//     Key key,
+//   }) : super(key: key);
+
+//   @override
+//   _TodoCardState createState() => _TodoCardState();
+// }
+
+// class _TodoCardState extends State<TodoCard> {
+//   GlobalKey imageKey;
+
+//   //
+
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   //bool isCompleted = false;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Davinci(builder: (key) {
+//       ///3. set the widget key to the globalkey
+//       this.imageKey = key;
+//       return Card(
+//         // color: Colors.white,
+//         elevation: 0.7,
+//         child: Wrap(
+//           children: [
+//             ListTile(
+//               onLongPress: () {},
+//               leading: IconButton(
+//                 onPressed: () {},
+
+//                 //   child: ListTile(
+//                 //       trailing: Text("${completedTodo.todoEmoji}"),
+//                 //       title: Text("${completedTodo.todoName}"),
+//                 //       subtitle: Text("${completedTodo.todoRemainder}")),
+//                 // ););
+
+//                 icon: Icon(CarbonIcons.checkmark_filled, color: Colors.blue),
 //               ),
 
-import 'dart:io';
-//import 'dart:html';
-import 'package:carbon_icons/carbon_icons.dart';
-import 'package:easy_gradient_text/easy_gradient_text.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_admob/flutter_admob.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hive/hive.dart';
+//               title: Text(
+//                 '${todo.todoName}',
+//                 style: TextStyle(
+//                   fontFamily: "WorkSans",
+//                   fontStyle: FontStyle.normal,
+//                   fontSize: 20,
+//                   fontWeight: FontWeight.w600,
 
-import 'package:toodo/pages/bored.dart';
-import 'package:toodo/pages/listspage.dart';
-import 'package:toodo/pages/progressbar.dart';
-import 'package:toodo/pages/quotes.dart';
-import 'package:toodo/pages/settingsPage/ad-state.dart';
-import 'package:toodo/pages/tommorownotification.dart';
-import 'package:toodo/pages/weatherCard.dart';
-import 'package:animate_do/animate_do.dart';
+//                   // color: Colors.black54
+//                 ),
+//               ),
 
-import 'package:toodo/main.dart';
+//               // subtitle: Text("written on morning"),
+//             ),
 
-//import "package:pexels/pexels.dart";
-//import 'dart:async';
+//             // Divider(thickness: 1.2),
+//             ButtonBar(
+//               children: [
+//                 IconButton(
+//                   color: Colors.blue,
+//                   onPressed: () {
+//                     player.play(
+//                       'sounds/ui_tap-variant-01.wav',
+//                       stayAwake: false,
+//                       // mode: PlayerMode.LOW_LATENCY,
+//                     );
+//                     showModalBottomSheet(
+//                       context: context,
+//                       isScrollControlled: false,
+//                       shape: RoundedRectangleBorder(
+//                         // <-- for border radius
+//                         borderRadius: BorderRadius.only(
+//                           topLeft: Radius.circular(10.0),
+//                           topRight: Radius.circular(10.0),
+//                         ),
+//                       ),
+//                       builder: (context) {
+//                         return Wrap(
+//                           children: [
+//                             FlatButton(
+//                               onPressed: () async {
+//                                 String fileName =
+//                                     "${todo.todoName} ${DateTime.now().microsecondsSinceEpoch}";
 
-//List of Cards with color and icon
+//                                 await DavinciCapture.click(
+//                                   imageKey,
+//                                   saveToDevice: true,
+//                                   fileName: fileName,
+//                                   openFilePreview: true,
+//                                   albumName: "Toodolees ",
+//                                 );
 
-class WithLoveMoreComming extends StatelessWidget {
-  const WithLoveMoreComming({
-    Key key,
-  }) : super(key: key);
+//                                 ScaffoldMessenger.of(context)
+//                                     .showSnackBar(SnackBar(
+//                                         backgroundColor: Colors.blue[200],
+//                                         content: Row(
+//                                           children: [
+//                                             Expanded(
+//                                                 flex: 1,
+//                                                 child: Text("👍",
+//                                                     style: TextStyle(
+//                                                         color: Colors.white))),
+//                                             Expanded(
+//                                                 flex: 5,
+//                                                 child: Text(
+//                                                   "Share this Will, (Captured)",
+//                                                 )),
+//                                           ],
+//                                         )));
+//                               },
+//                               // await DavinciCapture.offStage(
+//                               //     PreviewWidget());
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Padding(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width / 10),
-      child: Opacity(
-        opacity: 0.7,
-        child: Text(" - With ❤️ More Cards are on the way ",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontStyle: FontStyle.italic,
-              //color: Colors.black54,
-              fontSize: 15,
-            )),
-      ),
-    ));
-  }
-}
-
-class AdTest extends StatefulWidget {
-  @override
-  _AdTestState createState() => _AdTestState();
-}
-
-class _AdTestState extends State<AdTest> {
-  String _platformVersion = 'Unknown';
-  Future<void> showAdMob(BuildContext ctx) async {
-    if (Platform.isAndroid) {
-      setState(() {
-        _platformVersion = "Android";
-      });
-      try {
-        await FlutterAdmob.init("ca-app-pub-3940256099942544~3347511713")
-            .then((_) {
-          // FlutterAdmob.banner.show(
-          //   "ca-app-pub-3940256099942544/6300978111",
-          //   // size: Size.FULL_BANNER,
-          //   // gravity: Gravity.BOTTOM,
-          //   //anchorOffset: 60,
-          // );
-          // FlutterAdmob.showInterstitial(
-          //     "ca-app-pub-3940256099942544/1033173712");
-          FlutterAdmob.showRewardVideo(
-              "ca-app-pub-3940256099942544/5224354917");
-        });
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Builder(
-      builder: (BuildContext context) {
-        return Scaffold(
-            appBar: AppBar(
-              title: const Text('Plugin example app'),
-            ),
-            body: Center(
-              child: Text('Running on: $_platformVersion\n'),
-            ),
-            floatingActionButton: Padding(
-                padding: EdgeInsets.only(top: 100),
-                child: Column(
-                  children: <Widget>[
-                    FloatingActionButton(
-                      onPressed: () {
-                        showAdMob(context);
-                      },
-                    ),
-                    FloatingActionButton(onPressed: () {
-                      // FlutterAdmob.showBanner("ca-app-pub-3940256099942544/2934735716",
-                      //   size: Size.SMART_BANNER,
-                      //   gravity: Gravity.BOTTOM,
-                      //   anchorOffset: 100,
-                      // );
-                    })
-                  ],
-                )));
-      },
-    ));
-  }
-}
-
-class BackGroundTile extends StatelessWidget {
-  final Color backgroundColor;
-  final IconData icondata;
-
-  BackGroundTile({this.backgroundColor, this.icondata});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: backgroundColor,
-      child: Icon(icondata, color: Colors.white),
-    );
-  }
-}
+//                               child: ListTile(
+//                                 leading: Icon(CarbonIcons.download),
+//                                 title: Text("Download"),
+//                               ),
+//                             ),
+//                             Divider(),
+//                           ],
+//                         );
+//                       },
+//                     );
+//                   },
+//                   icon: Icon(CarbonIcons.overflow_menu_horizontal),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       );
+//     });
+//   }
+// }

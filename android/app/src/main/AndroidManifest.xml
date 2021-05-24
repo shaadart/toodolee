@@ -4,6 +4,8 @@
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.VIBRATE" />
 <uses-permission android:name="android.permission.WAKE_LOCK"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <application
         android:label="Toodolee"
         android:icon="@mipmap/toodoleeicon">
@@ -51,6 +53,12 @@
 
              <meta-data
       android:name="com.google.android.gms.ads.APPLICATION_ID"
-      android:value="ca-app-pub-3940256099942544~3347511713"/>
+      android:value="ca-app-pub-3388943164060824~4602546024"/>
+
+
+      <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
+
     </application>
 </manifest>

@@ -30,7 +30,6 @@ final TextEditingController getinitialweatherofLocation =
     TextEditingController();
 
 bool celciusMetric = true;
-var weatherBox = Hive.box(weatherBoxname);
 
 class Weathercard extends StatefulWidget {
   const Weathercard({
@@ -129,7 +128,6 @@ class _WeathercardState extends State<Weathercard> {
 
   @override
   Widget build(BuildContext context) {
-    final player = AudioCache();
     // print(weatherBox.keys);
     // print(weatherBox.values);
     print("${weatherBox.values} = are values");
@@ -294,7 +292,7 @@ class _WeathercardState extends State<Weathercard> {
                     );
                     return Center(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        //mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
                             child: Center(

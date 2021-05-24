@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
-import 'package:locally/locally.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toodo/main.dart';
+import 'package:toodo/pages/quotes.dart';
+import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
 import 'package:toodo/pages/tommorownotification.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -15,48 +18,58 @@ const deleteweatherdata = "deletingweatherData";
 const deletequotesdata = "deletingquotesData";
 const deletelistdata = "deletinglistsData";
 
-setDailyRemainderMethod(timing, context) {
-  // DateTime now = DateTime.now();
+setDailyRemainderMethod(String time, context) {
 
-  // String formattedDate = DateFormat('kk:mm:ss').format(now);
+  if (settingsBox.get("dailyNotifications") == "true") {
+    List splittingtheTime = time.split(":");
+    int hour = int.parse(splittingtheTime.first);
+    print(hour);
 
-  // String removeunwantedSymbolsfromRemainderTime =
-  //     timing.replaceAll(":", ""); //14:13
-  // String removeunwantedSymbolsfromCurrentTime =
-  //     formattedDate.replaceAll(":", ""); //1413
-  // int currentTime = int.parse(removeunwantedSymbolsfromCurrentTime);
-  // int remainderTime = int.parse(removeunwantedSymbolsfromRemainderTime);
+    int minute = int.parse(splittingtheTime.last);
+    print(minute);
+    AwesomeNotifications().initialize(
+        // set the icon to null if you want to use the default app icon
+        'resource://drawable/toodoleeicon',
+        [
+          NotificationChannel(
+            // groupKey: "remainderNotf",
+            channelKey: 'dailyNotific',
+            channelName: 'Daily_Notification',
+            channelDescription:
+                'Sends you notifications to remind you to write toodolee',
+            defaultColor: Color(0xff4785FF),
+            ledColor: Colors.blue,
+            importance: NotificationImportance.Max,
+            defaultPrivacy: NotificationPrivacy.Public,
+            soundSource: "resource://raw/alert_simple",
+          ),
+        ]);
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        // Insert here your friendly dialog box before call the request method
+        // This is very important to not harm the user experience
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
 
-  // int timeRemaining = (remainderTime * 60) - currentTime;
-
-  var splittingthevariable = timing.split(":");
-
-  var hour = splittingthevariable.first;
-  var minute = splittingthevariable.last;
-
-  var time = Time(hour, minute, 0);
-  //
-  Locally locally = Locally(
-    context: context,
-    payload: 'test2',
-
-    //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-    appIcon: 'toodoleeicon',
-
-    pageRoute: MaterialPageRoute(builder: (BuildContext context) {
-      return DefaultedApp();
-    }),
-  );
-
-  locally.showDailyAtTime(
-    title: 'Write Toodoolee For Today',
-    message:
-        "Stay Productive throughout the Day, Start Writing the Todoolee Now and...",
-    time: Time(11, 35, 1),
-    suffixTime: true,
-  );
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 20,
+            channelKey: 'dailyNotific',
+            title: "Champion this Day 🏆",
+            body: "Tap to and write todo"),
+        
+        schedule: NotificationCalendar(
+          hour: hour,
+          minute: minute,
+          allowWhileIdle: true,
+          timeZone: AwesomeNotifications.localTimeZoneIdentifier,
+        ));
+  }
 }
-// void callbackDispatcher() {
+
+// 
+// void callbackDispatcher() {}
 //   Workmanager.executeTask((task, inputdata) async {
 //     print('Deleting all the Toooooodooolees');
 //     await todoBox.clear();
@@ -105,4 +118,55 @@ setDailyRemainderMethod(timing, context) {
 //     //Return true when the task executed successfully or not
 //     return Future.value(true);
 //   });
+// }
+// ignore: camel_case_types
+// class scheduleNotificationRemainders {
+//   String time;
+//   String name;
+//   int id;
+
+//   scheduleNotificationRemainders(this.time, this.name, this.id);
+//   setRemainderMethod(time, name, id, context) async {
+//     if (settingsBox.get("remainderNotifications") == true) {
+//       print("This is the ID here $this.id");
+//       DateTime now = DateTime.now();
+
+//       String formattedDate =
+//           DateFormat('kk:mm').format(now); // 10:43 => "10:43"
+
+//       String removeunwantedSymbolsfromRemainderTime =
+//           (this.time).replaceAll(":", ""); //1413
+//       String removeunwantedSymbolsfromCurrentTime =
+//           formattedDate.replaceAll(":", ""); //1044
+//       int currentTime = int.parse(removeunwantedSymbolsfromCurrentTime);
+//       int remainderTime = int.parse(removeunwantedSymbolsfromRemainderTime);
+
+//       int timeRemaining = remainderTime - currentTime;
+//       //
+//       Locally locally = Locally(
+//         context: context,
+//         payload: '${name}',
+
+//         //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
+//         appIcon: 'toodoleeicon',
+
+//         pageRoute: MaterialPageRoute(builder: (BuildContext context) {
+//           return DefaultedApp();
+//         }),
+//       );
+
+//       locally.schedule(
+//           channelID: (this.id).toString(),
+//           channelName: "Remainder Notifications $id",
+//           channelDescription:
+//               "Sends you Notifications of the remainders you set $id",
+//           title: '$this.id - ${name}',
+//           message: "${name}, Remember to Work today",
+//           androidAllowWhileIdle: true,
+//           duration: Duration(minutes: timeRemaining));
+//     } else {
+//       print(
+//           "Settings of Remainder Notification is set to the $remainderNotifications");
+//     }
+//   }
 // }

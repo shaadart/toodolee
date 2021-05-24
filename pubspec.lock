@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.19.0"
+  awesome_notifications:
+    dependency: "direct main"
+    description:
+      name: awesome_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6+7"
   boolean_selector:
     dependency: transitive
     description:
@@ -225,6 +232,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  davinci:
+    dependency: "direct main"
+    description:
+      name: davinci
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   device_info:
     dependency: transitive
     description:
@@ -293,27 +307,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_admob:
-    dependency: "direct main"
-    description:
-      name: flutter_admob
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.8"
   flutter_local_notifications:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0+4"
+    version: "4.0.1+2"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "2.0.0+1"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -328,6 +335,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_radio_group:
+    dependency: "direct main"
+    description:
+      name: flutter_radio_group
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  flutter_snake_navigationbar:
+    dependency: "direct main"
+    description:
+      name: flutter_snake_navigationbar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -349,6 +370,13 @@ packages:
     dependency: transitive
     description:
       name: frontend_server_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  gallery_saver:
+    dependency: transitive
+    description:
+      name: gallery_saver
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
@@ -457,13 +485,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
-  locally:
-    dependency: "direct main"
-    description:
-      name: locally
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   logging:
     dependency: transitive
     description:
@@ -499,6 +520,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  open_file:
+    dependency: transitive
+    description:
+      name: open_file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.1"
   package_config:
     dependency: transitive
     description:
@@ -547,7 +575,7 @@ packages:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.0"
   path_provider_windows:
     dependency: transitive
     description:
@@ -582,7 +610,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "1.0.3"
   pool:
     dependency: transitive
     description:
@@ -749,13 +777,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  swipe_stack:
-    dependency: "direct main"
-    description:
-      name: swipe_stack
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   swipeable_card_stack:
     dependency: "direct main"
     description:
@@ -797,7 +818,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.6.1"
   timing:
     dependency: transitive
     description:
@@ -846,7 +867,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.1"
   url_launcher_web:
     dependency: transitive
     description:
@@ -926,4 +947,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.13.0 <3.0.0"
-  flutter: ">=2.0.0"
+  flutter: ">=2.0.4"

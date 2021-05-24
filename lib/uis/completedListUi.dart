@@ -36,7 +36,6 @@ class CompletedTodoCard extends StatefulWidget {
 }
 
 class _CompletedTodoCardState extends State<CompletedTodoCard> {
-  final player = AudioCache();
   //bool isCompleted = false;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
@@ -53,29 +52,26 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
           List<int> ckeys = cbox.keys.cast<int>().toList() ?? [];
           if (completedBox.isEmpty == true && todoBox.isEmpty == false) {
             return Column(children: [
-              FadeInUp(
-                  //delay: Duration(milliseconds: 800),
-                  duration: Duration(milliseconds: 2000),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                          MediaQuery.of(context).size.width / 15,
-                          MediaQuery.of(context).size.width / 60,
-                          MediaQuery.of(context).size.width / 15,
-                          MediaQuery.of(context).size.width / 30),
-                      child: Center(
-                        child: Opacity(
-                          opacity: 0.5,
-                          child: Text(
-                            'Tap to Complete',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width / 15,
+                      MediaQuery.of(context).size.width / 60,
+                      MediaQuery.of(context).size.width / 15,
+                      MediaQuery.of(context).size.width / 30),
+                  child: Center(
+                    child: Opacity(
+                      opacity: 0.5,
+                      child: Text(
+                        'Completing is the new full',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.subtitle,
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ]);
           } else if (completedBox.length == completedBox.length) {
             return SingleChildScrollView(
@@ -207,22 +203,22 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                       // Otherwise, the height will be half the height of the screen.
                                       return Wrap(
                                         children: [
-                                          FlatButton(
-                                            onPressed: () {},
-                                            child: ListTile(
-                                              leading: Icon(CarbonIcons.edit),
-                                              title: Text("Edit"),
-                                            ),
-                                          ),
+                                          // FlatButton(
+                                          //   onPressed: () {},
+                                          //   child: ListTile(
+                                          //     leading: Icon(CarbonIcons.edit),
+                                          //     title: Text("Edit"),
+                                          //   ),
+                                          // ),
                                           FlatButton(
                                             onPressed: () {
                                               Navigator.pop(context);
 
                                               Share.share(
-                                                  """Hey 👋, Todays Todo is done:
+                                                  """Hey 👋, Todays Todo is Completed,
                                                   ${comptodo.completedTodoName} 
 
-                                                  Share your Todoos from(playstore Link) I am really Excited
+                                                 
                                                   🎉🎉🎉""",
                                                   subject: "Today's Toodo");
                                             },

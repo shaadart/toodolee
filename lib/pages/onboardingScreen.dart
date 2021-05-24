@@ -24,12 +24,22 @@ class _MyHomePageState extends State<MyHomePage> {
         skipCallback: () {
           content:
           Text("Skip clicked");
+          player.play(
+            'sounds/hero_simple-celebration-03.wav',
+            stayAwake: false,
+            // mode: PlayerMode.LOW_LATENCY,
+          );
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),
           );
         },
         finishCallback: () {
+          player.play(
+            'sounds/hero_decorative-celebration-03.wav',
+            stayAwake: false,
+            // mode: PlayerMode.LOW_LATENCY,
+          );
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),

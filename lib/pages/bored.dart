@@ -12,14 +12,14 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
-import 'package:locally/locally.dart';
+
 import 'package:share/share.dart';
 import 'package:toodo/main.dart';
 import 'package:toodo/pages/more.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
-import 'package:swipe_stack/swipe_stack.dart';
+
 import 'package:animate_do/animate_do.dart';
 import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -42,7 +42,6 @@ class Bored extends StatefulWidget {
 
 class _BoredState extends State<Bored> {
   CardController _cardController = CardController();
-  final player = AudioCache();
 
   //https://www.boredapi.com/api/activity/
   var myboringListOne;
@@ -86,65 +85,65 @@ class _BoredState extends State<Bored> {
     // }
     if (completedBox.length > 4) {
       return FutureBuilder(
-        future: getBoringData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          boredBox.put("firstCard", [
-            myboringListOne["activity"],
-            myboringListOne["type"],
-            myboringListOne["link"],
-          ]);
+          future: getBoringData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            boredBox.put("firstCard", [
+              myboringListOne["activity"],
+              myboringListOne["type"],
+              myboringListOne["link"],
+            ]);
 
-          boredBox.put("secondCard", [
-            myboringListTwo["activity"],
-            myboringListTwo["link"],
-          ]);
+            boredBox.put("secondCard", [
+              myboringListTwo["activity"],
+              myboringListTwo["link"],
+            ]);
 
-          boredBox.put("thirdCard", [
-            myboringListThree["activity"],
-            myboringListThree["link"],
-          ]);
+            boredBox.put("thirdCard", [
+              myboringListThree["activity"],
+              myboringListThree["link"],
+            ]);
 
-          print("${boredBox.get("firstCard")[0]}");
-          if (myboringListThree == null) {
-            return Container(
-              child: Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  height: 60.0,
-                  width: 60.0,
+            print("${boredBox.get("firstCard")[0]}");
+            if (myboringListThree == null) {
+              return Container(
+                child: Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: 60.0,
+                    width: 60.0,
+                  ),
                 ),
-              ),
-            );
-          } else {
-            if (boredBox.get("showedNotification") == false ||
-                boredBox.get("showedNotification") == null) {
-              if (settingsBox.get("boringNotifications") == true) {
-                Locally locally = Locally(
-                  context: context,
-                  payload: 'test2',
+              );
+            } else {
+              // if (boredBox.get("showedNotification") == false ||
+              //     boredBox.get("showedNotification") == null) {
+              //   if (settingsBox.get("boringNotifications") == true) {
+              //     Locally locally = Locally(
+              //       context: context,
+              //       payload: 'test2',
 
-                  //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-                  appIcon: 'toodoleeicon',
+              //       //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
+              //       appIcon: 'toodoleeicon',
 
-                  pageRoute: MaterialPageRoute(builder: (BuildContext context) {
-                    return DefaultedApp();
-                  }),
-                );
+              //       pageRoute: MaterialPageRoute(builder: (BuildContext context) {
+              //         return DefaultedApp();
+              //       }),
+              //     );
 
-                locally.schedule(
-                  channelName: "Bored Card Notifications",
-                  channelID: "BoringCard",
-                  channelDescription:
-                      "Sends you Notifications related to Boring Card",
-                  title: 'Hey, You have unlocked the Boring Card',
-                  message:
-                      "You have unlocked the Boring Card, enjoy it after the completion of your toodoos, go to Grid Tab",
-                  duration: Duration(seconds: 2),
-                );
-                boredBox.put("showedNotification", true);
-              } else {
-                print("Notifications are not allowed by user");
-              }
+              //     locally.schedule(
+              //       channelName: "Bored Card Notifications",
+              //       channelID: "BoringCard",
+              //       channelDescription:
+              //           "Sends you Notifications related to Boring Card",
+              //       title: 'Hey, You have unlocked the Boring Card',
+              //       message:
+              //           "You have unlocked the Boring Card, enjoy it after the completion of your toodoos, go to Grid Tab",
+              //       duration: Duration(seconds: 2),
+              //     );
+              //     boredBox.put("showedNotification", true);
+              //   } else {
+              //     print("Notifications are not allowed by user");
+              //   }
             }
 
             return CarouselSlider(
@@ -289,9 +288,7 @@ class _BoredState extends State<Bored> {
                 viewportFraction: 0.8,
               ),
             );
-          }
-        },
-      );
+          });
     } else {
       return ValueListenableBuilder(
         valueListenable: Hive.box(welcomeBoringCardname).listenable(),
@@ -460,6 +457,12 @@ class _BoredState extends State<Bored> {
                                   CarbonIcons.checkbox,
                                 ),
                                 onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DefaultedApp()),
+                                  );
+                                  addTodoBottomSheet(context);
                                   player.play(
                                     'sounds/ui_tap-variant-01.wav',
                                     stayAwake: false,
@@ -640,6 +643,11 @@ class _BoredState extends State<Bored> {
                               FlatButton(
                                   color: Colors.blue,
                                   onPressed: () async {
+                                    player.play(
+                                      'sounds/hero_simple-celebration-03.wav',
+                                      stayAwake: false,
+                                      // mode: PlayerMode.LOW_LATENCY,
+                                    );
                                     var welcomeBoringCardBox =
                                         Hive.box(welcomeBoringCardname);
                                     welcomeBoringCardBox.put(
@@ -752,7 +760,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
 
     var randomCardWords = randomChoice(boringaskingList);
     var randomicons = randomChoice(iconsList);
-    final player = AudioCache();
+
     return CarouselSlider(
       items: [
         Card(
