@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:easy_gradient_text/easy_gradient_text.dart';
+
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toodo/main.dart';
-import 'package:toodo/pages/more.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 
 class ProgressBar extends StatefulWidget {

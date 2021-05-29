@@ -11,6 +11,7 @@ import 'package:toodo/models/todo_model.dart';
 //import 'package:share/share.dart';
 //import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:toodo/pages/quotes.dart';
 import 'package:toodo/uis/listui.dart';
 
 import 'package:flutter/material.dart';
@@ -113,6 +114,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                               },
                               leading: IconButton(
                                 onPressed: () {
+                                  deleteQuotes();
                                   player.play(
                                     'sounds/notification_simple-01.wav',
                                     stayAwake: false,
@@ -130,6 +132,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                       );
                                       completedBox.deleteAt(index);
                                       todoBox.add(incompletedTodo);
+
                                       // _listKey.currentState.removeItem(
                                       //     index,
                                       //     (context, animation) =>
@@ -240,7 +243,8 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                             onPressed: () async {
                                               await cbox.deleteAt(index);
                                               incrementCount();
-                                              setState(() {});
+                                              deleteQuotes();
+                                            
                                               Navigator.pop(context);
                                             },
                                             child: ListTile(

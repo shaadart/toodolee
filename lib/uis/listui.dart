@@ -1,26 +1,19 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:audioplayers/audioplayers.dart';
 import 'package:davinci/core/davinci_capture.dart';
 import 'package:davinci/core/davinci_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+
 import 'package:gradient_widgets/gradient_widgets.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:path_provider/path_provider.dart';
-
 import 'package:toodo/main.dart';
-import 'package:toodo/pages/listspage.dart';
-import 'package:toodo/uis/completedListUi.dart';
+
 import 'package:share/share.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/todo_model.dart';
+import 'package:toodo/pages/quotes.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
@@ -45,8 +38,6 @@ class TodoCard extends StatefulWidget {
 
 class _TodoCardState extends State<TodoCard> {
   GlobalKey imageKey;
-
-  //
 
   @override
   void initState() {
@@ -116,7 +107,61 @@ class _TodoCardState extends State<TodoCard> {
             "marhabaan",
             "kon’nichiwa",
             "hyālō",
-            "vandanalu",
+            "Maaaan",
+            "Man",
+            "(with Power)",
+            "energyyy",
+            "comeeee",
+            "boom",
+            "aaahaa",
+            "aare waaa",
+            "oyo",
+            "moooh",
+            "hoholooo",
+            "zingg",
+            "love line",
+            "line",
+            "bridge",
+            "perfection",
+            "minimally",
+            "beautifully",
+            "simply just",
+            "daaang",
+            "Grooooooot",
+            "smash",
+            "Hulk",
+            "Captain",
+            "Leader",
+            "Cap",
+            "Hey Capt..",
+            "(with dove)",
+            "(with Love)",
+            "(with affection)",
+            "nature",
+            "jumpppp",
+            "hooooo",
+            "oooo",
+            "lemmee...",
+            "booo",
+            "swiss",
+            "soap",
+            "loooop",
+            "game",
+            "baaaabaabaa",
+            "lala",
+            "lo",
+            "op",
+            "yo",
+            "rose",
+            "quo",
+            "hoohoho",
+            "sun",
+            "shine",
+            "sun-shine",
+            "toolodee",
+            "toooodooooooo",
+            "oo yeah"
+                "vandanalu",
             "namaskār",
             "vanakkam",
             "hallo",
@@ -145,8 +190,8 @@ class _TodoCardState extends State<TodoCard> {
             "aa-ji",
             "eeh",
             "aayye",
-            "heeeye"
-                "ggg",
+            "heeeye",
+            "ggg",
             "hhhee",
             "(giggles)",
             "(winks)",
@@ -165,7 +210,7 @@ class _TodoCardState extends State<TodoCard> {
             "write that thing",
             "write them all",
             "move a bit",
-            "swimming",
+            "learn swimming",
             "keep learning",
             "do exercising",
             "do meditation",
@@ -210,7 +255,7 @@ class _TodoCardState extends State<TodoCard> {
             "Meet Clients",
             "Learning",
             "make collections",
-            "cooking",
+            "learn cooking",
             "make toodoolee",
             "make music",
             "make beats",
@@ -240,7 +285,7 @@ class _TodoCardState extends State<TodoCard> {
             "learn cricket",
             "learn basketball",
             "learn home designing",
-            "jogging",
+            "do jogging",
             "do treckking",
             "learn French",
             "learn Spanissssh",
@@ -254,9 +299,9 @@ class _TodoCardState extends State<TodoCard> {
             "learn Hindiiii",
             "learn Araaaaaaaabic",
             "learn Japaneeeseee",
-            "work",
-            "work",
-            "work",
+            "do work",
+            "do work",
+            "do work",
           ];
 
           String work = randomChoice(workList);
@@ -394,70 +439,70 @@ class _TodoCardState extends State<TodoCard> {
           // var randomValue = randomChoice(listImageValues);
 
           if (todoBox.isEmpty == true && completedBox.isEmpty == true) {
-            return Center(
-              child: Container(
-                width: MediaQuery.of(context).size.height / 2,
-                height: MediaQuery.of(context).size.height / 2,
-                padding: const EdgeInsets.all(0.0),
-                child: Column(
-                  children: [
-                    Card(
-                      child: FlatButton(
-                        splashColor: Colors.white60,
-                        onPressed: () {
-                          addTodoBottomSheet(context);
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            0,
-                            MediaQuery.of(context).size.height / 30,
-                            0,
-                            0,
-                          ),
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Center(
+            return Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width / 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Card(
+                    child: FlatButton(
+                      splashColor: Colors.white60,
+                      onPressed: () {
+                        addTodoBottomSheet(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          0,
+                          MediaQuery.of(context).size.height / 30,
+                          0,
+                          0,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ListTile(
+                              title: Center(
+                                child: Text(
+                                  "${randomImage}",
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 22,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Padding(
+                                padding: EdgeInsets.fromLTRB(8, 0, 8,
+                                    MediaQuery.of(context).size.height / 40),
+                                child: Opacity(
+                                  opacity: 0.7,
                                   child: Text(
-                                    "${randomImage}",
-                                    style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              22,
-                                    ),
+                                    '$listEmojisValues',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),
-                              ListTile(
-                                title: Padding(
-                                  padding: EdgeInsets.fromLTRB(8, 0, 8,
-                                      MediaQuery.of(context).size.height / 40),
-                                  child: Opacity(
-                                    opacity: 0.7,
-                                    child: Text(
-                                      '$listEmojisValues',
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Center(
-                      child: ListTile(
-                        subtitle: Text(
-                          "$randomHeyss, To Start press +",
-                          textAlign: TextAlign.center,
-                        ),
+                  ),
+                  Center(
+                    child: ListTile(
+                      subtitle: Text(
+                        "$randomHeyss, To Start press +",
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           } else if (todoBox.length == todoBox.length) {
@@ -477,313 +522,302 @@ class _TodoCardState extends State<TodoCard> {
                       String completedTodoEmoji = todo.todoEmoji;
                       String completedTodoRemainder = todo.todoRemainder;
 
-                      return Davinci(builder: (key) {
+                      return Davinci(builder: (imgkey) {
                         ///3. set the widget key to the globalkey
-                        this.imageKey = key;
+                        this.imageKey = imgkey;
                         return Container(
-                          color: Colors.transparent,
-                          child: GradientCard(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
-                            ),
-                            margin: EdgeInsets.all(0),
-                            gradient: Gradients.buildGradient(
-                                Alignment.bottomRight, Alignment.bottomLeft, [
-                              Theme.of(context).canvasColor,
-                              Theme.of(context).canvasColor,
+                            color: Colors.transparent,
+                            child: GradientCard(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              margin: EdgeInsets.all(0),
+                              gradient: Gradients.buildGradient(
+                                  Alignment.topRight, Alignment.topLeft, [
+                                Theme.of(context).canvasColor,
 
-                              // Colors.black54,
-                              //  Colors.black87,
-                              //  Colors.black87,
-                            ]),
-                            child: Card(
-                              child: Wrap(
-                                children: [
-                                  ListTile(
-                                    onLongPress: () {},
-                                    leading: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          todo.isCompleted = !todo.isCompleted;
-                                          if (todo.isCompleted == true) {
-                                            CompletedTodoModel completedTodo =
-                                                CompletedTodoModel(
-                                              completedTodoName:
-                                                  completedTodoName,
-                                              completedTodoEmoji:
-                                                  completedTodoEmoji,
-                                              completedTodoRemainder:
-                                                  completedTodoRemainder,
-                                              isCompleted: todo.isCompleted =
-                                                  true,
-                                            );
-                                            print(completedTodo
-                                                .completedTodoName);
-                                            completedBox.add(completedTodo);
-                                            todoBox.deleteAt(index);
-                                            print(completedBox.length);
-                                          }
-                                        });
-                                        player.play(
-                                          'sounds/notification_simple-02.wav',
-                                          stayAwake: false,
-                                          // mode: PlayerMode.LOW_LATENCY,
-                                        );
-                                      },
-                                      icon: todo.isCompleted == false
-                                          ? Icon(CarbonIcons.radio_button,
-                                              color: Colors.blue)
-                                          : Icon(CarbonIcons.checkmark_filled,
-                                              color: Colors.blue),
-                                      color: Colors.blue,
-                                    ),
+                                // Theme.of(context).cardColor.withOpacity(0.2),
+                                Theme.of(context).canvasColor,
 
-                                    title: Opacity(
-                                      opacity: 0.8,
-                                      child: Text(
-                                        '${todo.todoName}',
-                                        style: TextStyle(
-                                          fontFamily: "WorkSans",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-
-                                          // color: Colors.black54
-                                        ),
-                                      ),
-                                    ),
-                                    // subtitle: Text("written on morning"),
-                                  ),
-
-                                  // Divider(thickness: 1.2),
-                                  ButtonBar(
-                                    children: [
-                                      (todo.todoRemainder) == null
-                                          ? Container()
-                                          : Text(
-                                              '${todo.todoRemainder.toString()}'),
-                                      (todo.todoRemainder) == null ||
-                                              todo.todoEmoji == "null"
-                                          ? Container()
-                                          : Opacity(
-                                              opacity: 0.5,
-                                              child: Text(
-                                                "•",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  //color: Colors.black54
-                                                ),
-                                              ),
-                                            ),
-                                      (todo.todoEmoji) == "null"
-                                          ? Container()
-                                          : Text('${todo.todoEmoji}',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                              )),
-                                      IconButton(
-                                        color: Colors.blue,
+                                // Colors.black54,
+                                //  Colors.black87,
+                                //  Colors.black87,
+                              ]),
+                              child: Card(
+                                child: Wrap(
+                                  children: [
+                                    ListTile(
+                                      leading: IconButton(
                                         onPressed: () {
+                                          setState(() {
+                                            todo.isCompleted =
+                                                !todo.isCompleted;
+                                            if (todo.isCompleted == true) {
+                                              CompletedTodoModel completedTodo =
+                                                  CompletedTodoModel(
+                                                completedTodoName:
+                                                    completedTodoName,
+                                                completedTodoEmoji:
+                                                    completedTodoEmoji,
+                                                completedTodoRemainder:
+                                                    completedTodoRemainder,
+                                                isCompleted: todo.isCompleted =
+                                                    true,
+                                              );
+                                              print(completedTodo
+                                                  .completedTodoName);
+                                              completedBox.add(completedTodo);
+                                              todoBox.deleteAt(index);
+                                              print(completedBox.length);
+                                            }
+                                          });
                                           player.play(
-                                            'sounds/ui_tap-variant-01.wav',
+                                            'sounds/notification_simple-02.wav',
                                             stayAwake: false,
                                             // mode: PlayerMode.LOW_LATENCY,
                                           );
-                                          showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: false,
-                                            shape: RoundedRectangleBorder(
-                                              // <-- for border radius
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10.0),
-                                                topRight: Radius.circular(10.0),
+                                        },
+                                        icon: todo.isCompleted == false
+                                            ? Icon(CarbonIcons.radio_button,
+                                                color: Colors.blue)
+                                            : Icon(CarbonIcons.checkmark_filled,
+                                                color: Colors.blue),
+                                        color: Colors.blue,
+                                      ),
+
+                                      title: Opacity(
+                                        opacity: 0.8,
+                                        child: Text(
+                                          '${todo.todoName}',
+                                          style: TextStyle(
+                                            fontFamily: "WorkSans",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+
+                                            // color: Colors.black54
+                                          ),
+                                        ),
+                                      ),
+                                      // subtitle: Text("written on morning"),
+                                    ),
+
+                                    // Divider(thickness: 1.2),
+                                    ButtonBar(
+                                      children: [
+                                        (todo.todoRemainder) == null
+                                            ? Container()
+                                            : Text(
+                                                '${todo.todoRemainder.toString()}'),
+                                        (todo.todoRemainder) == null ||
+                                                todo.todoEmoji == "null"
+                                            ? Container()
+                                            : Opacity(
+                                                opacity: 0.5,
+                                                child: Text(
+                                                  "•",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    //color: Colors.black54
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            builder: (context) {
-                                              // Using Wrap makes the bottom sheet height the height of the content.
-                                              // Otherwise, the height will be half the height of the screen.
-                                              return Wrap(
-                                                children: [
-                                                  // FlatButton(
-                                                  //   onPressed: () {},
-                                                  //   child: ListTile(
-                                                  //     leading: Icon(CarbonIcons.edit),
-                                                  //     title: Text("Edit"),
-                                                  //   ),
-                                                  // ),
-                                                  FlatButton(
-                                                    onPressed: () {
-                                                      player.play(
-                                                        'sounds/ui_tap-variant-01.wav',
-                                                        stayAwake: false,
-                                                        // mode: PlayerMode.LOW_LATENCY,
-                                                      );
-                                                      Navigator.pop(context);
-                                                      if (todo.todoEmoji ==
-                                                              "null" &&
-                                                          todo.todoRemainder ==
-                                                              null) {
-                                                        Share.share(
-                                                            "${todo.todoName} \n \n @ToodoleeApp",
-                                                            subject:
-                                                                "Today's Toodo");
-                                                      } else if (todo
-                                                              .todoRemainder ==
-                                                          null) {
-                                                        Share.share(
-                                                            "${todo.todoName} \n ${todo.todoEmoji}  \n \n @ToodoleeApp",
-                                                            subject:
-                                                                "Today's Toodo");
-                                                      } else if (todo
-                                                              .todoEmoji ==
-                                                          "null") {
-                                                        Share.share(
-                                                            "${todo.todoRemainder}⏰ \n \n @ToodoleeApp",
-                                                            subject:
-                                                                "Today's Toodo");
-                                                      } else {
-                                                        Share.share(
-                                                            "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n @ToodoleeApp",
-                                                            subject:
-                                                                "Today's Toodo");
-                                                      }
-                                                    },
-                                                    child: ListTile(
-                                                      leading: Icon(
-                                                          CarbonIcons.share),
-                                                      title: Text("Share"),
-                                                    ),
-                                                  ),
-
-                                                  FlatButton(
-                                                    onPressed: () async {
-                                                      // setState(() {
-                                                      //   initialCanvasColor =
-                                                      //       canvasColor;
-                                                      //   initialmargin =
-                                                      //       marginOfCard;
-                                                      // });
-
-                                                      String fileName =
-                                                          "tooodolee_${DateTime.now().microsecondsSinceEpoch * DateTime.now().second}";
-
-                                                      await DavinciCapture
-                                                          .click(
-                                                        imageKey,
-                                                        saveToDevice: true,
-                                                        fileName: fileName,
-                                                        openFilePreview: true,
-                                                        albumName: "Toodolees",
-                                                        pixelRatio: 3,
-                                                      );
-
-                                                      // setState(() {
-                                                      //   initialCanvasColor = null;
-                                                      //   initialmargin =
-                                                      //       EdgeInsets.all(4.0);
-                                                      // });
-
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                                  backgroundColor:
-                                                                      Colors.blue[
-                                                                          200],
-                                                                  content: Row(
-                                                                    children: [
-                                                                      Expanded(
-                                                                          flex:
-                                                                              1,
-                                                                          child: Text(
-                                                                              "👍",
-                                                                              style: TextStyle(color: Colors.white))),
-                                                                      Expanded(
-                                                                          flex:
-                                                                              5,
-                                                                          child:
-                                                                              Text(
-                                                                            "Share this Will, (Captured)",
-                                                                          )),
-                                                                      // FlatButton(
-                                                                      //   child: Text("Undo"),
-                                                                      //   color: Colors.white,
-                                                                      //   onPressed: () async{
-                                                                      //     await box.deleteAt(index);
-                                                                      //     Navigator.pop(context);
-                                                                      //   },
-                                                                      // ),
-                                                                    ],
-                                                                  )));
-                                                    },
-                                                    // await DavinciCapture.offStage(
-                                                    //     PreviewWidget());
-
-                                                    child: ListTile(
-                                                      leading: Icon(
-                                                          CarbonIcons.download),
-                                                      title: Text("Download"),
-                                                    ),
-                                                  ),
-
-                                                  Divider(),
-                                                  FlatButton(
-                                                    onPressed: () async {
-                                                      await box.deleteAt(index);
-                                                      incrementCount();
-                                                      //
-                                                      // Locally locally = Locally(
-                                                      //   context: context,
-                                                      //   payload: 'test',
-
-                                                      //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-                                                      //   appIcon: 'toodoleeicon',
-
-                                                      //   pageRoute: MaterialPageRoute(
-                                                      //       builder: (BuildContext
-                                                      //           context) {
-                                                      //     return DefaultedApp();
-                                                      //   }),
-                                                      // );
-
-                                                      // locally.cancel(0);
-                                                      player.play(
-                                                        'sounds/navigation_transition-left.wav',
-                                                        stayAwake: false,
-                                                        // mode: PlayerMode.LOW_LATENCY,
-                                                      );
-
-                                                      setState(() {});
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: ListTile(
-                                                      leading: Icon(
-                                                          CarbonIcons.delete,
-                                                          color:
-                                                              Colors.redAccent),
-                                                      title: Text(
-                                                        "Delete",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .redAccent),
+                                        (todo.todoEmoji) == "null"
+                                            ? Container()
+                                            : Text('${todo.todoEmoji}',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                )),
+                                        IconButton(
+                                          color: Colors.blue,
+                                          onPressed: () {
+                                            player.play(
+                                              'sounds/ui_tap-variant-01.wav',
+                                              stayAwake: false,
+                                              // mode: PlayerMode.LOW_LATENCY,
+                                            );
+                                            showModalBottomSheet(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              shape: RoundedRectangleBorder(
+                                                // <-- for border radius
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(10.0),
+                                                  topRight:
+                                                      Radius.circular(10.0),
+                                                ),
+                                              ),
+                                              builder: (context) {
+                                                return Wrap(
+                                                  children: [
+                                                    FlatButton(
+                                                      onPressed: () {
+                                                        player.play(
+                                                          'sounds/ui_tap-variant-01.wav',
+                                                          stayAwake: false,
+                                                          // mode: PlayerMode.LOW_LATENCY,
+                                                        );
+                                                        Navigator.pop(context);
+                                                        if (todo.todoEmoji ==
+                                                                "null" &&
+                                                            todo.todoRemainder ==
+                                                                null) {
+                                                          Share.share(
+                                                              "${todo.todoName} \n \n @toodoleeApp",
+                                                              subject:
+                                                                  "Today's Toodo");
+                                                        } else if (todo
+                                                                .todoRemainder ==
+                                                            null) {
+                                                          Share.share(
+                                                              "${todo.todoName} \n ${todo.todoEmoji}  \n \n @toodoleeApp",
+                                                              subject:
+                                                                  "Today's Toodo");
+                                                        } else if (todo
+                                                                .todoEmoji ==
+                                                            "null") {
+                                                          Share.share(
+                                                              "${todo.todoRemainder}⏰ \n \n @toodoleeApp",
+                                                              subject:
+                                                                  "Today's Toodo");
+                                                        } else {
+                                                          Share.share(
+                                                              "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n @toodoleeApp",
+                                                              subject:
+                                                                  "Today's Toodo");
+                                                        }
+                                                      },
+                                                      child: ListTile(
+                                                        leading: Icon(
+                                                            CarbonIcons.share),
+                                                        title: Text("Share"),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        icon: Icon(CarbonIcons
-                                            .overflow_menu_horizontal),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                                    FlatButton(
+                                                      onPressed: () async {
+                                                        await DavinciCapture
+                                                            .click(
+                                                          imgkey,
+                                                          saveToDevice: true,
+                                                          fileName:
+                                                              "${DateTime.now().microsecondsSinceEpoch} $randomHeyss",
+                                                          openFilePreview: true,
+                                                          albumName:
+                                                              "Toodolees",
+                                                          pixelRatio: 2,
+                                                          // returnImageUint8List:
+                                                          //     true,
+                                                        );
+
+                                                        // setState(() {
+                                                        //   initialCanvasColor = null;
+                                                        //   initialmargin =
+                                                        //       EdgeInsets.all(4.0);
+                                                        // });
+
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                                    backgroundColor:
+                                                                        Colors.blue[
+                                                                            200],
+                                                                    content:
+                                                                        Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                            flex:
+                                                                                1,
+                                                                            child:
+                                                                                Text("👍", style: TextStyle(color: Colors.white))),
+                                                                        Expanded(
+                                                                            flex:
+                                                                                5,
+                                                                            child:
+                                                                                Text(
+                                                                              "Share this Will, (Captured)",
+                                                                            )),
+                                                                        // FlatButton(
+                                                                        //   child: Text("Undo"),
+                                                                        //   color: Colors.white,
+                                                                        //   onPressed: () async{
+                                                                        //     await box.deleteAt(index);
+                                                                        //     Navigator.pop(context);
+                                                                        //   },
+                                                                        // ),
+                                                                      ],
+                                                                    )));
+                                                      },
+                                                      // await DavinciCapture.offStage(
+                                                      //     PreviewWidget());
+
+                                                      child: ListTile(
+                                                        leading: Icon(
+                                                            CarbonIcons
+                                                                .download),
+                                                        title: Text("Download"),
+                                                      ),
+                                                    ),
+                                                    Divider(),
+                                                    FlatButton(
+                                                      onPressed: () async {
+                                                        await box
+                                                            .deleteAt(index);
+                                                        incrementCount();
+                                                        deleteQuotes();
+                                                        //
+                                                        // Locally locally = Locally(
+                                                        //   context: context,
+                                                        //   payload: 'test',
+
+                                                        //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
+                                                        //   appIcon: 'toodoleeicon',
+
+                                                        //   pageRoute: MaterialPageRoute(
+                                                        //       builder: (BuildContext
+                                                        //           context) {
+                                                        //     return DefaultedApp();
+                                                        //   }),
+                                                        // );
+
+                                                        // locally.cancel(0);
+                                                        player.play(
+                                                          'sounds/navigation_transition-left.wav',
+                                                          stayAwake: false,
+                                                          // mode: PlayerMode.LOW_LATENCY,
+                                                        );
+
+                                                        setState(() {});
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: ListTile(
+                                                        leading: Icon(
+                                                            CarbonIcons.delete,
+                                                            color: Colors
+                                                                .redAccent),
+                                                        title: Text(
+                                                          "Delete",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .redAccent),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(CarbonIcons
+                                              .overflow_menu_horizontal),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                        );
+                            ));
                       });
                     }));
           }

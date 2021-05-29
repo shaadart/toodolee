@@ -32,27 +32,14 @@ dependencies:
   
   path: ^1.8.0
   awesome_notifications: ^0.0.6+7
-  google_mobile_ads: ^0.11.0+1
   flutter_radio_group: ^2.0.0
-  
-  
-  workmanager: 0.2.4
   adaptive_theme: ^2.2.0
   audioplayers: any
   expansion_card: ^0.1.0
   flutter_overboard:
-  davinci: ^2.0.2
-  
-  
-  
-  #audioplayers: 
-  #pexels: ^0.1.1
-  cron: ^0.3.0
+  davinci: ^2.0.5
   easy_gradient_text: ^1.0.0
-  #flutter_tindercard:
-  
   cupertino_icons: ^1.0.2
-  #flutter_gradients: ^1.0.0+3
   gradient_widgets: ^0.6.0
   search_page: ^2.0.0
   carbon_icons: ^0.0.1+2
@@ -60,38 +47,29 @@ dependencies:
   syncfusion_flutter_charts: ^19.1.59
   flutter_native_splash: ^1.1.8+4
   path_provider:
-  sleek_circular_slider: ^2.0.0
-  swipeable_card_stack: ^0.0.2
   share: ^2.0.1
   flutter_snake_navigationbar: ^0.5.0
-  #in_app_review: ^2.0.2
-  page_transition: ^1.1.7+6
   hive_flutter: 
   shared_preferences: 
   intl: ^0.17.0
   provider:
   emoji_picker:
   flutter_staggered_grid_view: ^0.4.0
-  flutter_local_notifications: 
   dart_random_choice: ^0.0.2
-  
-  #extended_image: ^4.0.1
   flip_card: ^0.5.0
   http: ^0.13.2
   animate_do: ^2.0.0
-  
-  #admob_flutter: 
-  
-  #shot_widget: ^1.0.0
-  
-  
-  
+  connection_verify:
   carousel_slider: ^3.0.0
   url_launcher: ^6.0.3
-  #locally: ^1.0.5
+  shimmer_animation: ^2.0.0
+  speech_bubble: ^0.0.9
+  flappy: ^0.1.7
+  
 
 dev_dependencies:
   hive_generator: ^1.1.0
+
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter
@@ -109,7 +87,7 @@ flutter:
   assets:
     - jsons/quotes.json
     - assets/achievement_bell.wav
-    - assets/bitmojis/
+    - assets/
     - assets/sounds/
     - icon/
       # - images/a_dot_ham.jpeg
@@ -133,25 +111,6 @@ flutter:
         - asset: fonts/WorkSans/static/WorkSans-SemiBold.ttf
           style: italic
           weight: 600
-    - family: Elsie
-      fonts:
-        - asset: fonts/Elsie/Elsie-Regular.ttf
-        - asset: fonts/Elsie/Elsie-Black.ttf
-          weight: 900
-
-    - family: AlegreyaSc
-      fonts:
-        - asset: fonts/Alegreya_SC/AlegreyaSC-Black.ttf
-        - asset: fonts/Alegreya_SC/AlegreyaSC-Medium.ttf
-          weight: 700
-
-    - family: Itim
-      fonts:
-        - asset: fonts/Itim/Itim-Regular.ttf
-        
-    - family: cafe24_behappy
-      fonts:
-        - asset: fonts/cafe24_behappy/Cafe24Behappy.ttf
-          
+  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

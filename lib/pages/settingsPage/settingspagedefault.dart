@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
@@ -19,11 +20,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 // bool dailyNotifications = true;
 
-
 var listVertical = [
   "Light",
   "Dark",
 ];
+
+var suffix = "";
 var indexVertical = 0;
 var keyVertical = GlobalKey<FlutterRadioGroupState>();
 
@@ -56,14 +58,72 @@ class _SettingPageState extends State<SettingPage> {
         setState(() {
           dailyRemainder = t.format(context);
           dailyRemainderBox.put("remainderTime", dailyRemainder);
+          if (dailyRemainderBox.get("remainderTime").contains("PM") == true) {
+            setState(() {
+              suffix = "PM";
+            });
+            var splittingSpace =
+                dailyRemainderBox.get("remainderTime").split(" ");
+            var removePM = splittingSpace.removeAt(0);
+
+            var removeUnwantedSymbol = removePM.split(":");
+
+            Map convertTimetotwentyFourHourClock = {
+              1: 13,
+              2: 14,
+              3: 15,
+              4: 16,
+              5: 17,
+              6: 18,
+              7: 19,
+              8: 20,
+              9: 21,
+              10: 22,
+              11: 23,
+              12: 24
+            };
+            var hourToBeChanged = int.parse(removeUnwantedSymbol.first);
+
+            var hour = convertTimetotwentyFourHourClock[hourToBeChanged];
+            var minute = removeUnwantedSymbol.last;
+
+            var remainderTime = [hour.toString(), minute.toString()];
+            dailyRemainderBox.put("remainderTime", remainderTime);
+            print(remainderTime);
+            print(hour);
+            print(minute);
+            setDailyRemainderMethod(
+                dailyRemainderBox.get("remainderTime"), context);
+          } else if (dailyRemainderBox.get("remainderTime").contains("AM") ==
+              true) {
+            setState(() {
+              suffix = "AM";
+            });
+            var splittingSpace =
+                dailyRemainderBox.get("remainderTime").split(" ");
+            var removeAM = splittingSpace.removeAt(0);
+
+            var remainderTime = removeAM.split(":");
+            dailyRemainderBox.put("remainderTime", remainderTime);
+            setDailyRemainderMethod(
+                dailyRemainderBox.get("remainderTime"), context);
+          } else if (dailyRemainderBox.get("remainderTime").contains("AM") ==
+                  false &&
+              dailyRemainderBox.get("remainderTime").contains("PM") == false) {
+            setState(() {
+              suffix = "";
+            });
+            var remainderTime =
+                dailyRemainderBox.get("remainderTime").split(":");
+            dailyRemainderBox.put("remainderTime", remainderTime);
+            setDailyRemainderMethod(
+                dailyRemainderBox.get("remainderTime"), context);
+          }
         });
       }
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings Page"),
-      ),
       body: ListView(
         children: [
           ExpansionCard(
@@ -124,14 +184,14 @@ class _SettingPageState extends State<SettingPage> {
                         opacity: 0.6,
                         child: Text("Tommorow, Start Journey at"),
                       ),
-                      trailing: FlatButton(
+                      trailing: MaterialButton(
                           onPressed: () {
                             openTimePickerDaily(context);
                           },
                           child: Text(
                               dailyRemainderBox.get("remainderTime") == null
                                   ? "$dailyRemainder"
-                                  : "${dailyRemainderBox.get('remainderTime')}",
+                                  : "${dailyRemainderBox.get('remainderTime')[0]}:${dailyRemainderBox.get('remainderTime')[1]}$suffix",
                               style: TextStyle(
                                   color: Colors.blue, fontFamily: "WorkSans"))),
                     )),
@@ -156,14 +216,6 @@ class _SettingPageState extends State<SettingPage> {
                                   //boredNotifications = value;
                                   //dailyNotifications = value;
                                   if (val == false) {
-                                    setDailyRemainderMethod(
-                                        dailyRemainderBox
-                                                    .get('remainderTime') ==
-                                                null
-                                            ? dailyRemainder
-                                            : dailyRemainderCall
-                                                .get('remainderTime'),
-                                        context);
                                     player.play(
                                       'sounds/state-change_confirm-down.wav',
                                       stayAwake: false,
@@ -356,7 +408,19 @@ class _SettingPageState extends State<SettingPage> {
             ],
           ),
           Divider(),
-          FlatButton(
+          GestureDetector(
+            onTap: () async {
+              player.play(
+                'sounds/navigation_forward-selection-minimal.wav',
+                stayAwake: false,
+                // mode: PlayerMode.LOW_LATENCY,
+              );
+              String texturl = "https://www.buymeacoffee.com/toodolee";
+
+              await canLaunch(texturl)
+                  ? await launch(texturl)
+                  : throw 'Could not launch $texturl';
+            },
             child: ListTile(
               title: Text(
                 "Love",
@@ -369,30 +433,36 @@ class _SettingPageState extends State<SettingPage> {
               trailing: Icon(CarbonIcons.gift,
                   color: Theme.of(context).backgroundColor),
             ),
-            onPressed: () async {
-              player.play(
-                'sounds/navigation_forward-selection-minimal.wav',
-                stayAwake: false,
-                // mode: PlayerMode.LOW_LATENCY,
-              );
-              String texturl = "https://www.buymeacoffee.com/toodolee";
-
-              await canLaunch(texturl)
-                  ? await launch(texturl)
-                  : throw 'Could not launch $texturl';
-            },
           ),
           Divider(),
           Card(
             child: Column(
               children: [
-                ListTile(
-                    leading: IconButton(
+                Row(
+                  children: [
+                    IconButton(
                         icon: Icon(CarbonIcons.logo_instagram),
-                        onPressed: () {
+                        onPressed: () async {
+                          String texturl = "https://www.instagram.com/toodolee";
+
+                          await canLaunch(texturl)
+                              ? await launch(texturl)
+                              : throw 'Could not launch $texturl';
                           //https://www.instagram.com/project_coded/
-                        })),
-                ListTile(title: Text("Social Links")),
+                        }),
+                    IconButton(
+                        icon: Icon(CarbonIcons.favorite),
+                        onPressed: () async {
+                          String texturl =
+                              "https://www.buymeacoffee.com/toodolee";
+
+                          await canLaunch(texturl)
+                              ? await launch(texturl)
+                              : throw 'Could not launch $texturl';
+                          //https://www.instagram.com/project_coded/
+                        }),
+                  ],
+                ),
               ],
             ),
           )

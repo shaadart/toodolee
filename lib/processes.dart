@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:intl/intl.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -12,61 +12,13 @@ import 'package:toodo/main.dart';
 import 'package:toodo/pages/quotes.dart';
 import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
 import 'package:toodo/pages/tommorownotification.dart';
-import 'package:workmanager/workmanager.dart';
+
 
 const deleteweatherdata = "deletingweatherData";
 const deletequotesdata = "deletingquotesData";
 const deletelistdata = "deletinglistsData";
 
-setDailyRemainderMethod(String time, context) {
 
-  if (settingsBox.get("dailyNotifications") == "true") {
-    List splittingtheTime = time.split(":");
-    int hour = int.parse(splittingtheTime.first);
-    print(hour);
-
-    int minute = int.parse(splittingtheTime.last);
-    print(minute);
-    AwesomeNotifications().initialize(
-        // set the icon to null if you want to use the default app icon
-        'resource://drawable/toodoleeicon',
-        [
-          NotificationChannel(
-            // groupKey: "remainderNotf",
-            channelKey: 'dailyNotific',
-            channelName: 'Daily_Notification',
-            channelDescription:
-                'Sends you notifications to remind you to write toodolee',
-            defaultColor: Color(0xff4785FF),
-            ledColor: Colors.blue,
-            importance: NotificationImportance.Max,
-            defaultPrivacy: NotificationPrivacy.Public,
-            soundSource: "resource://raw/alert_simple",
-          ),
-        ]);
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        // Insert here your friendly dialog box before call the request method
-        // This is very important to not harm the user experience
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
-
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 20,
-            channelKey: 'dailyNotific',
-            title: "Champion this Day 🏆",
-            body: "Tap to and write todo"),
-        
-        schedule: NotificationCalendar(
-          hour: hour,
-          minute: minute,
-          allowWhileIdle: true,
-          timeZone: AwesomeNotifications.localTimeZoneIdentifier,
-        ));
-  }
-}
 
 // 
 // void callbackDispatcher() {}
