@@ -227,9 +227,10 @@ class _SettingPageState extends State<SettingPage> {
                                       stayAwake: false,
                                       // mode: PlayerMode.LOW_LATENCY,
                                     );
+                                    dailyNotification.put(
+                                        "dailyNotifications", !switchValue);
                                   }
-                                  dailyNotification.put(
-                                      "dailyNotifications", !switchValue);
+
                                   //dailyNotification = !dailyNotification;
                                   print(val);
 

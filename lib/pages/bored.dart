@@ -91,7 +91,7 @@ class _BoredState extends State<Bored> {
                         EdgeInsets.all(MediaQuery.of(context).size.width / 20),
                     child: Text("Pss. Connect to the Network",
                         style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width / 18)),
+                            fontSize: MediaQuery.of(context).size.width / 20)),
                   ),
                 ),
               ]));
@@ -333,7 +333,7 @@ class _BoredState extends State<Bored> {
                                             children: <TextSpan>[
                                               TextSpan(
                                                   text: 'Literally, ',
-                                                  style: new TextStyle(
+                                                  style: TextStyle(
                                                       color: Colors.blue,
                                                       fontFamily: "WorkSans")),
                                               TextSpan(
@@ -350,7 +350,7 @@ class _BoredState extends State<Bored> {
                                                           .onSurface)),
                                               TextSpan(
                                                   text: 'The, ',
-                                                  style: new TextStyle(
+                                                  style: TextStyle(
                                                       color: Colors.blue,
                                                       fontFamily: "WorkSans")),
                                               TextSpan(
@@ -367,7 +367,7 @@ class _BoredState extends State<Bored> {
                                                           .onSurface)),
                                               TextSpan(
                                                   text: "Boring",
-                                                  style: new TextStyle(
+                                                  style: TextStyle(
                                                       color: Colors.blue,
                                                       fontFamily: "WorkSans")),
                                               TextSpan(
@@ -385,7 +385,7 @@ class _BoredState extends State<Bored> {
                                                           .onSurface)),
                                               TextSpan(
                                                   text: 'Card\n',
-                                                  style: new TextStyle(
+                                                  style: TextStyle(
                                                       color: Colors.blue,
                                                       fontFamily: "WorkSans"))
                                             ],
@@ -770,7 +770,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
       CarbonIcons.sun,
       CarbonIcons.explore,
       CarbonIcons.palm_tree,
-      
       CarbonIcons.bicycle,
       CarbonIcons.bee
     ];
@@ -793,7 +792,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                     style: TextStyle(
                         fontSize: randomCardWords.length < 10
                             ? MediaQuery.of(context).size.width / 10
-                            : MediaQuery.of(context).size.width / 18)),
+                            : MediaQuery.of(context).size.width / 20)),
               ),
             ),
             ListTile(

@@ -19,7 +19,7 @@ import 'package:share/share.dart';
 import 'package:speech_bubble/speech_bubble.dart';
 import 'package:toodo/main.dart';
 
-int lengthofJSON = 1643;
+int lengthofJSON = 1648;
 
 class Quotes extends StatefulWidget {
   const Quotes({
@@ -420,6 +420,6 @@ void deleteQuotes() {
 }
 
 random(min, max) {
-  var rn = new Random();
+  var rn = Random();
   return min + rn.nextInt(max - min);
 }

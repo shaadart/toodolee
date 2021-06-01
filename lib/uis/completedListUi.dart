@@ -58,9 +58,9 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                       MediaQuery.of(context).size.width / 15,
-                      MediaQuery.of(context).size.width / 60,
+                      MediaQuery.of(context).size.width / 20,
                       MediaQuery.of(context).size.width / 15,
-                      MediaQuery.of(context).size.width / 30),
+                      MediaQuery.of(context).size.width / 60),
                   child: Center(
                     child: Opacity(
                       opacity: 0.5,
@@ -89,184 +89,185 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                       //comptodo.completedTodoName = todoName;
 
                       //todo.isCompleted = false;
-                      return Card(
-                        // color: Colors.white,
-                        elevation: 0.7,
-                        child: Wrap(
-                          children: [
-                            ListTile(
-                              title: Opacity(
-                                opacity: 0.8,
-                                child: Text(
-                                  '${(comptodo.completedTodoName).toString()}',
-                                  style: TextStyle(
-                                    fontFamily: "WorkSans",
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                    //  color: Colors.black54,
-                                    //decoration: TextDecoration.lineThrough,
+                      return Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 35,
+                            0,
+                            MediaQuery.of(context).size.width / 35,
+                            0),
+                        child: Card(
+                          // color: Colors.white,
+
+                          elevation: 0.4,
+                          child: Wrap(
+                            children: [
+                              ListTile(
+                                title: Opacity(
+                                  opacity: 0.8,
+                                  child: Text(
+                                    '${(comptodo.completedTodoName).toString()}',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontFamily: "WorkSans",
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      //  color: Colors.black54,
+                                      //decoration: TextDecoration.lineThrough,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              onLongPress: () {
-                                print("object");
-                              },
-                              leading: IconButton(
-                                onPressed: () {
-                                  deleteQuotes();
-                                  player.play(
-                                    'sounds/notification_simple-01.wav',
-                                    stayAwake: false,
-                                    // mode: PlayerMode.LOW_LATENCY,
-                                  );
-                                  setState(() {
-                                    if (comptodo.isCompleted) {
-                                      TodoModel incompletedTodo = TodoModel(
-                                        todoName: comptodo.completedTodoName,
-                                        todoEmoji: comptodo.completedTodoEmoji,
-                                        todoRemainder:
-                                            comptodo.completedTodoRemainder,
-                                        isCompleted: comptodo.isCompleted =
-                                            false,
-                                      );
-                                      completedBox.deleteAt(index);
-                                      todoBox.add(incompletedTodo);
-
-                                      // _listKey.currentState.removeItem(
-                                      //     index,
-                                      //     (context, animation) =>
-                                      //         Container());
-
-                                      /// what I'm supposed to do here
-
-                                    }
-                                    //     comptodo.isCompleted = !comptodo.isCompleted;
-                                    //     if (comptodo.isCompleted == true) {
-                                    //       CompletedTodoModel completedTodo = CompletedTodoModel(
-                                    //         completedTodoName: comptodo.completedTodoName,
-                                    //         completedTodoEmoji: comptodo.completedTodoEmoji,
-                                    //         completedTodoRemainder: comptodo.completedTodoRemainder,
-                                    //         isCompleted: comptodo.isCompleted = false,
-                                    //       );
-                                    //       todoBox.put(key, completedTodo);
-                                    //     } else {
-                                    //       TodoModel incompletedTodo = TodoModel(
-                                    //         todoName: todo.todoName,
-                                    //         todoEmoji: todo.todoEmoji,
-                                    //         todoRemainder: todo.todoRemainder,
-                                    //         isCompleted: todo.isCompleted = false,
-                                    //       );
-                                    //       todoBox.put(key, incompletedTodo);
-                                    //     }
-                                    //   });
-                                    //   // setState(() {
-                                    //   //   todo.isCompleted = !todo.isCompleted;
-
-                                    //   // });
-                                    // },
-
-                                    // child:
-                                    // ListTile(
-                                    //     trailing: Text(
-                                    //         "${comptodo.completedTodoEmoji}"),
-                                    //     title: Text(
-                                    //         "${comptodo.completedTodoName}"),
-                                    //     subtitle: Text(
-                                    //         "${comptodo.completedTodoRemainder}"));
-                                  });
+                                onLongPress: () {
+                                  print("object");
                                 },
-                                icon: Icon(CarbonIcons.checkmark_filled,
-                                    color: Colors.blue),
-                              ),
-                              // Padding(
-                              //   padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
-                              //   // child: Text(
-                              //   //   'Greyhound d ',
-                              //   //   style:
-                              //   //       TextStyle(color: Colors.black.withOpacity(0.6)),
-                              //   // ),
-                              // ),
+                                leading: IconButton(
+                                  onPressed: () {
+                                    deleteQuotes();
+                                    player.play(
+                                      'sounds/notification_simple-01.wav',
+                                      stayAwake: false,
+                                      // mode: PlayerMode.LOW_LATENCY,
+                                    );
+                                    setState(() {
+                                      if (comptodo.isCompleted) {
+                                        TodoModel incompletedTodo = TodoModel(
+                                          todoName: comptodo.completedTodoName,
+                                          todoEmoji:
+                                              comptodo.completedTodoEmoji,
+                                          todoRemainder:
+                                              comptodo.completedTodoRemainder,
+                                          isCompleted: comptodo.isCompleted =
+                                              false,
+                                        );
+                                        completedBox.deleteAt(index);
+                                        todoBox.add(incompletedTodo);
 
-                              trailing: IconButton(
-                                color: Colors.blue,
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: false,
-                                    shape: RoundedRectangleBorder(
-                                      // <-- for border radius
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10.0),
-                                        topRight: Radius.circular(10.0),
+                                        // _listKey.currentState.removeItem(
+                                        //     index,
+                                        //     (context, animation) =>
+                                        //         Container());
+
+                                        /// what I'm supposed to do here
+
+                                      }
+                                      //     comptodo.isCompleted = !comptodo.isCompleted;
+                                      //     if (comptodo.isCompleted == true) {
+                                      //       CompletedTodoModel completedTodo = CompletedTodoModel(
+                                      //         completedTodoName: comptodo.completedTodoName,
+                                      //         completedTodoEmoji: comptodo.completedTodoEmoji,
+                                      //         completedTodoRemainder: comptodo.completedTodoRemainder,
+                                      //         isCompleted: comptodo.isCompleted = false,
+                                      //       );
+                                      //       todoBox.put(key, completedTodo);
+                                      //     } else {
+                                      //       TodoModel incompletedTodo = TodoModel(
+                                      //         todoName: todo.todoName,
+                                      //         todoEmoji: todo.todoEmoji,
+                                      //         todoRemainder: todo.todoRemainder,
+                                      //         isCompleted: todo.isCompleted = false,
+                                      //       );
+                                      //       todoBox.put(key, incompletedTodo);
+                                      //     }
+                                      //   });
+                                      //   // setState(() {
+                                      //   //   todo.isCompleted = !todo.isCompleted;
+
+                                      //   // });
+                                      // },
+
+                                      // child:
+                                      // ListTile(
+                                      //     trailing: Text(
+                                      //         "${comptodo.completedTodoEmoji}"),
+                                      //     title: Text(
+                                      //         "${comptodo.completedTodoName}"),
+                                      //     subtitle: Text(
+                                      //         "${comptodo.completedTodoRemainder}"));
+                                    });
+                                  },
+                                  icon: Icon(CarbonIcons.checkmark_filled,
+                                      color: Colors.blue),
+                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
+                                //   // child: Text(
+                                //   //   'Greyhound d ',
+                                //   //   style:
+                                //   //       TextStyle(color: Colors.black.withOpacity(0.6)),
+                                //   // ),
+                                // ),
+
+                                trailing: IconButton(
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: false,
+                                      shape: RoundedRectangleBorder(
+                                        // <-- for border radius
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
+                                        ),
                                       ),
-                                    ),
-                                    builder: (context) {
-                                      // Using Wrap makes the bottom sheet height the height of the content.
-                                      // Otherwise, the height will be half the height of the screen.
-                                      return Wrap(
-                                        children: [
-                                          // FlatButton(
-                                          //   onPressed: () {},
-                                          //   child: ListTile(
-                                          //     leading: Icon(CarbonIcons.edit),
-                                          //     title: Text("Edit"),
-                                          //   ),
-                                          // ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
+                                      builder: (context) {
+                                        // Using Wrap makes the bottom sheet height the height of the content.
+                                        // Otherwise, the height will be half the height of the screen.
+                                        return Wrap(
+                                          children: [
+                                            // FlatButton(
+                                            //   onPressed: () {},
+                                            //   child: ListTile(
+                                            //     leading: Icon(CarbonIcons.edit),
+                                            //     title: Text("Edit"),
+                                            //   ),
+                                            // ),
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
 
-                                              Share.share(
-                                                  """Hey 👋, Todays Todo is Completed,
-                                                  ${comptodo.completedTodoName} 
-
-                                                 
-                                                  🎉🎉🎉""",
-                                                  subject: "Today's Toodo");
-                                            },
-                                            child: ListTile(
-                                              leading: Icon(CarbonIcons.share),
-                                              title: Text("Share"),
-                                            ),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {},
-                                            child: ListTile(
-                                              leading:
-                                                  Icon(CarbonIcons.download),
-                                              title: Text("Download"),
-                                            ),
-                                          ),
-                                          Divider(),
-                                          FlatButton(
-                                            onPressed: () async {
-                                              await cbox.deleteAt(index);
-                                              incrementCount();
-                                              deleteQuotes();
-                                            
-                                              Navigator.pop(context);
-                                            },
-                                            child: ListTile(
-                                              leading: Icon(CarbonIcons.delete,
-                                                  color: Colors.redAccent),
-                                              title: Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                    color: Colors.redAccent),
+                                                Share.share(
+                                                    "Hey 👋, Todays Todo is Completed, \n \n ${comptodo.completedTodoName} \n \n 🎉🎉🎉",
+                                                    subject: "Today's Toodo");
+                                              },
+                                              child: ListTile(
+                                                leading:
+                                                    Icon(CarbonIcons.share),
+                                                title: Text("Share"),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                icon:
-                                    Icon(CarbonIcons.overflow_menu_horizontal),
+
+                                            Divider(),
+                                            FlatButton(
+                                              onPressed: () async {
+                                                await cbox.deleteAt(index);
+                                                incrementCount();
+                                                deleteQuotes();
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: ListTile(
+                                                leading: Icon(
+                                                    CarbonIcons.delete,
+                                                    color: Colors.redAccent),
+                                                title: Text(
+                                                  "Delete",
+                                                  style: TextStyle(
+                                                      color: Colors.redAccent),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                      CarbonIcons.overflow_menu_horizontal),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }));

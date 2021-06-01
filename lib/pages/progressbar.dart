@@ -1,3 +1,5 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 
@@ -6,6 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toodo/main.dart';
 
 import 'package:toodo/uis/addTodoBottomSheet.dart';
+import 'package:toodo/uis/completedListUi.dart';
 
 class ProgressBar extends StatefulWidget {
   const ProgressBar({
@@ -29,72 +32,45 @@ class _ProgressBarState extends State<ProgressBar> {
   Widget build(BuildContext context) {
     double runningTodoCount = todoBox.length.toDouble();
     double completedTodoCount = completedBox.length.toDouble();
-    if (runningTodoCount == 0 && completedTodoCount == 0) {
-      return Card(
-        child: Wrap(
-          children: [
-            ListTile(
-              leading: IconButton(
-                  icon: Icon(CarbonIcons.hashtag, color: Colors.green),
-                  onPressed: () {}),
-            ),
-            ListTile(title: Text("Write Toodoos to see Your Progress"))
-          ],
-        ),
-      );
-    } else {
-      final List<ChartData> chartData = [
-        ChartData(
-          'Completed Todo',
-          completedTodoCount,
-        ),
-        ChartData(
-          'Incompleted Todo',
-          runningTodoCount,
-        ),
-      ];
-      return Center(
-        child: Card(
-          child: GradientCard(
-            gradient:
-                Gradients.buildGradient(Alignment.topRight, Alignment.topLeft, [
-              Colors.blue[50],
-              Colors.white,
-              Colors.blue[50],
-              Colors.blue[100],
-            ]),
-            child: SfCircularChart(
-                legend: Legend(
-                  isVisible: true,
-                  // Legend title
-                  title: LegendTitle(
-                      text: "Today's Build-up..",
-                      alignment: ChartAlignment.center,
-                      textStyle: TextStyle(
-                        color: Colors.blue,
-                        fontSize: MediaQuery.of(context).size.width / 22,
-                      )),
-                ),
-                palette: <Color>[
-                  // Colors.amber,
-                  Colors.blue,
-                  Colors.blueAccent[100],
-                ],
-                tooltipBehavior: _tooltipBehavior,
-                series: <CircularSeries>[
-                  DoughnutSeries<ChartData, String>(
-                      enableTooltip: true,
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y,
-                      // Explode the segments on tap
-                      explode: true,
-                      explodeIndex: 1)
-                ]),
+
+    final List<ChartData> chartData = [
+      ChartData(
+        'Completed Todo',
+        completedTodoCount,
+      ),
+      ChartData(
+        'Incompleted Todo',
+        runningTodoCount,
+      ),
+    ];
+    return Container(
+      margin: EdgeInsets.all(0),
+      height: MediaQuery.of(context).size.width / 2.5,
+      child: SfCircularChart(
+          legend: Legend(
+            isVisible: false,
+            // Legend title
+            title: LegendTitle(
+                text: "...",
+                alignment: ChartAlignment.near,
+                textStyle: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 1,
+                )),
           ),
-        ),
-      );
-    }
+          palette: [Colors.blueAccent[100], Colors.blue[100]],
+          tooltipBehavior: _tooltipBehavior,
+          series: <CircularSeries>[
+            DoughnutSeries<ChartData, String>(
+                enableTooltip: true,
+                dataSource: chartData,
+                xValueMapper: (ChartData data, _) => data.x,
+                yValueMapper: (ChartData data, _) => data.y,
+                // Explode the segments on tap
+                explode: true,
+                explodeIndex: 2)
+          ]),
+    );
   }
 }
 

@@ -2,12 +2,12 @@
 //import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-
-
+import 'package:chips_choice/chips_choice.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flappy/flappy.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +19,8 @@ import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:intl/intl.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 
+import 'package:toodo/pages/progressbar.dart';
+
 import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/completedListUi.dart';
@@ -28,6 +30,7 @@ import 'package:toodo/uis/listui.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:toodo/uis/whiteScreen.dart';
 
 import 'models/todo_model.dart';
 
@@ -52,12 +55,17 @@ const String currentBoxName = "currentDateBox";
 const String onboardingScreenBoxName = "onboardingScreenBox";
 //var  = ValueNotifier<int>(2);
 
-ValueNotifier<int> totalTodoCount = ValueNotifier(10 -
-    (todoBox.length +
-        completedBox.length)); //limiting the toodolee count to 10.
-const quote = "refreshQuote";
+ValueNotifier<int> totalTodoCount =
+    ValueNotifier(10 - (todoBox.length + completedBox.length));
 
-const reset = "simpleTask";
+ValueNotifier<int> totalTodosCount =
+    ValueNotifier((todoBox.length + completedBox.length));
+
+ValueNotifier<int> todoBoxLength = ValueNotifier(todoBox.length);
+
+ValueNotifier<int> completedtodoBoxLength = ValueNotifier(completedBox.length);
+//limiting the toodolee count to 10.
+
 final player = AudioCache(); //Plays Sounds
 Box<CompletedTodoModel> completedBox; //For Box
 Box settingsBox;
@@ -149,16 +157,20 @@ class MyApp extends StatelessWidget {
 
               return AdaptiveTheme(
                 light: ThemeData(
-                    fontFamily: "WorkSans",
-                    brightness: Brightness.light,
-                    primaryColor: Color(0xffFBFB0E),
-                    accentColor: Color(0xff4785FF),
-                    backgroundColor: Color(0xffF6F8FF)),
+                  fontFamily: "WorkSans",
+                  brightness: Brightness.light,
+                  primaryColor: Color(0xffFBFB0E),
+                  accentColor: Color(0xff0177fb),
+                  scaffoldBackgroundColor: Color(0xffffffff),
+                  cardColor: Color(0xfff3f8fb),
+                ),
                 dark: ThemeData(
                   fontFamily: "WorkSans",
                   brightness: Brightness.dark,
-                  primaryColor: Color(0xff4785FF),
+                  primaryColor: Color(0xff0177fb),
                   accentColor: Color(0xffFBFB0E),
+                  cardColor: Color(0xff222228),
+                  scaffoldBackgroundColor: Color(0xff17171a),
                 ),
                 initial: AdaptiveThemeMode.light,
                 builder: (theme, darkTheme) => MaterialApp(
@@ -189,9 +201,11 @@ class _SplashState extends State<Splash> {
 
   resettingToodoleeApp() {
     if (currentDate != currentDateBox.get("todayDate")) {
-      todoBox.clear();
-      completedBox.clear();
-      boredBox.clear();
+      setState(() {
+        todoBox.clear();
+        completedBox.clear();
+        boredBox.clear();
+      });
 
       currentDateBox.put(
           "todayDate", int.parse(DateFormat("dd").format(DateTime.now())));
@@ -283,9 +297,33 @@ class _DefaultedAppState extends State<DefaultedApp> {
         builder: (context, remainingTodoCount, _) {
           return Scaffold(
             appBar: AppBar(
+                centerTitle: false,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0.7,
+                actions: [
+                  Opacity(
+                    opacity: 1,
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.background,
+                      child: IconButton(
+                          onPressed: () {
+                            addTodoBottomSheet(context);
+                          },
+                          icon: Icon(CarbonIcons.add)),
+                    ),
+                  )
+                ],
                 title: _selectedItemPosition == 2
-                    ? Text("Settings")
-                    : Text("Toodolee")),
+                    ? Text(
+                        "Settings",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      )
+                    : Text(
+                        "Toodolee",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).accentColor),
+                      )),
             // extendBodyBehindAppBar: true,
             // resizeToAvoidBottomInset: true,
             // extendBody: true,
@@ -325,7 +363,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
 //Rich Black: 0xff010C13
 // Azure: 0xff4785FF
 
-              backgroundColor: Theme.of(context).cardColor,
+              backgroundColor: Theme.of(context).bottomAppBarColor,
               behaviour: SnakeBarBehaviour.pinned,
               snakeShape: SnakeShape.circle,
               //shape: bottomBarShape,
@@ -333,15 +371,9 @@ class _DefaultedAppState extends State<DefaultedApp> {
               elevation: 5.0,
 
               ///configuration for SnakeNavigationBar.color
-              snakeViewColor: Theme.of(context).colorScheme.background,
+              snakeViewColor: Theme.of(context).cardColor,
               selectedItemColor: Theme.of(context).colorScheme.onSurface,
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
-
-              ///configuration for SnakeNavigationBar.gradient
-              //snakeViewGradient: selectedGradient,
-              //selectedItemGradient: snakeShape == SnakeShape.indicator ? selectedGradient : null,
-              //unselectedItemGradient: unselectedGradient,
-
               showUnselectedLabels: showUnselectedLabels,
               showSelectedLabels: showSelectedLabels,
 
@@ -464,9 +496,32 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  @override
+  int initialselectedPage = 0;
+
+  // multiple choice value
+
+  // list of string options
+
+  List pages = [TodoCard(), CompletedTodoCard()];
+
+
   @override
   Widget build(BuildContext context) {
+    // Create a global key that uniquely identifies the Form widget
+    // and allows validation of the form.
+    //
+    // Note: This is a GlobalKey<FormState>,
+    // not a GlobalKey<MyCustomFormState>.
+
+    DateTime now = DateTime.now();
+
+    var year = now.year;
+    var month = now.month;
+    var day = now.day;
+    print(formatDate(DateTime(year, month, day), [yy, ' ', M, ' ', d])
+        .split(" "));
+    settingsBox.put("selectedChipPage", 0);
+
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
@@ -474,40 +529,250 @@ class _TodoAppState extends State<TodoApp> {
             child: Scaffold(
               body: ListView(
                 children: [
+                  todoBox.length > 0 || completedBox.length > 0
+                      ? ValueListenableBuilder(
+                          valueListenable: Hive.box(settingsName).listenable(),
+                          builder: (context, selectedChip, child) {
+                            var workingSwitchValue = selectedChip
+                                .get("workingSelectedChip", defaultValue: true);
+
+                            var completedSwitchValue = selectedChip.get(
+                                "completedSelectedChip",
+                                defaultValue: false);
+                            return Center(
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ChoiceChip(
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      label: Text("Working on"),
+                                      labelStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor),
+                                      // shape: StadiumBorder(
+                                      //   side: BorderSide(
+                                      //       color: Theme.of(context)
+                                      //           .colorScheme
+                                      //           .onSurface,
+                                      //       width: 1),
+                                      // ),
+                                      selected: workingSwitchValue,
+                                      onSelected: (val) {
+                                        setState(() {
+                                          initialselectedPage = 0;
+
+                                          selectedChip.put("selectedPage", 0);
+                                        });
+                                        if (val == true) {
+                                          selectedChip.put(
+                                              "workingSelectedChip", true);
+                                        }
+                                        selectedChip.put(
+                                            "workingSelectedChip", true);
+                                        selectedChip.put(
+                                            "completedSelectedChip", false);
+                                        print(val);
+                                      },
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide /
+                                                40,
+                                            0,
+                                            MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide /
+                                                40,
+                                            0)),
+                                    ChoiceChip(
+                                      labelStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor),
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      label: Text("Completed"),
+                                      selected: completedSwitchValue,
+                                      onSelected: (val) {
+                                        setState(() {
+                                          initialselectedPage = 1;
+
+                                          selectedChip.put("selectedPage", 1);
+                                        });
+
+                                        if (val == true) {
+                                          print("No Change");
+                                          selectedChip.put(
+                                              "completedSelectedChip", true);
+                                        }
+                                        selectedChip.put(
+                                            "completedSelectedChip", true);
+
+                                        selectedChip.put(
+                                            "workingSelectedChip", false);
+
+                                        print(val);
+                                      },
+                                    ),
+                                  ]),
+                            );
+                          })
+                      : Container(),
+
+                  todoBox.length <= 0 && completedBox.length <= 0
+                      ? whiteScreen(context)
+                      : Container(),
+                  todoBox.length > 0 || completedBox.length > 0
+                      ? Column(
+                          children: [
+                            // ListTile(
+                            //   title: Opacity(
+                            //     opacity: 0.7,
+                            //     child: Text(
+                            //       'My Progress',
+                            //       style: TextStyle(
+                            //           fontWeight: FontWeight.w700,
+                            //           fontSize:
+                            //               MediaQuery.of(context).size.width /
+                            //                   25),
+                            //     ),
+                            //   ),
+                            // ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  MediaQuery.of(context).size.width / 35,
+                                  0,
+                                  MediaQuery.of(context).size.width / 35,
+                                  0),
+                              child: Card(
+                                elevation: 0.3,
+                                //  color: Theme.of(context).colorScheme.onBackground,
+                                child: Row(
+                                  //crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ProgressBar(),
+                                    ),
+                                    Container(
+                                        height: 60,
+                                        child: VerticalDivider(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface)),
+                                    Expanded(
+                                        flex: 2,
+                                        child: Center(
+                                            child: Opacity(
+                                          opacity: 0.8,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Today's\n",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                TextSpan(
+                                                  text: "Progress\n \n",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                TextSpan(
+                                                    text:
+                                                        '${completedBox.length}/${completedBox.length + todoBox.length}',
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              22,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .accentColor,
+                                                    )),
+                                                TextSpan(
+                                                    text: ' is completed',
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              25,
+                                                      color: Theme.of(context)
+                                                          .accentColor,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ))),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
+
                   SlideInUp(
-                    child: TodoCard(),
+                    child: settingsBox.get("selectedPage") == null
+                        ? pages[initialselectedPage]
+                        : pages[settingsBox.get("selectedPage")],
                     duration: Duration(milliseconds: 2000),
                     //delay: Duration(milliseconds: 200),
                   ),
 
                   // ),
-                  SlideInUp(
-                    child: CompletedTodoCard(),
-                    duration: Duration(milliseconds: 2000),
-                    //delay: Duration(milliseconds: 2000),
-                  ),
+                  // SlideInUp(
+                  //   child: CompletedTodoCard(),
+                  //   duration: Duration(milliseconds: 2000),
+                  //   //delay: Duration(milliseconds: 2000),
+                  // ),
 
-                  FadeInUp(
-                    //delay: Duration(milliseconds: 800),
-                    duration: Duration(milliseconds: 2000),
-                    child: (todoBox.length <= 0 || completedBox.length > 0)
-                        ? Container(
-                            height: MediaQuery.of(context).size.width / 4)
-                        : Center(),
-                  ),
-                  Opacity(
-                    opacity: 0.5,
-                    child: SlideInUp(
-                      duration: Duration(milliseconds: 2000),
-                      child: Text(
-                        todoBox.isEmpty == true
-                            ? ""
-                            : "You can add : $remainingTodoCount more ",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ),
-                  )
+                  // FadeInUp(
+                  //   //delay: Duration(milliseconds: 800),
+                  //   duration: Duration(milliseconds: 2000),
+                  //   child: (todoBox.length <= 0 || completedBox.length > 0)
+                  //       ? Container(
+                  //           height: MediaQuery.of(context).size.width / 4)
+                  //       : Center(),
+                  // ),
+                  todoBox.length > 0
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: SlideInUp(
+                              duration: Duration(milliseconds: 2000),
+                              child: Text(
+                                todoBox.length == 10
+                                    ? ""
+                                    : "You can add : $remainingTodoCount more ",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  Container(height: MediaQuery.of(context).size.width / 3)
                 ],
               ),
             ),

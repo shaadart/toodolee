@@ -65,6 +65,8 @@ dependencies:
   shimmer_animation: ^2.0.0
   speech_bubble: ^0.0.9
   flappy: ^0.1.7
+  date_format: ^2.0.2
+  chips_choice: ^2.0.1
   
 
 dev_dependencies:

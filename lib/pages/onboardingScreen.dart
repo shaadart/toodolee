@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.blue,
           doAnimateChild: true),
       // PageModel.withChild(
-      //     child: new Padding(
-      //       padding: new EdgeInsets.only(bottom: 25.0),
-      //       child: new Image.asset('assets/quotes.jpg',
+      //     child:   Padding(
+      //       padding:   EdgeInsets.only(bottom: 25.0),
+      //       child:   Image.asset('assets/quotes.jpg',
       //           width: MediaQuery.of(context).size.width / 0.9,
       //           height: MediaQuery.of(context).size.width / 0.9),
       //     ),
@@ -72,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
         pages: pages,
         showBullets: false,
         skipCallback: () {
-          
           Text("Skip clicked");
           Hive.box(settingsName).put("remainderNotifications", true);
           Hive.box(settingsName).put("dailyNotifications", true);
