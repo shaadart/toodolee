@@ -3,13 +3,10 @@
 This is a Readme of Todo App
 
 ## OverView 👀
-
-This Project is only and only for them, who are for those crazy ones who are crazy enough to think that they could change theirs and this world...
-By 
-##### Project_Coded
+###### By Project_Coded
 Toodolee holds your most impactful, perfect, and higly-Prioritization works in your pocket.
 
-It is all Created with only One One One One thing in the Mind..
+It is all Created with only One One One One x100 thing in the Mind..
 To Make People set their most Prior Work, for the Day and Limit them as minimum as possible. 
 It's all about Limiting to See Limitless. 
 
