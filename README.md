@@ -59,9 +59,5 @@ https://pub.dev/packages/carbon_icons
 
 Get an Island and Use The Toodolee, Then See yourself as a great man of success.
 
-<a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="toodolee" data-color="#FFDD00" data-emoji="🧠"  data-font="Arial" data-text="Buy me a brain" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
-
 <a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
