@@ -1,4 +1,4 @@
-# toodo
+# Toodolee 🔔
 
 This is a Readme of Todo App
 
@@ -52,8 +52,11 @@ Well, there is not much fonts... we are using in this App,
 https://fonts.google.com/specimen/Work+Sans
 
 
-#### 🔗 carbon_icons: ^0.0.1+2 
+#### 🔗 carbon_icons
 https://pub.dev/packages/carbon_icons
 
+#### ⚡ 
 
 Get an Island and Use The Toodolee, Then See yourself as a great man of success.
+
+<a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
