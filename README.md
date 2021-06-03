@@ -4,41 +4,31 @@ This is a Readme of Todo App
 
 ## OverView 👀
 
-This project is a starting point for 
-##### Project_Coded 
+This Project is only and only for them, who are for those crazy ones who are crazy enough to think that they could change theirs and this world...
+By ##### Project_Coded
+Toodolee holds your most impactful, perfect, and higly-Prioritization works in your pocket.
 
-This is a minimal Todo App, This is one of it's kind it got things, features etc.  to Organise your Day better! the Best part is that it Takes Only 10 Things that are Necessary for anyone to Perform, and you have to Decide what are these 10 Things which you are needed to do? Ask Yourself do you got something on this list? The Project _Coded is Making, by Two Young Developers, Dadzie and Maxsinss.
+It is all Created with only One One One One thing in the Mind..
+To Make People set their most Prior Work, for the Day and Limit them as minimum as possible. 
+It's all about Limiting to See Limitless. 
+
 
 ## Screenshots 📱
 
-![20210514_135220](https://user-images.githubusercontent.com/64954854/118243424-112dd600-b4bc-11eb-8783-d859a18c04c3.jpg)
-
-![Screenshot_20210514-134348](https://user-images.githubusercontent.com/64954854/118243433-13903000-b4bc-11eb-9b80-9172550e9725.jpg)
-
-
-![Screenshot_20210514-134414](https://user-images.githubusercontent.com/64954854/118243437-14c15d00-b4bc-11eb-888d-79003a31163d.jpg)
-
-
-![Screenshot_20210514-134442](https://user-images.githubusercontent.com/64954854/118243446-168b2080-b4bc-11eb-8e72-31c184682cc6.jpg)
-
-
-![Screenshot_20210514-134552](https://user-images.githubusercontent.com/64954854/118243449-1723b700-b4bc-11eb-9730-aea24ca4eba8.jpg)
-
-
-![Screenshot_20210514-134604](https://user-images.githubusercontent.com/64954854/118243452-17bc4d80-b4bc-11eb-9993-e4d2728feff6.jpg)
-
-
-![20210514_135131](https://user-images.githubusercontent.com/64954854/118243456-1854e400-b4bc-11eb-88a4-2b1fcf801cc4.jpg)
-
-
-![20210514_135200](https://user-images.githubusercontent.com/64954854/118243460-18ed7a80-b4bc-11eb-8426-dd9a633a7223.jpg)
+![2](https://user-images.githubusercontent.com/64954854/120599189-cd980d80-c464-11eb-8c32-1d67735fbebd.png)
+![3](https://user-images.githubusercontent.com/64954854/120599202-d25cc180-c464-11eb-9eae-0c8b99f96a7c.png)
+![1](https://user-images.githubusercontent.com/64954854/120599216-d8eb3900-c464-11eb-8db1-eeb58ac717bb.png)
+![4](https://user-images.githubusercontent.com/64954854/120599234-dee11a00-c464-11eb-8387-25abaf5266ed.png)
+![5](https://user-images.githubusercontent.com/64954854/120599250-e4d6fb00-c464-11eb-8026-92ac8d9bb9e3.png)
+![6](https://user-images.githubusercontent.com/64954854/120599263-e9031880-c464-11eb-93aa-2cce1174eac0.png)
+![7](https://user-images.githubusercontent.com/64954854/120599270-eb657280-c464-11eb-9460-05b6f68cae2e.png)
 
 
 ## Pub Packages 📦 and Fonts
 
 Well, there are bit so much packages we are using in this App, 
 
-Well, there are bit so much fonts... we are using in this App,
+Well, there is not much fonts... we are using in this App,
 #### ✍️ WorkSans
 https://fonts.google.com/specimen/Work+Sans
 
@@ -47,3 +37,4 @@ https://fonts.google.com/specimen/Work+Sans
 https://pub.dev/packages/carbon_icons
 
 
+Get an Island and Use The Toodolee, Then See yourself as a great man of success.
