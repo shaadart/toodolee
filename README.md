@@ -1,8 +1,4 @@
-# Toodolee 🌈
-
-This is a Readme of Todo App
-
-## OverView 👀
+# OverView 👀
 ###### By Project_Coded
 Toodolee holds your most impactful, perfect, and higly-Prioritization works in your pocket.
 
@@ -11,7 +7,7 @@ To Make People set their most Prior Work, for the Day and Limit them as minimum 
 It's all about Limiting to See Limitless. 
 
 
-## Screenshots 📱
+# Screenshots 📱
 
 ![2](https://user-images.githubusercontent.com/64954854/120599189-cd980d80-c464-11eb-8c32-1d67735fbebd.png)
 
@@ -40,7 +36,18 @@ It's all about Limiting to See Limitless.
 ![7](https://user-images.githubusercontent.com/64954854/120599270-eb657280-c464-11eb-9460-05b6f68cae2e.png)
 
 
-## Pub Packages 📦 and Fonts
+# Toodolee 🌈
+
+Toodoleee is a revolt Against All Tooodo apps, Because they worsen your creatvity and productivitiness.
+This is a simple introduction of most simplest app, Toodolee
+Toodolee wants to revolutionarize the whole Toodo App World, 
+There are Pretty much lot of apps in this world, but Toodolee is certainly not among them, it focuses on Limited-ness and focuses on writing up most important Toodos for the Day.
+People tend to write really unrelated things like, Bathing, Sleeping, etc. for the whole day, which is really really unproductive, 
+Toodolee focuses for you maximally limited things, because, when the days are limited why are not your works?
+Toodoleee is a revolt Against All Tooodo apps, Because they worsen your creatvity and productivitiness.
+
+
+# Pub Packages 📦 and Fonts
 
 Well, there are bit so much packages we are using in this App, 
 
