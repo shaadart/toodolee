@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:toodo/main.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
-import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -29,9 +27,10 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Image.asset('assets/play football.jpg',
-              //     width: MediaQuery.of(context).size.width / 1.5),
+              //     width: MediaQuery.of(context).size.shortestSide / 1.5),
               Padding(
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
+                padding: EdgeInsets.all(
+                    MediaQuery.of(context).size.shortestSide / 20),
                 child: Center(
                   child: Text(
                     "You have got a Dream...",
@@ -47,15 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
       PageModel.withChild(
           child: Center(
               child: Text("Packet it Daily",
-                  style: Theme.of(context).textTheme.headline6)),
+                  style: Theme.of(context).textTheme.headline4)),
           color: Colors.blue,
           doAnimateChild: true),
       // PageModel.withChild(
       //     child:   Padding(
       //       padding:   EdgeInsets.only(bottom: 25.0),
       //       child:   Image.asset('assets/quotes.jpg',
-      //           width: MediaQuery.of(context).size.width / 0.9,
-      //           height: MediaQuery.of(context).size.width / 0.9),
+      //           width: MediaQuery.of(context).size.shortestSide / 0.9,
+      //           height: MediaQuery.of(context).size.shortestSide / 0.9),
       //     ),
       //     color: Colors.blue,
       //     doAnimateChild: true),
@@ -66,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.yellow,
           doAnimateChild: true),
     ];
+
     return Scaffold(
       key: _globalKey,
       body: OverBoard(
@@ -73,29 +73,30 @@ class _MyHomePageState extends State<MyHomePage> {
         showBullets: false,
         skipCallback: () {
           Text("Skip clicked");
-          Hive.box(settingsName).put("remainderNotifications", true);
-          Hive.box(settingsName).put("dailyNotifications", true);
-          setDailyRemainderMethod("6:30", context);
+          settingsBox.put("remainderNotifications", true);
+          settingsBox.put("dailyNotifications", true);
+          setDailyRemainderMethod([6.toString(), 30.toString()], context);
           player.play(
-            'sounds/hero_simple-celebration-03.wav',
+            'sounds/hero_decorative-celebration-03.wav',
             stayAwake: false,
-
             // mode: PlayerMode.LOW_LATENCY,
           );
+          onboardingScreenBox.put('shownOnBoard', true);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),
           );
         },
         finishCallback: () {
-          Hive.box(settingsName).put("remainderNotifications", true);
-          Hive.box(settingsName).put("dailyNotifications", true);
-          setDailyRemainderMethod("6:30", context);
+          settingsBox.put("remainderNotifications", true);
+          settingsBox.put("dailyNotifications", true);
+          setDailyRemainderMethod([6.toString(), 30.toString()], context);
           player.play(
             'sounds/hero_decorative-celebration-03.wav',
             stayAwake: false,
             // mode: PlayerMode.LOW_LATENCY,
           );
+          onboardingScreenBox.put('shownOnBoard', true);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),

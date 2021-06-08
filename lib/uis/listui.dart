@@ -13,11 +13,9 @@ import 'package:toodo/main.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/todo_model.dart';
-import 'package:toodo/pages/quotes.dart';
+import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:dart_random_choice/dart_random_choice.dart';
-
 import 'dart:core';
 
 String firstButtonText = 'Take photo';
@@ -50,6 +48,7 @@ class _TodoCardState extends State<TodoCard> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: Hive.box<TodoModel>(todoBoxname).listenable(),
+        // ignore: missing_return
         builder: (context, Box<TodoModel> box, _) {
           List<int> keys = box.keys.cast<int>().toList();
 
@@ -72,9 +71,9 @@ class _TodoCardState extends State<TodoCard> {
 
                       return Padding(
                         padding: EdgeInsets.fromLTRB(
-                            MediaQuery.of(context).size.width / 35,
+                            MediaQuery.of(context).size.shortestSide / 35,
                             0,
-                            MediaQuery.of(context).size.width / 35,
+                            MediaQuery.of(context).size.shortestSide / 35,
                             0),
                         child: Davinci(builder: (imgkey) {
                           ///3. set the widget key to the globalkey
@@ -103,44 +102,39 @@ class _TodoCardState extends State<TodoCard> {
                                     children: [
                                       ListTile(
                                         leading: IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              todo.isCompleted =
-                                                  !todo.isCompleted;
-                                              if (todo.isCompleted == true) {
-                                                CompletedTodoModel
-                                                    completedTodo =
-                                                    CompletedTodoModel(
-                                                  completedTodoName:
-                                                      completedTodoName,
-                                                  completedTodoEmoji:
-                                                      completedTodoEmoji,
-                                                  completedTodoRemainder:
-                                                      completedTodoRemainder,
-                                                  isCompleted:
-                                                      todo.isCompleted = true,
-                                                );
-                                                print(completedTodo
-                                                    .completedTodoName);
-                                                completedBox.add(completedTodo);
-                                                todoBox.deleteAt(index);
-                                                print(completedBox.length);
-                                              }
-                                            });
-                                            player.play(
-                                              'sounds/notification_simple-02.wav',
-                                              stayAwake: false,
-                                              // mode: PlayerMode.LOW_LATENCY,
-                                            );
-                                          },
-                                          icon: todo.isCompleted == false
-                                              ? Icon(CarbonIcons.radio_button,
-                                                  color: Colors.blue)
-                                              : Icon(
-                                                  CarbonIcons.checkmark_filled,
-                                                  color: Colors.blue),
-                                          color: Colors.blue,
-                                        ),
+                                            onPressed: () {
+                                              setState(() {
+                                                todo.isCompleted =
+                                                    !todo.isCompleted;
+                                                if (todo.isCompleted == true) {
+                                                  CompletedTodoModel
+                                                      completedTodo =
+                                                      CompletedTodoModel(
+                                                    completedTodoName:
+                                                        completedTodoName,
+                                                    completedTodoEmoji:
+                                                        completedTodoEmoji,
+                                                    completedTodoRemainder:
+                                                        completedTodoRemainder,
+                                                    isCompleted:
+                                                        todo.isCompleted = true,
+                                                  );
+                                                  print(completedTodo
+                                                      .completedTodoName);
+                                                  completedBox
+                                                      .add(completedTodo);
+                                                  todoBox.deleteAt(index);
+                                                  print(completedBox.length);
+                                                }
+                                              });
+                                              player.play(
+                                                'sounds/notification_simple-02.wav',
+                                                stayAwake: false,
+                                                // mode: PlayerMode.LOW_LATENCY,
+                                              );
+                                            },
+                                            icon: Icon(CarbonIcons.radio_button,
+                                                color: Colors.blue)),
 
                                         title: Opacity(
                                           opacity: 0.8,
@@ -149,23 +143,38 @@ class _TodoCardState extends State<TodoCard> {
                                             style: TextStyle(
                                               fontFamily: "WorkSans",
                                               fontStyle: FontStyle.normal,
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  19,
                                               fontWeight: FontWeight.w600,
 
                                               // color: Colors.black54
                                             ),
                                           ),
                                         ),
+
                                         // subtitle: Text("written on morning"),
                                       ),
 
                                       // Divider(thickness: 1.2),
                                       ButtonBar(
+                                        alignment: MainAxisAlignment.end,
                                         children: [
                                           (todo.todoRemainder) == null
-                                              ? Container()
-                                              : Text(
-                                                  '${todo.todoRemainder.toString()}'),
+                                              ? Container(
+                                                  margin: EdgeInsets.all(0),
+                                                  padding:
+                                                      const EdgeInsets.all(0),
+                                                  child: Opacity(
+                                                      opacity: 0.7,
+                                                      child: Text("Today")),
+                                                )
+                                              : Opacity(
+                                                  opacity: 0.7,
+                                                  child: Text(
+                                                      '${todo.todoRemainder.toString()}'),
+                                                ),
                                           (todo.todoRemainder) == null ||
                                                   todo.todoEmoji == "null"
                                               ? Container()
@@ -185,192 +194,204 @@ class _TodoCardState extends State<TodoCard> {
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                   )),
-                                          IconButton(
-                                            color: Colors.blue,
-                                            onPressed: () {
-                                              player.play(
-                                                'sounds/ui_tap-variant-01.wav',
-                                                stayAwake: false,
-                                                // mode: PlayerMode.LOW_LATENCY,
-                                              );
-                                              showModalBottomSheet(
-                                                context: context,
-                                                isScrollControlled: true,
-                                                shape: RoundedRectangleBorder(
-                                                  // <-- for border radius
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10.0),
-                                                    topRight:
-                                                        Radius.circular(10.0),
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                8,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                8,
+                                            child: IconButton(
+                                              color: Colors.blue,
+                                              onPressed: () {
+                                                player.play(
+                                                  'sounds/ui_tap-variant-01.wav',
+                                                  stayAwake: false,
+                                                  // mode: PlayerMode.LOW_LATENCY,
+                                                );
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  isScrollControlled: true,
+                                                  shape: RoundedRectangleBorder(
+                                                    // <-- for border radius
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10.0),
+                                                      topRight:
+                                                          Radius.circular(10.0),
+                                                    ),
                                                   ),
-                                                ),
-                                                builder: (context) {
-                                                  return Wrap(
-                                                    children: [
-                                                      FlatButton(
-                                                        onPressed: () {
-                                                          player.play(
-                                                            'sounds/ui_tap-variant-01.wav',
-                                                            stayAwake: false,
-                                                            // mode: PlayerMode.LOW_LATENCY,
-                                                          );
-                                                          Navigator.pop(
-                                                              context);
-                                                          if (todo.todoEmoji ==
-                                                                  "null" &&
-                                                              todo.todoRemainder ==
-                                                                  null) {
-                                                            Share.share(
-                                                                "${todo.todoName} \n \n @toodoleeApp",
-                                                                subject:
-                                                                    "Today's Toodo");
-                                                          } else if (todo
-                                                                  .todoRemainder ==
-                                                              null) {
-                                                            Share.share(
-                                                                "${todo.todoName} \n ${todo.todoEmoji}  \n \n @toodoleeApp",
-                                                                subject:
-                                                                    "Today's Toodo");
-                                                          } else if (todo
-                                                                  .todoEmoji ==
-                                                              "null") {
-                                                            Share.share(
-                                                                "${todo.todoRemainder}⏰ \n \n @toodoleeApp",
-                                                                subject:
-                                                                    "Today's Toodo");
-                                                          } else {
-                                                            Share.share(
-                                                                "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n @toodoleeApp",
-                                                                subject:
-                                                                    "Today's Toodo");
-                                                          }
-                                                        },
-                                                        child: ListTile(
-                                                          leading: Icon(
-                                                              CarbonIcons
-                                                                  .share),
-                                                          title: Text("Share"),
-                                                        ),
-                                                      ),
-                                                      FlatButton(
-                                                        onPressed: () async {
-                                                          await DavinciCapture
-                                                              .click(
-                                                            imgkey,
-                                                            saveToDevice: true,
-                                                            fileName:
-                                                                "${DateTime.now().microsecondsSinceEpoch}",
-                                                            openFilePreview:
-                                                                true,
-                                                            albumName:
-                                                                "Toodolees",
-                                                            pixelRatio: 2,
-                                                            // returnImageUint8List:
-                                                            //     true,
-                                                          );
-
-                                                          // setState(() {
-                                                          //   initialCanvasColor = null;
-                                                          //   initialmargin =
-                                                          //       EdgeInsets.all(4.0);
-                                                          // });
-
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                                  SnackBar(
-                                                                      backgroundColor:
-                                                                          Colors.blue[
-                                                                              200],
-                                                                      content:
-                                                                          Row(
-                                                                        children: [
-                                                                          Expanded(
-                                                                              flex: 1,
-                                                                              child: Text("👍", style: TextStyle(color: Colors.white))),
-                                                                          Expanded(
-                                                                              flex: 5,
-                                                                              child: Text(
-                                                                                "Share this Will, (Captured)",
-                                                                              )),
-                                                                          // FlatButton(
-                                                                          //   child: Text("Undo"),
-                                                                          //   color: Colors.white,
-                                                                          //   onPressed: () async{
-                                                                          //     await box.deleteAt(index);
-                                                                          //     Navigator.pop(context);
-                                                                          //   },
-                                                                          // ),
-                                                                        ],
-                                                                      )));
-                                                        },
-                                                        // await DavinciCapture.offStage(
-                                                        //     PreviewWidget());
-
-                                                        child: ListTile(
-                                                          leading: Icon(
-                                                              CarbonIcons
-                                                                  .download),
-                                                          title:
-                                                              Text("Download"),
-                                                        ),
-                                                      ),
-                                                      Divider(),
-                                                      FlatButton(
-                                                        onPressed: () async {
-                                                          await box
-                                                              .deleteAt(index);
-                                                          incrementCount();
-                                                          deleteQuotes();
-                                                          //
-                                                          // Locally locally = Locally(
-                                                          //   context: context,
-                                                          //   payload: 'test',
-
-                                                          //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-                                                          //   appIcon: 'toodoleeicon',
-
-                                                          //   pageRoute: MaterialPageRoute(
-                                                          //       builder: (BuildContext
-                                                          //           context) {
-                                                          //     return DefaultedApp();
-                                                          //   }),
-                                                          // );
-
-                                                          // locally.cancel(0);
-                                                          player.play(
-                                                            'sounds/navigation_transition-left.wav',
-                                                            stayAwake: false,
-                                                            // mode: PlayerMode.LOW_LATENCY,
-                                                          );
-
-                                                          setState(() {});
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: ListTile(
-                                                          leading: Icon(
-                                                              CarbonIcons
-                                                                  .delete,
-                                                              color: Colors
-                                                                  .redAccent),
-                                                          title: Text(
-                                                            "Delete",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .redAccent),
+                                                  builder: (context) {
+                                                    return Wrap(
+                                                      children: [
+                                                        MaterialButton(
+                                                          onPressed: () {
+                                                            player.play(
+                                                              'sounds/ui_tap-variant-01.wav',
+                                                              stayAwake: false,
+                                                              // mode: PlayerMode.LOW_LATENCY,
+                                                            );
+                                                            Navigator.pop(
+                                                                context);
+                                                            if (todo.todoEmoji ==
+                                                                    "null" &&
+                                                                todo.todoRemainder ==
+                                                                    null) {
+                                                              Share.share(
+                                                                  "${todo.todoName} \n \n @toodoleeApp",
+                                                                  subject:
+                                                                      "Today's Toodo");
+                                                            } else if (todo
+                                                                    .todoRemainder ==
+                                                                null) {
+                                                              Share.share(
+                                                                  "${todo.todoName} \n ${todo.todoEmoji}  \n \n @toodoleeApp",
+                                                                  subject:
+                                                                      "Today's Toodo");
+                                                            } else if (todo
+                                                                    .todoEmoji ==
+                                                                "null") {
+                                                              Share.share(
+                                                                  "${todo.todoRemainder}⏰ \n \n @toodoleeApp",
+                                                                  subject:
+                                                                      "Today's Toodo");
+                                                            } else {
+                                                              Share.share(
+                                                                  "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n @toodoleeApp",
+                                                                  subject:
+                                                                      "Today's Toodo");
+                                                            }
+                                                          },
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                                CarbonIcons
+                                                                    .share),
+                                                            title:
+                                                                Text("Share"),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            icon: Icon(CarbonIcons
-                                                .overflow_menu_horizontal),
+                                                        MaterialButton(
+                                                          onPressed: () async {
+                                                            await DavinciCapture
+                                                                .click(
+                                                              imgkey,
+                                                              saveToDevice:
+                                                                  true,
+                                                              fileName:
+                                                                  "${DateTime.now().microsecondsSinceEpoch}",
+                                                              openFilePreview:
+                                                                  true,
+                                                              albumName:
+                                                                  "Toodolees",
+                                                              pixelRatio: 2,
+                                                              // returnImageUint8List:
+                                                              //     true,
+                                                            );
+
+                                                            // setState(() {
+                                                            //   initialCanvasColor = null;
+                                                            //   initialmargin =
+                                                            //       EdgeInsets.all(4.0);
+                                                            // });
+
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                                        backgroundColor:
+                                                                            Colors.blue[
+                                                                                200],
+                                                                        content:
+                                                                            Row(
+                                                                          children: [
+                                                                            Expanded(
+                                                                                flex: 1,
+                                                                                child: Text("👍", style: TextStyle(color: Colors.white))),
+                                                                            Expanded(
+                                                                                flex: 5,
+                                                                                child: Text(
+                                                                                  "Share this Will, (Captured)",
+                                                                                )),
+                                                                            // MaterialButton(
+                                                                            //   child: Text("Undo"),
+                                                                            //   color: Colors.white,
+                                                                            //   onPressed: () async{
+                                                                            //     await box.deleteAt(index);
+                                                                            //     Navigator.pop(context);
+                                                                            //   },
+                                                                            // ),
+                                                                          ],
+                                                                        )));
+                                                          },
+                                                          // await DavinciCapture.offStage(
+                                                          //     PreviewWidget());
+
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                                CarbonIcons
+                                                                    .download),
+                                                            title: Text(
+                                                                "Download"),
+                                                          ),
+                                                        ),
+                                                        Divider(),
+                                                        MaterialButton(
+                                                          onPressed: () async {
+                                                            await box.deleteAt(
+                                                                index);
+                                                            incrementCount();
+                                                            deleteQuotes();
+                                                            //
+                                                            // Locally locally = Locally(
+                                                            //   context: context,
+                                                            //   payload: 'test',
+
+                                                            //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
+                                                            //   appIcon: 'toodoleeicon',
+
+                                                            //   pageRoute: MaterialPageRoute(
+                                                            //       builder: (BuildContext
+                                                            //           context) {
+                                                            //     return DefaultedApp();
+                                                            //   }),
+                                                            // );
+
+                                                            // locally.cancel(0);
+                                                            player.play(
+                                                              'sounds/navigation_transition-left.wav',
+                                                              stayAwake: false,
+                                                              // mode: PlayerMode.LOW_LATENCY,
+                                                            );
+
+                                                            setState(() {});
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                                CarbonIcons
+                                                                    .delete,
+                                                                color: Colors
+                                                                    .redAccent),
+                                                            title: Text(
+                                                              "Delete",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .redAccent),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              icon: Icon(CarbonIcons
+                                                  .overflow_menu_horizontal),
+                                            ),
                                           ),
                                         ],
                                       ),

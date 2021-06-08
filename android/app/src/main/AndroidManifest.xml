@@ -8,7 +8,7 @@
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <application
         android:label="Toodolee"
-        android:icon="@mipmap/toodoleeicon">
+        android:icon="@mipmap/res_toodoleeicon">
          <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
     <intent-filter>

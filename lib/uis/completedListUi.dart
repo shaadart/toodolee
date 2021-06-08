@@ -11,7 +11,7 @@ import 'package:toodo/models/todo_model.dart';
 //import 'package:share/share.dart';
 //import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:toodo/pages/quotes.dart';
+import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/listui.dart';
 
 import 'package:flutter/material.dart';
@@ -38,7 +38,6 @@ class CompletedTodoCard extends StatefulWidget {
 
 class _CompletedTodoCardState extends State<CompletedTodoCard> {
   //bool isCompleted = false;
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +48,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
     return ValueListenableBuilder(
         valueListenable:
             Hive.box<CompletedTodoModel>(completedtodoBoxname).listenable(),
+        // ignore: missing_return
         builder: (context, Box<CompletedTodoModel> cbox, _) {
           List<int> ckeys = cbox.keys.cast<int>().toList() ?? [];
           if (completedBox.isEmpty == true && todoBox.isEmpty == false) {
@@ -57,10 +57,10 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                 alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width / 15,
-                      MediaQuery.of(context).size.width / 20,
-                      MediaQuery.of(context).size.width / 15,
-                      MediaQuery.of(context).size.width / 60),
+                      MediaQuery.of(context).size.shortestSide / 15,
+                      MediaQuery.of(context).size.shortestSide / 20,
+                      MediaQuery.of(context).size.shortestSide / 15,
+                      MediaQuery.of(context).size.shortestSide / 60),
                   child: Center(
                     child: Opacity(
                       opacity: 0.5,
@@ -91,9 +91,9 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                       //todo.isCompleted = false;
                       return Padding(
                         padding: EdgeInsets.fromLTRB(
-                            MediaQuery.of(context).size.width / 35,
+                            MediaQuery.of(context).size.shortestSide / 35,
                             0,
-                            MediaQuery.of(context).size.width / 35,
+                            MediaQuery.of(context).size.shortestSide / 35,
                             0),
                         child: Card(
                           // color: Colors.white,
@@ -215,14 +215,14 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                         // Otherwise, the height will be half the height of the screen.
                                         return Wrap(
                                           children: [
-                                            // FlatButton(
+                                            // MaterialButton(
                                             //   onPressed: () {},
                                             //   child: ListTile(
                                             //     leading: Icon(CarbonIcons.edit),
                                             //     title: Text("Edit"),
                                             //   ),
                                             // ),
-                                            FlatButton(
+                                            MaterialButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
 
@@ -238,7 +238,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                             ),
 
                                             Divider(),
-                                            FlatButton(
+                                            MaterialButton(
                                               onPressed: () async {
                                                 await cbox.deleteAt(index);
                                                 incrementCount();

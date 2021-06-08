@@ -9,14 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toodo/main.dart';
-import 'package:toodo/pages/quotes.dart';
-import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
-import 'package:toodo/pages/tommorownotification.dart';
-
-
-const deleteweatherdata = "deletingweatherData";
-const deletequotesdata = "deletingquotesData";
-const deletelistdata = "deletinglistsData";
+import 'package:toodo/uis/quotes.dart';
+import 'package:toodo/pages/settingspagedefault.dart';
 
 
 

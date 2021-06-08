@@ -1,21 +1,6 @@
-//import 'package:carbon_icons/carbon_icons.dart';
-//import 'package:carbon_icons/carbon_icons.dart';
-import 'package:carbon_icons/carbon_icons.dart';
-import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
-
-import 'package:toodo/pages/bored.dart';
-
-import 'package:toodo/pages/progressbar.dart';
-import 'package:toodo/pages/quotes.dart';
-import 'package:toodo/pages/tommorownotification.dart';
-import 'package:toodo/pages/weatherCard.dart';
-import 'package:animate_do/animate_do.dart';
-
-import 'package:toodo/main.dart';
-
-//import "package:pexels/pexels.dart";
-//import 'dart:async';
+import 'package:toodo/uis/bored.dart';
+import 'package:toodo/uis/quotes.dart';
 
 class WithLoveMoreComming extends StatelessWidget {
   const WithLoveMoreComming({
@@ -26,7 +11,7 @@ class WithLoveMoreComming extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Padding(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width / 10),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.shortestSide / 10),
       child: Opacity(
         opacity: 0.7,
         child: Text(" - With ❤️ More Cards are on the way ",
@@ -57,14 +42,18 @@ class _MorePageState extends State<MorePage> {
           Padding(
               padding: EdgeInsets.fromLTRB(
                   0,
-                  MediaQuery.of(context).size.width / 40,
+                  MediaQuery.of(context).size.shortestSide / 40,
                   0,
-                  MediaQuery.of(context).size.width / 10),
+                  MediaQuery.of(context).size.shortestSide / 10),
               child: Quotes()),
           Padding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.width / 10),
+                  bottom: MediaQuery.of(context).size.shortestSide / 10),
               child: Bored()),
+          // Padding(
+          //     padding: EdgeInsets.only(
+          //         bottom: MediaQuery.of(context).size.shortestSide / 10),
+          //     child: Weathercard()),
           WithLoveMoreComming()
         ],
       )),

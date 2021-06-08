@@ -1,22 +1,21 @@
-import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+// import 'package:app_settings/app_settings.dart';
 
 import 'package:flutter_radio_group/flutter_radio_group.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:share/share.dart';
 
 import 'package:toodo/main.dart';
-import 'package:toodo/pages/tommorownotification.dart';
-import 'package:toodo/processes.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../main.dart';
 
 // bool dailyNotifications = true;
 
@@ -24,6 +23,21 @@ var listVertical = [
   "Light",
   "Dark",
 ];
+
+Map convertTimetotwentyFourHourClock = {
+  1: 13,
+  2: 14,
+  3: 15,
+  4: 16,
+  5: 17,
+  6: 18,
+  7: 19,
+  8: 20,
+  9: 21,
+  10: 22,
+  11: 23,
+  12: 12,
+};
 
 var suffix = "";
 var indexVertical = 0;
@@ -35,6 +49,21 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  @override
+  void initState() {
+    /// Call out to intialize platform state.
+    initPlatformState();
+    super.initState();
+  }
+
+  /// Initialize platform state.
+  Future<void> initPlatformState() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
+
   Future<void> _launched;
 
   Future<void> _launchBoringWorkinWeb(String url) async {
@@ -44,7 +73,7 @@ class _SettingPageState extends State<SettingPage> {
           forceWebView: true,
           headers: <String, String>{'my_header_key': 'my_value_key'});
     } else {
-      throw await 'Could not launch $url';
+      throw 'Could not launch $url';
     }
   }
 
@@ -56,8 +85,10 @@ class _SettingPageState extends State<SettingPage> {
 
       if (t != null) {
         setState(() {
+          settingsBox.put("dailyNotifications", true);
           dailyRemainder = t.format(context);
           dailyRemainderBox.put("remainderTime", dailyRemainder);
+
           if (dailyRemainderBox.get("remainderTime").contains("PM") == true) {
             setState(() {
               suffix = "PM";
@@ -68,20 +99,6 @@ class _SettingPageState extends State<SettingPage> {
 
             var removeUnwantedSymbol = removePM.split(":");
 
-            Map convertTimetotwentyFourHourClock = {
-              1: 13,
-              2: 14,
-              3: 15,
-              4: 16,
-              5: 17,
-              6: 18,
-              7: 19,
-              8: 20,
-              9: 21,
-              10: 22,
-              11: 23,
-              12: 24
-            };
             var hourToBeChanged = int.parse(removeUnwantedSymbol.first);
 
             var hour = convertTimetotwentyFourHourClock[hourToBeChanged];
@@ -123,6 +140,9 @@ class _SettingPageState extends State<SettingPage> {
       }
     }
 
+    // var hourofRemainder = convertTimetotwentyFourHourClock[
+    //     dailyRemainderBox.get("remainderTime")[0]];
+
     return Scaffold(
       body: ListView(
         children: [
@@ -138,21 +158,35 @@ class _SettingPageState extends State<SettingPage> {
             children: <Widget>[
               Column(children: [
                 // <-- Collapses when tapped on
-                FlatButton(
-                  onPressed: () {},
+                MaterialButton(
+                  onPressed: () {
+                    Share.share(
+                        "\n\nLife is All About Limiting the things to get unlimited things and results...\n Download Up Toodolee, it's all about being limitlesss.");
+                  },
                   child: ListTile(
                     leading: Icon(CarbonIcons.user_follow),
                     title: Text("Send Instant Invites"),
                   ),
                 ),
-                FlatButton(
+                MaterialButton(
+                  onPressed: () {
+                    Share.share(
+                        "If your Days are Limited, Your Time is Limited, Why are not your Things?\n\nLife is All About Limiting the things to get unlimited things and results...\n Download Up Toodolee, it's all about being limitlesss.");
+                  },
+                  child: ListTile(
+                    leading: Icon(CarbonIcons.phone),
+                    title: Text("Invite by Call"),
+                  ),
+                ),
+
+                MaterialButton(
                   onPressed: () {},
                   child: ListTile(
                     leading: Icon(CarbonIcons.copy),
                     title: Text("Copy the Link"),
                   ),
                 ),
-                FlatButton(
+                MaterialButton(
                   onPressed: () {},
                   child: ListTile(
                     leading: Icon(CarbonIcons.star),
@@ -191,63 +225,62 @@ class _SettingPageState extends State<SettingPage> {
                           child: Text(
                               dailyRemainderBox.get("remainderTime") == null
                                   ? "$dailyRemainder"
-                                  : "${dailyRemainderBox.get('remainderTime')[0]}:${dailyRemainderBox.get('remainderTime')[1]}$suffix",
+                                  : "${dailyRemainderBox.get("remainderTime")[0]}:${dailyRemainderBox.get('remainderTime')[1]} $suffix",
                               style: TextStyle(
                                   color: Colors.blue, fontFamily: "WorkSans"))),
                     )),
 
                     ValueListenableBuilder(
-                        valueListenable: dailyRemainderBox.listenable(),
-                        builder: (context, dailyRemainderCall, child) {
-                          return ValueListenableBuilder(
-                            valueListenable:
-                                Hive.box(settingsName).listenable(),
-                            builder: (context, dailyNotification, child) {
-                              var switchValue = dailyNotification.get(
-                                  "dailyNotifications",
-                                  defaultValue: true);
-                              return SwitchListTile(
-                                title: Text("Daily Notifications"),
-                                value: switchValue,
-                                activeColor: Theme.of(context).primaryColor,
-                                onChanged: (val) {
-                                  print(
-                                      "$dailyRemainderBox.get('remainderTime')");
-                                  //boredNotifications = value;
-                                  //dailyNotifications = value;
-                                  if (val == false) {
-                                    player.play(
-                                      'sounds/state-change_confirm-down.wav',
-                                      stayAwake: false,
-                                      // mode: PlayerMode.LOW_LATENCY,
-                                    );
-                                  } else {
-                                    player.play(
-                                      'sounds/state-change_confirm-up.wav',
-                                      stayAwake: false,
-                                      // mode: PlayerMode.LOW_LATENCY,
-                                    );
-                                    dailyNotification.put(
-                                        "dailyNotifications", !switchValue);
-                                  }
-
-                                  //dailyNotification = !dailyNotification;
-                                  print(val);
-
-                                  print(
-                                      "$dailyNotification is value of dailyNotification");
-
-                                  //print(settingsBox.get("dailyNotifications"));
-                                },
+                      valueListenable: settingsBox.listenable(),
+                      builder: (context, dailyNotification, child) {
+                        var switchValue =
+                            dailyNotification.get("dailyNotifications");
+                        return SwitchListTile(
+                          title: Text("Daily Notifications"),
+                          value: switchValue,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (val) {
+                            print("$dailyRemainderBox.get('remainderTime')");
+                            //boredNotifications = value;
+                            //dailyNotifications = value;
+                            if (val == false) {
+                              player.play(
+                                'sounds/state-change_confirm-down.wav',
+                                stayAwake: false,
+                                // mode: PlayerMode.LOW_LATENCY,
                               );
-                            },
-                          );
-                        }),
+                              dailyNotification.put(
+                                  "dailyNotifications", false);
+                            } else {
+                              player.play(
+                                'sounds/state-change_confirm-up.wav',
+                                stayAwake: false,
+                                // mode: PlayerMode.LOW_LATENCY,
+                              );
+                              dailyNotification.put("dailyNotifications", true);
+                            }
+
+                            if (settingsBox.get("dailyNotifications") == true) {
+                              setDailyRemainderMethod(
+                                  dailyRemainderBox.get('remainderTime'),
+                                  context);
+                            }
+                            //dailyNotification = !dailyNotification;
+                            print(val);
+
+                            print(
+                                "$dailyNotification is value of dailyNotification");
+
+                            //print(settingsBox.get("dailyNotifications"));
+                          },
+                        );
+                      },
+                    ),
                     ValueListenableBuilder(
                       valueListenable: Hive.box(settingsName).listenable(),
                       builder: (context, remainderNotification, child) {
-                        var switchValue = remainderNotification
-                            .get("remainderNotifications", defaultValue: true);
+                        var switchValue =
+                            remainderNotification.get("remainderNotifications");
                         return SwitchListTile(
                           title: Text("Remainder Notifications"),
                           value: switchValue,
@@ -274,38 +307,38 @@ class _SettingPageState extends State<SettingPage> {
                         );
                       },
                     ),
-                    ValueListenableBuilder(
-                      valueListenable: Hive.box(settingsName).listenable(),
-                      builder: (context, quotesNotification, child) {
-                        var switchValue = quotesNotification
-                            .get("quotesNotifications", defaultValue: false);
-                        return SwitchListTile(
-                          title: Text("Quotes Notifications"),
-                          value: switchValue,
-                          activeColor: Theme.of(context).primaryColor,
-                          onChanged: (val) {
-                            //  showperiodicallyQuotesNotification(context);
+                    // ValueListenableBuilder(
+                    //   valueListenable: Hive.box(settingsName).listenable(),
+                    //   builder: (context, quotesNotification, child) {
+                    //     var switchValue = quotesNotification
+                    //         .get("quotesNotifications", defaultValue: false);
+                    //     return SwitchListTile(
+                    //       title: Text("Quotes Notifications"),
+                    //       value: switchValue,
+                    //       activeColor: Theme.of(context).primaryColor,
+                    //       onChanged: (val) {
+                    //         //  showperiodicallyQuotesNotification(context);
 
-                            if (val == false) {
-                              player.play(
-                                'sounds/state-change_confirm-down.wav',
-                                stayAwake: false,
-                                // mode: PlayerMode.LOW_LATENCY,
-                              );
-                            } else {
-                              player.play(
-                                'sounds/state-change_confirm-up.wav',
-                                stayAwake: false,
-                              );
-                            }
-                            quotesNotification.put(
-                                "quotesNotifications", !switchValue);
+                    //         if (val == false) {
+                    //           player.play(
+                    //             'sounds/state-change_confirm-down.wav',
+                    //             stayAwake: false,
+                    //             // mode: PlayerMode.LOW_LATENCY,
+                    //           );
+                    //         } else {
+                    //           player.play(
+                    //             'sounds/state-change_confirm-up.wav',
+                    //             stayAwake: false,
+                    //           );
+                    //         }
+                    //         quotesNotification.put(
+                    //             "quotesNotifications", !switchValue);
 
-                            print(val);
-                          },
-                        );
-                      },
-                    ),
+                    //         print(val);
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                     // ValueListenableBuilder(
                     //   valueListenable: Hive.box(settingsName).listenable(),
                     //   builder: (context, boredNotification, child) {
@@ -340,6 +373,15 @@ class _SettingPageState extends State<SettingPage> {
                   ],
                 ),
               ]),
+              // GestureDetector(
+              //   onTap: () {
+              //     AppSettings.openNotificationSettings();
+              //   },
+              //   child: ListTile(
+              //     trailing: IconButton(icon: Icon(CarbonIcons.launch), onPressed: (){AppSettings.openNotificationSettings();}),
+              //     title: Text("Check Notifications Settings"),
+              //   ),
+              // )
             ],
           ),
           Divider(),
@@ -363,9 +405,9 @@ class _SettingPageState extends State<SettingPage> {
                     // ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
-                          MediaQuery.of(context).size.width / 10,
+                          MediaQuery.of(context).size.shortestSide / 10,
                           0,
-                          MediaQuery.of(context).size.width / 10,
+                          MediaQuery.of(context).size.shortestSide / 10,
                           0),
                       child: ValueListenableBuilder(
                           valueListenable: settingsBox.listenable(),
@@ -436,12 +478,13 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ),
           Divider(),
-          Card(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
+          Column(
+            children: [
+              Row(
+                children: [
+                  Opacity(
+                    opacity: 0.5,
+                    child: IconButton(
                         icon: Icon(CarbonIcons.logo_instagram),
                         onPressed: () async {
                           String texturl = "https://www.instagram.com/toodolee";
@@ -451,7 +494,10 @@ class _SettingPageState extends State<SettingPage> {
                               : throw 'Could not launch $texturl';
                           //https://www.instagram.com/project_coded/
                         }),
-                    IconButton(
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: IconButton(
                         icon: Icon(CarbonIcons.favorite),
                         onPressed: () async {
                           String texturl =
@@ -462,10 +508,34 @@ class _SettingPageState extends State<SettingPage> {
                               : throw 'Could not launch $texturl';
                           //https://www.instagram.com/project_coded/
                         }),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: IconButton(
+                        icon: Icon(CarbonIcons.delete),
+                        onPressed: () async {
+                          onboardingScreenBox.put("shownOnBoard", false);
+                          // https://toodolee.blogspot.com/p/meeeet-you-tooodoleee-i-am-giving-you.html
+                          //https://www.instagram.com/project_coded/
+                        }),
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: IconButton(
+                        icon: Icon(CarbonIcons.overflow_menu_horizontal),
+                        onPressed: () async {
+                          String texturl =
+                              "https://toodolee.blogspot.com/p/meeeet-you-tooodoleee-i-am-giving-you.html";
+
+                          await canLaunch(texturl)
+                              ? await launch(texturl)
+                              : throw 'Could not launch $texturl';
+                          //https://www.instagram.com/project_coded/
+                        }),
+                  ),
+                ],
+              ),
+            ],
           )
         ],
       ),

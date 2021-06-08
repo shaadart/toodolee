@@ -6,20 +6,17 @@ import 'package:davinci/davinci.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:share/share.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:speech_bubble/speech_bubble.dart';
 import 'package:toodo/main.dart';
 
-int lengthofJSON = 1648;
+int lengthofJSON = 1652;
 
 class Quotes extends StatefulWidget {
   const Quotes({
@@ -33,9 +30,6 @@ class Quotes extends StatefulWidget {
 class _QuotesState extends State<Quotes> {
   GlobalKey quoteKey;
   bool showToolTip = false;
-  int _counter = 0;
-
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   @override
   void initState() {
@@ -51,13 +45,15 @@ class _QuotesState extends State<Quotes> {
             getQuotes(context);
             // AndroidAlarmManager.oneShot(
             //     Duration(seconds: 30), 1, deleteQuotes());
-            return Container(
-              child: Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  height: 60.0,
-                  width: 60.0,
-                ),
+            return Shimmer(
+              duration: Duration(seconds: 1), //Default value
+              interval:
+                  Duration(seconds: 0), //Default value: Duration(seconds: 0)
+              color: Theme.of(context).cardColor, //Default value
+              enabled: true, //Default value
+              direction: ShimmerDirection.fromLTRB(), //Default Value
+              child: Container(
+                height: MediaQuery.of(context).size.shortestSide / 2,
               ),
             );
             // I understand it will be empty for now
@@ -226,7 +222,7 @@ class _QuotesState extends State<Quotes> {
                 //           children: [
                 //             Container(
                 //                 padding: EdgeInsets.all(
-                //                     MediaQuery.of(context).size.width / 30),
+                //                     MediaQuery.of(context).size.shortestSide / 30),
                 //                 child: Text("Share or Download",
                 //                     textAlign: TextAlign.center,
                 //                     style: TextStyle(
@@ -298,7 +294,7 @@ class _QuotesState extends State<Quotes> {
                 //                                             child: Text(
                 //                                               "Quotes, is captured sucessfully",
                 //                                             )),
-                //                                         // FlatButton(
+                //                                         // MaterialButton(
                 //                                         //   child: Text("Undo"),
                 //                                         //   color: Colors.white,
                 //                                         //   onPressed: () async{

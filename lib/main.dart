@@ -2,13 +2,15 @@
 //import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:chips_choice/chips_choice.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flappy/flappy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:toodo/pages/streakPage.dart';
+import 'package:toodo/uis/streakListUi.dart';
 import 'dart:async';
+import 'package:workmanager/workmanager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
@@ -18,14 +20,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:intl/intl.dart';
 import 'package:toodo/models/completed_todo_model.dart';
+import 'package:toodo/models/streak_model.dart';
+import 'package:toodo/pages/onboardingScreen.dart';
 
-import 'package:toodo/pages/progressbar.dart';
+import 'package:toodo/uis/progressbar.dart';
 
-import 'package:toodo/pages/settingsPage/settingspagedefault.dart';
+import 'package:toodo/pages/settingspagedefault.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/completedListUi.dart';
 import 'package:toodo/models/todo_model.dart';
-import 'package:toodo/pages/more.dart';
+import 'package:toodo/pages/morePage.dart';
 import 'package:toodo/uis/listui.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
@@ -53,17 +57,12 @@ const String boringcardName = "boringcard";
 const String settingsName = "settings";
 const String currentBoxName = "currentDateBox";
 const String onboardingScreenBoxName = "onboardingScreenBox";
+const String streakBoxName = "streakBox";
 //var  = ValueNotifier<int>(2);
 
-ValueNotifier<int> totalTodoCount =
-    ValueNotifier(10 - (todoBox.length + completedBox.length));
+ValueNotifier<int> totalTodoCount = ValueNotifier(
+    10 - (todoBox.length + completedBox.length + streakBox.length));
 
-ValueNotifier<int> totalTodosCount =
-    ValueNotifier((todoBox.length + completedBox.length));
-
-ValueNotifier<int> todoBoxLength = ValueNotifier(todoBox.length);
-
-ValueNotifier<int> completedtodoBoxLength = ValueNotifier(completedBox.length);
 //limiting the toodolee count to 10.
 
 final player = AudioCache(); //Plays Sounds
@@ -75,6 +74,7 @@ Box onboardingScreenBox;
 Box dailyRemainderBox;
 Box boredBox;
 Box currentDateBox;
+Box<StreakModel> streakBox;
 String dailyRemainder = "6:30";
 
 int minutesLeftTillTwelveAm() {
@@ -94,12 +94,17 @@ int minutesLeftTillTwelveAm() {
   double rawSeconds = (remainingTime * 3600);
   int seconds = rawSeconds.toInt();
 
-  return seconds; //
+  return seconds;
 }
 
+int initialselectedPage = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // WorkManager.
+  // Workmanager.initialize(callbackDispatcher);
 
+  //  Workmanager.registerPeriodicTask("100", reset,
+  //      frequency: Duration(hours: 24), initialDelay: Duration(seconds: 40));
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors
         .transparent, //Making Status Bar (battery, time, notifications etc) to Transparent
@@ -111,11 +116,13 @@ void main() async {
   //Registering Adapters
   Hive.registerAdapter(TodoModelAdapter());
   Hive.registerAdapter(CompletedTodoModelAdapter());
+  Hive.registerAdapter(StreakModelAdapter());
 
   //Opening Boxes
   await Hive.openBox(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
+  await Hive.openBox<StreakModel>(streakBoxName);
   await Hive.openBox(welcomeBoringCardname);
   await Hive.openBox(quotesCardname);
   await Hive.openBox(dailyRemainderBoxName);
@@ -124,9 +131,71 @@ void main() async {
   await Hive.openBox(onboardingScreenBoxName);
   await Hive.openBox(currentBoxName);
 
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    'resource://drawable/res_toodoleeicon',
+    [
+      NotificationChannel(
+        // groupKey: "remainderNotf",
+        channelKey: 'dailyNotific',
+        channelName: 'Daily Notifications',
+        channelDescription:
+            'Sends you daily notifications to remind you to write toodolees, to win the day',
+        defaultColor: Color(0xff4785FF),
+        ledColor: Colors.blue,
+        importance: NotificationImportance.Max,
+        defaultPrivacy: NotificationPrivacy.Public,
+        soundSource: "resource://raw/res_alert_simple",
+      ),
+      NotificationChannel(
+        // groupKey: "remainderNotf",
+        channelKey: 'remainderNotific',
+        channelName: 'Remainder Notifications',
+        channelDescription:
+            'Sends you notifications of the remainders you set, to win the time.',
+        defaultColor: Color(0xff4785FF),
+        ledColor: Colors.blue,
+        importance: NotificationImportance.Max,
+        defaultPrivacy: NotificationPrivacy.Public,
+        soundSource: "resource://raw/res_alert_simple",
+      ),
+      NotificationChannel(
+        // groupKey: "remainderNotf",
+        channelKey: 'streakNotific',
+        channelName: 'Streak Notifications',
+        channelDescription:
+            'Reminds you to check the streaks, so you never break them.',
+        defaultColor: Color(0xffFBFB0E),
+        ledColor: Color(0xffFBFB0E),
+        importance: NotificationImportance.Max,
+        defaultPrivacy: NotificationPrivacy.Public,
+        soundSource: "resource://raw/res_alert_simple",
+      ),
+    ],
+  );
   runApp(MyApp());
 
   //dekhke he laglaa hai // Running the App
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key key}) : super(key: key);
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: onboardingScreenBox.listenable(),
+      builder: (context, onboard, child) =>
+          onboard.get('shownOnBoard', defaultValue: false)
+              ? DefaultedApp()
+              : MyHomePage(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -177,7 +246,7 @@ class MyApp extends StatelessWidget {
                   title: 'Toodolee',
                   theme: theme,
                   darkTheme: darkTheme,
-                  home: DefaultedApp(),
+                  home: MainScreen(),
                 ),
               );
             }
@@ -201,11 +270,8 @@ class _SplashState extends State<Splash> {
 
   resettingToodoleeApp() {
     if (currentDate != currentDateBox.get("todayDate")) {
-      setState(() {
-        todoBox.clear();
-        completedBox.clear();
-        boredBox.clear();
-      });
+      todoBox.clear();
+      completedBox.clear();
 
       currentDateBox.put(
           "todayDate", int.parse(DateFormat("dd").format(DateTime.now())));
@@ -221,6 +287,8 @@ class _SplashState extends State<Splash> {
   void initState() {
     // setupWorkManager();
     super.initState();
+    // getCurrentDate();
+    // resettingToodoleeApp();
 
     completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
     todoBox = Hive.box<TodoModel>(todoBoxname);
@@ -230,11 +298,16 @@ class _SplashState extends State<Splash> {
     quotesBox = Hive.box(quotesCardname);
     dailyRemainderBox = Hive.box(dailyRemainderBoxName);
     currentDateBox = Hive.box(currentBoxName);
+    onboardingScreenBox = Hive.box(onboardingScreenBoxName);
+    streakBox = Hive.box<StreakModel>(streakBoxName);
+
+    getCurrentDate();
+
+    resettingToodoleeApp();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Resetting the App: ${resettingToodoleeApp()}");
     return Scaffold(
       body: Container(
         color: Colors.white70,
@@ -246,7 +319,7 @@ class _SplashState extends State<Splash> {
               child: Center(
                 child: Image.asset(
                   "icon/toodoleeicon.png",
-                  height: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.shortestSide / 2,
                 ),
               ),
             ),
@@ -300,23 +373,25 @@ class _DefaultedAppState extends State<DefaultedApp> {
                 centerTitle: false,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0.7,
-                actions: [
-                  Opacity(
-                    opacity: 1,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      child: IconButton(
-                          onPressed: () {
-                            addTodoBottomSheet(context);
-                          },
-                          icon: Icon(CarbonIcons.add)),
-                    ),
-                  )
-                ],
+                // actions: [
+                //   Opacity(
+                //     opacity: 1,
+                //     child: CircleAvatar(
+                //       backgroundColor: Theme.of(context).colorScheme.background,
+                //       child: IconButton(
+                //           onPressed: () {
+                //             addTodoBottomSheet(context);
+                //           },
+                //           icon: Icon(CarbonIcons.add)),
+                //     ),
+                //   )
+                // ],
                 title: _selectedItemPosition == 2
                     ? Text(
                         "Settings",
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).accentColor),
                       )
                     : Text(
                         "Toodolee",
@@ -335,9 +410,11 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
+                    // streakBox.clear();
+
                     setState(() {
                       showEmojiKeyboard = false;
-                      selectedEmoji = null;
+                      todoEmoji = null;
                     });
                     player.play(
                       'sounds/navigation_forward-selection-minimal.wav',
@@ -380,7 +457,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
               items: [
                 BottomNavigationBarItem(
                     icon: Opacity(opacity: 0.5, child: Icon(CarbonIcons.home)),
-                    label: 'home'),
+                    label: 'ho8me'),
                 BottomNavigationBarItem(
                     icon: Opacity(opacity: 0.5, child: Icon(CarbonIcons.grid)),
                     label: 'app'),
@@ -460,7 +537,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
   //           todoBox.todoRemainder,
   //           todoBox.todoEmoji.toString(),
   //         ],
-  //         builder: (todoBox) => FlatButton(
+  //         builder: (todoBox) => MaterialButton(
   //           onPressed: () async {
   //             player.play(
   //               'sounds/navigation_forward-selection.wav',
@@ -496,14 +573,11 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State<TodoApp> {
-  int initialselectedPage = 0;
-
   // multiple choice value
 
   // list of string options
 
-  List pages = [TodoCard(), CompletedTodoCard()];
-
+  List pages = [TodoCard(), StreakCard(), CompletedTodoCard()];
 
   @override
   Widget build(BuildContext context) {
@@ -529,13 +603,17 @@ class _TodoAppState extends State<TodoApp> {
             child: Scaffold(
               body: ListView(
                 children: [
-                  todoBox.length > 0 || completedBox.length > 0
+                  todoBox.length > 0 ||
+                          completedBox.length > 0 ||
+                          streakBox.length > 0
                       ? ValueListenableBuilder(
                           valueListenable: Hive.box(settingsName).listenable(),
                           builder: (context, selectedChip, child) {
                             var workingSwitchValue = selectedChip
                                 .get("workingSelectedChip", defaultValue: true);
 
+                            var streakSwitchValue = selectedChip
+                                .get("streakSelectedChip", defaultValue: false);
                             var completedSwitchValue = selectedChip.get(
                                 "completedSelectedChip",
                                 defaultValue: false);
@@ -550,21 +628,24 @@ class _TodoAppState extends State<TodoApp> {
                                       labelStyle: TextStyle(
                                           color: Theme.of(context)
                                               .scaffoldBackgroundColor),
-                                      // shape: StadiumBorder(
-                                      //   side: BorderSide(
-                                      //       color: Theme.of(context)
-                                      //           .colorScheme
-                                      //           .onSurface,
-                                      //       width: 1),
-                                      // ),
                                       selected: workingSwitchValue,
                                       onSelected: (val) {
                                         setState(() {
+                                          player.play(
+                                            'sounds/ui_tap-variant-01.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
                                           initialselectedPage = 0;
 
                                           selectedChip.put("selectedPage", 0);
                                         });
                                         if (val == true) {
+                                          player.play(
+                                            'sounds/navigation_forward-selection.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
                                           selectedChip.put(
                                               "workingSelectedChip", true);
                                         }
@@ -572,6 +653,9 @@ class _TodoAppState extends State<TodoApp> {
                                             "workingSelectedChip", true);
                                         selectedChip.put(
                                             "completedSelectedChip", false);
+
+                                        selectedChip.put(
+                                            "streakSelectedChip", false);
                                         print(val);
                                       },
                                     ),
@@ -580,12 +664,69 @@ class _TodoAppState extends State<TodoApp> {
                                             MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                40,
+                                                60,
                                             0,
                                             MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                40,
+                                                60,
+                                            0)),
+                                    ChoiceChip(
+                                      labelStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor),
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      label: Text("Streak"),
+                                      selected: streakSwitchValue,
+                                      onSelected: (val) {
+                                        print("${streakBox.length} are length");
+                                        print("${streakBox.values} are values");
+                                        print(
+                                            "${streakBox.isEmpty} are emptiness");
+                                        print("${streakBox.keys} are keys");
+                                        setState(() {
+                                          player.play(
+                                            'sounds/ui_tap-variant-01.wav',
+                                            stayAwake: false,
+                                          );
+                                          initialselectedPage = 1;
+
+                                          selectedChip.put("selectedPage", 1);
+                                        });
+
+                                        if (val == true) {
+                                          player.play(
+                                            'sounds/navigation_forward-selection.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
+                                          selectedChip.put(
+                                              "streakSelectedChip", true);
+                                        }
+                                        selectedChip.put(
+                                            "streakSelectedChip", true);
+
+                                        selectedChip.put(
+                                            "workingSelectedChip", false);
+
+                                        selectedChip.put(
+                                            "completedSelectedChip", false);
+
+                                        print(val);
+                                      },
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide /
+                                                60,
+                                            0,
+                                            MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide /
+                                                60,
                                             0)),
                                     ChoiceChip(
                                       labelStyle: TextStyle(
@@ -596,14 +737,28 @@ class _TodoAppState extends State<TodoApp> {
                                       label: Text("Completed"),
                                       selected: completedSwitchValue,
                                       onSelected: (val) {
+                                        print("${streakBox.length} are length");
+                                        print("${streakBox.values} are values");
+                                        print(
+                                            "${streakBox.isEmpty} are emptiness");
+                                        print("${streakBox.keys} are keys");
                                         setState(() {
-                                          initialselectedPage = 1;
+                                          player.play(
+                                            'sounds/ui_tap-variant-01.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
+                                          initialselectedPage = 2;
 
-                                          selectedChip.put("selectedPage", 1);
+                                          selectedChip.put("selectedPage", 2);
                                         });
 
                                         if (val == true) {
-                                          print("No Change");
+                                          player.play(
+                                            'sounds/navigation_forward-selection.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
                                           selectedChip.put(
                                               "completedSelectedChip", true);
                                         }
@@ -612,6 +767,8 @@ class _TodoAppState extends State<TodoApp> {
 
                                         selectedChip.put(
                                             "workingSelectedChip", false);
+                                        selectedChip.put(
+                                            "streakSelectedChip", false);
 
                                         print(val);
                                       },
@@ -624,112 +781,11 @@ class _TodoAppState extends State<TodoApp> {
                   todoBox.length <= 0 && completedBox.length <= 0
                       ? whiteScreen(context)
                       : Container(),
-                  todoBox.length > 0 || completedBox.length > 0
-                      ? Column(
-                          children: [
-                            // ListTile(
-                            //   title: Opacity(
-                            //     opacity: 0.7,
-                            //     child: Text(
-                            //       'My Progress',
-                            //       style: TextStyle(
-                            //           fontWeight: FontWeight.w700,
-                            //           fontSize:
-                            //               MediaQuery.of(context).size.width /
-                            //                   25),
-                            //     ),
-                            //   ),
-                            // ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  MediaQuery.of(context).size.width / 35,
-                                  0,
-                                  MediaQuery.of(context).size.width / 35,
-                                  0),
-                              child: Card(
-                                elevation: 0.3,
-                                //  color: Theme.of(context).colorScheme.onBackground,
-                                child: Row(
-                                  //crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: ProgressBar(),
-                                    ),
-                                    Container(
-                                        height: 60,
-                                        child: VerticalDivider(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface)),
-                                    Expanded(
-                                        flex: 2,
-                                        child: Center(
-                                            child: Opacity(
-                                          opacity: 0.8,
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: "Today's\n",
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                TextSpan(
-                                                  text: "Progress\n \n",
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                TextSpan(
-                                                    text:
-                                                        '${completedBox.length}/${completedBox.length + todoBox.length}',
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              22,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .accentColor,
-                                                    )),
-                                                TextSpan(
-                                                    text: ' is completed',
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              25,
-                                                      color: Theme.of(context)
-                                                          .accentColor,
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
-                                        ))),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Container(),
+                  // todoBox.length > 0 || completedBox.length > 0
+                  //     ? ProgressBar()
+                  //     : Container(),
+
+                  initialselectedPage == 1 ? Container() : ProgressBar(),
 
                   SlideInUp(
                     child: settingsBox.get("selectedPage") == null
@@ -751,15 +807,15 @@ class _TodoAppState extends State<TodoApp> {
                   //   duration: Duration(milliseconds: 2000),
                   //   child: (todoBox.length <= 0 || completedBox.length > 0)
                   //       ? Container(
-                  //           height: MediaQuery.of(context).size.width / 4)
+                  //           height: MediaQuery.of(context).size.shortestSide / 4)
                   //       : Center(),
                   // ),
                   todoBox.length > 0
                       ? Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Opacity(
                             opacity: 0.5,
-                            child: SlideInUp(
+                            child: FadeInUp(
                               duration: Duration(milliseconds: 2000),
                               child: Text(
                                 todoBox.length == 10
@@ -772,7 +828,15 @@ class _TodoAppState extends State<TodoApp> {
                           ),
                         )
                       : Container(),
-                  Container(height: MediaQuery.of(context).size.width / 3)
+                  Container(
+                      height: MediaQuery.of(context).size.shortestSide / 3),
+
+                  // MaterialButton(
+                  //   onPressed: () {
+
+                  //   },
+                  //   child: Text("GEt the "),
+                  // )
                 ],
               ),
             ),
@@ -789,23 +853,6 @@ setRemainderMethod(time, String name, int id, context) {
     int minute = int.parse(time.last);
     print(minute);
 
-    AwesomeNotifications().initialize(
-        // set the icon to null if you want to use the default app icon
-        'resource://drawable/toodoleeicon',
-        [
-          NotificationChannel(
-            // groupKey: "remainderNotf",
-            channelKey: 'remainderNotific',
-            channelName: 'Remainder_Notification',
-            channelDescription:
-                'Sends you notifications of the remainders you set',
-            defaultColor: Color(0xff4785FF),
-            ledColor: Colors.blue,
-            importance: NotificationImportance.Max,
-            defaultPrivacy: NotificationPrivacy.Public,
-            soundSource: "resource://raw/alert_simple",
-          ),
-        ]);
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         // Insert here your friendly dialog box before call the request method
@@ -819,7 +866,7 @@ setRemainderMethod(time, String name, int id, context) {
             id: id,
             channelKey: 'remainderNotific',
             title: "$name",
-            body: "work is life"),
+            body: "Today, $hour:$minute"),
         actionButtons: [
           NotificationActionButton(
             key: 'COMPLETED',
@@ -844,23 +891,7 @@ setDailyRemainderMethod(time, context) {
 
     int minute = int.parse(time.last);
     print(minute);
-    AwesomeNotifications().initialize(
-        // set the icon to null if you want to use the default app icon
-        'resource://drawable/toodoleeicon',
-        [
-          NotificationChannel(
-            // groupKey: "remainderNotf",
-            channelKey: 'dailyNotific',
-            channelName: 'Daily_Notification',
-            channelDescription:
-                'Sends you notifications to remind you to write toodolee',
-            defaultColor: Color(0xff4785FF),
-            ledColor: Colors.blue,
-            importance: NotificationImportance.Max,
-            defaultPrivacy: NotificationPrivacy.Public,
-            soundSource: "resource://raw/alert_simple",
-          ),
-        ]);
+
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         // Insert here your friendly dialog box before call the request method
@@ -874,7 +905,7 @@ setDailyRemainderMethod(time, context) {
             id: 20,
             channelKey: 'dailyNotific',
             title: "Champion this Day 🏆",
-            body: "Tap to and write todo"),
+            body: "Tap to and write toodo"),
         schedule: NotificationCalendar(
           hour: hour,
           minute: minute,
@@ -884,4 +915,31 @@ setDailyRemainderMethod(time, context) {
   }
 }
 
-//khasbi
+setStreakRemainderMethod(time, name, emoji, context) {
+  int hour = int.parse(time.first);
+  print(hour);
+
+  int minute = int.parse(time.last);
+  print(minute);
+
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      // Insert here your friendly dialog box before call the request method
+      // This is very important to not harm the user experience
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
+
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 30,
+          channelKey: 'streakNotific',
+          title: "$name $emoji",
+          body: "Save the Streak, its $hour:$minute"),
+      schedule: NotificationCalendar(
+        hour: hour,
+        minute: minute,
+        allowWhileIdle: true,
+        timeZone: AwesomeNotifications.localTimeZoneIdentifier,
+      ));
+}

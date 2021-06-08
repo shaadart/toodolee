@@ -1,38 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bored_model.dart';
+part of 'streak_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BoredModelAdapter extends TypeAdapter<BoredModel> {
+class StreakModelAdapter extends TypeAdapter<StreakModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 1;
 
   @override
-  BoredModel read(BinaryReader reader) {
+  StreakModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BoredModel(
-      boringActivity: fields[0] as String,
-      boringType: fields[1] as String,
-      boringLink: fields[2] as String,
+    return StreakModel(
+      streakName: fields[0] as String,
+      streakCount: fields[1] as int,
+      streakEmoji: fields[2] as String,
+      streakRemainder: fields[3] as String,
+      streakDays: fields[4] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, BoredModel obj) {
+  void write(BinaryWriter writer, StreakModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.boringActivity)
+      ..write(obj.streakName)
       ..writeByte(1)
-      ..write(obj.boringType)
+      ..write(obj.streakCount)
       ..writeByte(2)
-      ..write(obj.boringLink);
+      ..write(obj.streakEmoji)
+      ..writeByte(3)
+      ..write(obj.streakRemainder)
+      ..writeByte(4)
+      ..write(obj.streakDays);
   }
 
   @override
@@ -41,7 +47,7 @@ class BoredModelAdapter extends TypeAdapter<BoredModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BoredModelAdapter &&
+      other is StreakModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

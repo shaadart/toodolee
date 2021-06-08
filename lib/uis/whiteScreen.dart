@@ -1,23 +1,8 @@
-import 'package:davinci/core/davinci_capture.dart';
-import 'package:davinci/core/davinci_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-import 'package:gradient_widgets/gradient_widgets.dart';
-
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:toodo/main.dart';
-
-import 'package:share/share.dart';
-import 'package:toodo/models/completed_todo_model.dart';
-import 'package:toodo/models/todo_model.dart';
-
 import 'package:toodo/uis/addTodoBottomSheet.dart';
-import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
-
 import 'dart:core';
 
 List<String> heyss = [
@@ -277,21 +262,20 @@ Map<String, String> imageLists = {
   '🐝': "Get Things done, Nowww...",
   '🔔🐱': "We Belive in working, goodness comes automatically, do we?",
   '✔️': "Writing it first then check it",
-  '☕': "Die hard fan of Coffee, but ${work} is more in caffiiinnnee..",
-  '🗻': "I turn Dreams to Real, after undertanding, i have to ${work} for it",
+  '☕': "Die hard fan of Coffee, but $work is more in caffiiinnnee..",
+  '🗻': "I turn Dreams to Real, after undertanding, i have to $work for it",
   '👍': "good.. now lift goods..",
   '🎸⚡': "Energy-ised! Now to break all the odds..",
   '👋😃':
       "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
-  '😎🌴':
-      "Hey Beauty, do You know? your work of - '${work}' is more beautiful?",
+  '😎🌴': "Hey Beauty, do You know? your work of - '$work' is more beautiful?",
   '🐣': "Welcome to the realest world... #WorldofWork",
   '🎉🎉🎉': "Toooooodooooo, hiiiiiiiiiiiis",
   '🍩': "if you think, your work is sweeter than any stuff, you are a bolt...",
   '📮': "Can't Mail you, So i mailed myself..",
   '🦍':
-      "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got to ${work}.. ",
-  '🐓😃': "I am going to ${work} on this chicken, you can also join me...",
+      "hiHiHi... Welcome to the Toodooooolee Squad, BTW.. I know you got to $work.. ",
+  '🐓😃': "I am going to $work on this chicken, you can also join me...",
   '📦': "hew.. to the \n work-shipper, - Who ships work, to its Destination",
   '🚀': "Going to space... to see what stars you will make",
   '🌞': "Hey.. hey.. hey.. Today is Blessed to see you.. yes 'today'.",
@@ -305,22 +289,22 @@ Map<String, String> imageLists = {
   '🌵': "Stick with me...We will go to different places after the Work",
   '🕊️': "Voilaa.. Fleeeee...",
   '🐍😛':
-      "This Boi, is really good at tongue Twisting, i need to ${work} and learn tounge-twisting hard from now... - Bro I will seeeeee you next time",
+      "This Boi, is really good at tongue Twisting, i need to $work and learn tounge-twisting hard from now... - Bro I will seeeeee you next time",
   '🙌': "Salaaaaam .... to all revolutionaries",
-  '🔥': "Fireeeee....., \n Let's make our Head and Chests to ${work}",
-  '🌺💐': "Aloha.. I am in Hawaii, yeah, but still got to ${work} here..",
+  '🔥': "Fireeeee....., \n Let's make our Head and Chests to $work",
+  '🌺💐': "Aloha.. I am in Hawaii, yeah, but still got to $work here..",
   '🌅': "Best time to enjoy, live, and schedule... Lemme schedule this day",
   '☕👱':
       "I drink so much coffee at Work, I consider it part of my daily grind.",
   '🚀🌱':
       //🏖️
       "Going to the Space to plant this, so it will see your progress when i will not be there. ",
-  '🐬': "Under the sea... (in a Vacation). Yeah, i will ${work} here too..",
-  '🌳': "It's my Dream to make this bush a big tree, lemme ${work} for it",
+  '🐬': "Under the sea... (in a Vacation). Yeah, i will $work here too..",
+  '🌳': "It's my Dream to make this bush a big tree, lemme $work for it",
   '✨': "Hi.. (Swwwwwing....)",
   '💨': "I realised, Dreams also needs a push of focused work to get a flight.",
   "🏁": "Letsssssss. Staaaaaaaaaaaart.....",
-  '➰': "Comming out of the loop, so to ${work}...",
+  '➰': "Comming out of the loop, so to $work...",
   '🍉': "Staaaaaaaaaaaaaaaaaaaaaaaaarted now.... but melons first..",
   '🎶🕺🏻': "Dance with me... from whereever you are..",
   '🛫': "To all.. Come, Let's Fly together and make the history..",
@@ -331,14 +315,14 @@ Map<String, String> imageLists = {
   '⭐': "When i come forward to $work a New Star borns..",
   '🦘':
       "Skipping just before writing tooodooolee, not for skip-ing the work.. hehe",
-  '👨🏻‍🌾': "Your own successful biz, that's what your best job is!",
+  '👨🏻‍🌾': "Your own successful biz, that's what your best hobby is!",
   '🎊🎁':
       "Stick with me.. We will Enjoy every world after this last piece of work",
   '🍵':
       "Yums...Together we all Will Drink it just after swimming on the waves of lilly-lil bits of work..",
-  '🏇🏻': "Lazies will say I am Phsyco-path.. But I am On the ${work}-path...",
+  '🏇🏻': "Lazies will say I am Phsyco-path.. But I am On the $work-path...",
   '👻':
-      "Yeah... yeah... yeah... Now you know, (${work}) is Important for the whole life.. hmm..",
+      "Yeah... yeah... yeah... Now you know, ($work) is Important for the whole life.. hmm..",
   '💡': "It's as easy as it is looking hard",
   '😄': "Look... Everytime we all are happy or we 'am' happy, #WeareOne",
   '😌':
@@ -354,10 +338,10 @@ Map<String, String> imageLists = {
   '💙🎨':
       "I colored my heart Blue from Red.. and it was the best of all descissions",
   '🌈⚽': "Swiiiiiing... in dreams and in real tooo...",
-  '👤💰': "Shhh.. Un-Stealing the lucks and Stealing the Urgues to ${work}",
-  '👋✨': "Hey <3000..\n and \n ${work} > 3000000",
-  '🐦': "Chu..Chu.. All - Aboard Next Stop to the ${work}'s Zone.",
-  '🥊👊': "Preparing to ${work}, You can also join the Grind. heh",
+  '👤💰': "Shhh.. Un-Stealing the lucks and Stealing the Urgues to $work",
+  '👋✨': "Hey <3000..\n and \n $work > 3000000",
+  '🐦': "Chu..Chu.. All - Aboard Next Stop to the $work's Zone.",
+  '🥊👊': "Preparing to $work, You can also join the Grind. heh",
   '🦄': "Aaaye, I am not Unicorn, i am just, uniquely-born :)",
   '💪❤️':
       "Me: Training the heart hard.... and discard the rest of the taaaask..",
@@ -385,19 +369,17 @@ var randomImage = randomChoice(listEmojiKeys);
 
 var listEmojisValues = imageLists["$randomImage"];
 
- whiteScreen(context) {
-  // var randomValue = randomChoice(listImageValues);
-
+whiteScreen(context) {
   if (todoBox.isEmpty == true && completedBox.isEmpty == true) {
     return Padding(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width / 35),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.shortestSide / 35),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Card(
-            child: FlatButton(
+            child: MaterialButton(
               splashColor: Colors.white60,
               onPressed: () {
                 addTodoBottomSheet(context);
