@@ -8,9 +8,11 @@ import 'package:date_format/date_format.dart';
 import 'package:flappy/flappy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toodo/pages/streakPage.dart';
+import 'package:toodo/uis/quotes.dart';
+import 'package:toodo/uis/streakCompletedDialoges.dart';
 import 'package:toodo/uis/streakListUi.dart';
 import 'dart:async';
-import 'package:workmanager/workmanager.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
@@ -35,6 +37,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:toodo/uis/whiteScreen.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'models/todo_model.dart';
 
@@ -124,7 +127,7 @@ void main() async {
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
   await Hive.openBox<StreakModel>(streakBoxName);
   await Hive.openBox(welcomeBoringCardname);
-  await Hive.openBox(quotesCardname);
+
   await Hive.openBox(dailyRemainderBoxName);
   await Hive.openBox(boringcardName);
   await Hive.openBox(settingsName);
@@ -137,6 +140,7 @@ void main() async {
     [
       NotificationChannel(
         // groupKey: "remainderNotf",
+
         channelKey: 'dailyNotific',
         channelName: 'Daily Notifications',
         channelDescription:
@@ -226,6 +230,7 @@ class MyApp extends StatelessWidget {
 
               return AdaptiveTheme(
                 light: ThemeData(
+                  platform: TargetPlatform.iOS,
                   fontFamily: "WorkSans",
                   brightness: Brightness.light,
                   primaryColor: Color(0xffFBFB0E),
@@ -234,6 +239,7 @@ class MyApp extends StatelessWidget {
                   cardColor: Color(0xfff3f8fb),
                 ),
                 dark: ThemeData(
+                  platform: TargetPlatform.iOS,
                   fontFamily: "WorkSans",
                   brightness: Brightness.dark,
                   primaryColor: Color(0xff0177fb),
@@ -295,7 +301,7 @@ class _SplashState extends State<Splash> {
     boredBox = Hive.box(boringcardName);
     settingsBox = Hive.box(settingsName);
     weatherBox = Hive.box(weatherBoxname);
-    quotesBox = Hive.box(quotesCardname);
+
     dailyRemainderBox = Hive.box(dailyRemainderBoxName);
     currentDateBox = Hive.box(currentBoxName);
     onboardingScreenBox = Hive.box(onboardingScreenBoxName);
@@ -370,7 +376,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
         builder: (context, remainingTodoCount, _) {
           return Scaffold(
             appBar: AppBar(
-                centerTitle: false,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0.7,
                 // actions: [
@@ -410,6 +415,16 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
+                    Workmanager().initialize(
+                      callbackDispatcher,
+                      isInDebugMode: true,
+                    );
+
+                    Workmanager().registerOneOffTask(
+                      "2",
+                      simpleDelayedTask,
+                      initialDelay: Duration(seconds: 1),
+                    );
                     // streakBox.clear();
 
                     setState(() {
@@ -778,7 +793,9 @@ class _TodoAppState extends State<TodoApp> {
                           })
                       : Container(),
 
-                  todoBox.length <= 0 && completedBox.length <= 0
+                  todoBox.length <= 0 &&
+                          completedBox.length <= 0 &&
+                          streakBox.length <= 0
                       ? whiteScreen(context)
                       : Container(),
                   // todoBox.length > 0 || completedBox.length > 0
@@ -886,12 +903,6 @@ setRemainderMethod(time, String name, int id, context) {
 
 setDailyRemainderMethod(time, context) {
   if (settingsBox.get("dailyNotifications") == true) {
-    int hour = int.parse(time.first);
-    print(hour);
-
-    int minute = int.parse(time.last);
-    print(minute);
-
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         // Insert here your friendly dialog box before call the request method
@@ -906,10 +917,12 @@ setDailyRemainderMethod(time, context) {
             channelKey: 'dailyNotific',
             title: "Champion this Day 🏆",
             body: "Tap to and write toodo"),
-        schedule: NotificationCalendar(
-          hour: hour,
-          minute: minute,
+        schedule: NotificationInterval(
+          // hour: hour,
+          // minute: minute,
+          interval: 86400,
           allowWhileIdle: true,
+          repeats: true,
           timeZone: AwesomeNotifications.localTimeZoneIdentifier,
         ));
   }
@@ -936,10 +949,12 @@ setStreakRemainderMethod(time, name, emoji, context) {
           channelKey: 'streakNotific',
           title: "$name $emoji",
           body: "Save the Streak, its $hour:$minute"),
-      schedule: NotificationCalendar(
-        hour: hour,
-        minute: minute,
+      schedule: NotificationInterval(
+        // hour: hour,
+        // minute: minute,
+        interval: 86400,
         allowWhileIdle: true,
+        repeats: true,
         timeZone: AwesomeNotifications.localTimeZoneIdentifier,
       ));
 }

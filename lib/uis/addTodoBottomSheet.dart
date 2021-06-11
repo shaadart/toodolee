@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:better_cupertino_slider/better_cupertino_slider.dart';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
 import 'package:toodo/main.dart';
@@ -638,5 +640,118 @@ class _SetChallengeState extends State<SetChallenge> {
           },
           color: Theme.of(context).accentColor)
     ]);
+  }
+}
+
+class CompletedStreak extends StatefulWidget {
+  const CompletedStreak({Key key}) : super(key: key);
+
+  @override
+  _CompletedStreakState createState() => _CompletedStreakState();
+}
+
+class _CompletedStreakState extends State<CompletedStreak> {
+  ConfettiController controllerTopCenter;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      initController();
+    });
+  }
+
+  void initController() {
+    controllerTopCenter =
+        ConfettiController(duration: const Duration(seconds: 1));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Stack(
+        children: <Widget>[
+          buildConfettiWidget(controllerTopCenter, pi / 1),
+          buildConfettiWidget(controllerTopCenter, pi / 4),
+          Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Text("Hellow"),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                ),
+              ],
+            ),
+          ),
+          buildButton()
+        ],
+      ),
+    );
+  }
+
+  Align buildButton() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 100),
+        child: RaisedButton(
+          onPressed: () {
+            controllerTopCenter.play();
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          color: Colors.red,
+          textColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Congratulations!",
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Align buildConfettiWidget(controller, double blastDirection) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConfettiWidget(
+        colors: [
+          Colors.green,
+          Theme.of(context).primaryColor,
+          Colors.redAccent,
+          Theme.of(context).accentColor,
+        ],
+        // colors: [
+        //   Theme.of(context).accentColor,
+        //   Theme.of(context).scaffoldBackgroundColor,
+        //   Theme.of(context).canvasColor,
+        //   Theme.of(context).primaryColor,
+        //   Theme.of(context).primaryColorLight,
+        //   Theme.of(context).primaryColorDark,
+        //   Theme.of(context).colorScheme.onSurface,
+        //   Theme.of(context).colorScheme.secondaryVariant
+        // ],
+        maximumSize: Size(20, 15),
+        shouldLoop: true,
+        confettiController: controller,
+        blastDirection: blastDirection,
+        blastDirectionality: BlastDirectionality.explosive,
+        maxBlastForce: 30, // set a lower max blast force
+        minBlastForce: 5, // set a lower min blast force
+        emissionFrequency: 0.3,
+        numberOfParticles: 1, // a lot of particles at once
+        gravity: 0.4,
+      ),
+    );
   }
 }

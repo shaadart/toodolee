@@ -62,12 +62,16 @@ dependencies:
   speech_bubble: ^0.0.9
   date_format: ^2.0.2
   multi_value_listenable_builder: ^0.0.1
-  workmanager: ^0.4.1
+  flutter_mailer: ^2.0.0
+
   # flt_worker: ^0.1.0
+  workmanager: ^0.4.1
   yudiz_modal_sheet: ^0.0.3
   better_cupertino_slider: ^1.0.0
   step_progress_indicator: ^1.0.0
   confetti: ^0.5.5
+  
+ 
   # app_settings: any
   
 
