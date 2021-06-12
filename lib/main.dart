@@ -230,7 +230,7 @@ class MyApp extends StatelessWidget {
 
               return AdaptiveTheme(
                 light: ThemeData(
-                  platform: TargetPlatform.iOS,
+                  // platform: TargetPlatform.iOS,
                   fontFamily: "WorkSans",
                   brightness: Brightness.light,
                   primaryColor: Color(0xffFBFB0E),
@@ -239,7 +239,7 @@ class MyApp extends StatelessWidget {
                   cardColor: Color(0xfff3f8fb),
                 ),
                 dark: ThemeData(
-                  platform: TargetPlatform.iOS,
+                  // platform: TargetPlatform.iOS,
                   fontFamily: "WorkSans",
                   brightness: Brightness.dark,
                   primaryColor: Color(0xff0177fb),
@@ -802,7 +802,11 @@ class _TodoAppState extends State<TodoApp> {
                   //     ? ProgressBar()
                   //     : Container(),
 
-                  initialselectedPage == 1 ? Container() : ProgressBar(),
+                  initialselectedPage == 1
+                      ? Container()
+                      : todoBox.length + completedBox.length == 0
+                          ? whiteScreen(context)
+                          : ProgressBar(),
 
                   SlideInUp(
                     child: settingsBox.get("selectedPage") == null
@@ -902,6 +906,11 @@ setRemainderMethod(time, String name, int id, context) {
 }
 
 setDailyRemainderMethod(time, context) {
+  int hour = int.parse(time.first);
+  print(hour);
+
+  int minute = int.parse(time.last);
+  print(minute);
   if (settingsBox.get("dailyNotifications") == true) {
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
@@ -917,10 +926,9 @@ setDailyRemainderMethod(time, context) {
             channelKey: 'dailyNotific',
             title: "Champion this Day 🏆",
             body: "Tap to and write toodo"),
-        schedule: NotificationInterval(
-          // hour: hour,
-          // minute: minute,
-          interval: 86400,
+        schedule: NotificationCalendar(
+          hour: hour,
+          minute: minute,
           allowWhileIdle: true,
           repeats: true,
           timeZone: AwesomeNotifications.localTimeZoneIdentifier,
@@ -949,12 +957,12 @@ setStreakRemainderMethod(time, name, emoji, context) {
           channelKey: 'streakNotific',
           title: "$name $emoji",
           body: "Save the Streak, its $hour:$minute"),
-      schedule: NotificationInterval(
-        // hour: hour,
-        // minute: minute,
-        interval: 86400,
+      schedule: NotificationCalendar(
+        hour: hour,
+        minute: minute,
+        // interval: 86400,
         allowWhileIdle: true,
-        repeats: true,
+
         timeZone: AwesomeNotifications.localTimeZoneIdentifier,
       ));
 }

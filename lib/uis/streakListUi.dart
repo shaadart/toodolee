@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:confetti/confetti.dart';
 import 'package:davinci/core/davinci_capture.dart';
 import 'package:davinci/core/davinci_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
@@ -38,6 +35,7 @@ class StreakCard extends StatefulWidget {
 class _StreakCardState extends State<StreakCard> {
   GlobalKey imageKey;
   String platformResponse;
+  CarouselController buttonCarouselController = CarouselController();
 
   ConfettiController controllerbottomCenter;
   @override
@@ -62,7 +60,7 @@ class _StreakCardState extends State<StreakCard> {
       return Align(
         alignment: Alignment.topCenter,
         child: ConfettiWidget(
-          maxBlastForce: 10,
+          maxBlastForce: 30,
           minBlastForce: 5,
           // radial value - LEFT
           // apply drag to the confetti
@@ -74,12 +72,14 @@ class _StreakCardState extends State<StreakCard> {
           blastDirectionality: BlastDirectionality
               .explosive, // don't specify a direction, blast randomly
           shouldLoop: false, // start again as soon as the animation is finished
-          colors: const [
+          colors: [
             Colors.green,
             Colors.blue,
             Colors.pink,
             Colors.orange,
-            Colors.purple
+            Colors.purple,
+            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.onSecondary,
           ], // manually specify the colors to be used
           // define a custom shape/path.
         ),
@@ -113,6 +113,7 @@ class _StreakCardState extends State<StreakCard> {
                               height:
                                   MediaQuery.of(context).size.longestSide / 2,
                               child: CarouselSlider(
+                                carouselController: buttonCarouselController,
                                 items: [
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +140,12 @@ class _StreakCardState extends State<StreakCard> {
                                         child: MaterialButton(
                                             color:
                                                 Theme.of(context).accentColor,
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              buttonCarouselController.nextPage(
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.linear);
+                                            },
                                             child: Text("Next")),
                                       ),
                                     ],
@@ -181,6 +187,14 @@ class _StreakCardState extends State<StreakCard> {
                                                 onChanged: (value) {
                                                   settingsBox.put(
                                                       "userThoughts", value);
+
+                                                  if (settingsBox.get(
+                                                          "userThoughts") ==
+                                                      null) {
+                                                    settingsBox.put(
+                                                        "userThoughts",
+                                                        "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                  }
                                                   //Do something with the user input.
                                                 },
                                                 decoration: InputDecoration(
@@ -209,6 +223,14 @@ class _StreakCardState extends State<StreakCard> {
                                                 onChanged: (value) {
                                                   settingsBox.put(
                                                       "userRecommend", value);
+
+                                                  if (settingsBox.get(
+                                                          "userRecommend") ==
+                                                      null) {
+                                                    settingsBox.put(
+                                                        "userRecommend",
+                                                        "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                  }
                                                   //Do something with the user input.
                                                 },
                                                 decoration: InputDecoration(
@@ -273,6 +295,8 @@ class _StreakCardState extends State<StreakCard> {
 
                                                     await FlutterMailer.send(
                                                         mailOptions);
+
+                                                    Navigator.pop(context);
                                                   },
                                                   child: Text("Complete")),
                                             ),
@@ -416,7 +440,7 @@ class _StreakCardState extends State<StreakCard> {
 
                                                     // deleteQuotes();
                                                     player.play(
-                                                      'sounds/notification_simple-01.wav',
+                                                      'sounds/hero_decorative-celebration-03.wav',
                                                       stayAwake: false,
                                                       // mode: PlayerMode.LOW_LATENCY,
                                                     );
