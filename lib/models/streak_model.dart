@@ -4,7 +4,7 @@ import 'package:hive/hive.dart'; //Local Database, Easy....
 part 'streak_model.g.dart';
 
 @HiveType(typeId: 1)
-class StreakModel {
+class StreakModel extends HiveObject {
   @HiveField(0)
   String streakName;
   @HiveField(1)

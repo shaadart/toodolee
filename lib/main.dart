@@ -343,7 +343,6 @@ class DefaultedApp extends StatefulWidget {
 
 class _DefaultedAppState extends State<DefaultedApp> {
   int _selectedItemPosition = 0;
-  SnakeShape snakeShape = SnakeShape.circle;
 
   bool showSelectedLabels = false;
   bool showUnselectedLabels = false;
@@ -456,29 +455,29 @@ class _DefaultedAppState extends State<DefaultedApp> {
 // Azure: 0xff4785FF
 
               backgroundColor: Theme.of(context).bottomAppBarColor,
-              behaviour: SnakeBarBehaviour.pinned,
+              behaviour: SnakeBarBehaviour.floating,
               snakeShape: SnakeShape.circle,
               //shape: bottomBarShape,
               //padding: padding,
-              elevation: 5.0,
+              elevation: 10.0,
 
               ///configuration for SnakeNavigationBar.color
-              snakeViewColor: Theme.of(context).cardColor,
-              selectedItemColor: Theme.of(context).colorScheme.onSurface,
+              snakeViewColor: Theme.of(context).accentColor.withOpacity(0.6),
+              selectedItemColor: Theme.of(context).scaffoldBackgroundColor,
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
               showUnselectedLabels: showUnselectedLabels,
               showSelectedLabels: showSelectedLabels,
 
               items: [
                 BottomNavigationBarItem(
-                    icon: Opacity(opacity: 0.5, child: Icon(CarbonIcons.home)),
-                    label: 'ho8me'),
+                    icon: Opacity(opacity: 0.6, child: Icon(CarbonIcons.home)),
+                    label: 'home'),
                 BottomNavigationBarItem(
-                    icon: Opacity(opacity: 0.5, child: Icon(CarbonIcons.grid)),
+                    icon: Opacity(opacity: 0.6, child: Icon(CarbonIcons.grid)),
                     label: 'app'),
                 BottomNavigationBarItem(
                     icon: Opacity(
-                        opacity: 0.5, child: Icon(CarbonIcons.settings)),
+                        opacity: 0.6, child: Icon(CarbonIcons.settings)),
                     label: 'settings')
               ],
 
@@ -793,20 +792,20 @@ class _TodoAppState extends State<TodoApp> {
                           })
                       : Container(),
 
-                  todoBox.length <= 0 &&
-                          completedBox.length <= 0 &&
-                          streakBox.length <= 0
-                      ? whiteScreen(context)
-                      : Container(),
-                  // todoBox.length > 0 || completedBox.length > 0
-                  //     ? ProgressBar()
+                  // todoBox.length <= 0 &&
+                  //         completedBox.length <= 0 &&
+                  //         streakBox.length <= 0
+                  //     ? whiteScreen(context)
                   //     : Container(),
+                  // // todoBox.length > 0 || completedBox.length > 0
+                  // //     ? ProgressBar()
+                  // //     : Container(),
 
-                  initialselectedPage == 1
-                      ? Container()
-                      : todoBox.length + completedBox.length == 0
-                          ? whiteScreen(context)
-                          : ProgressBar(),
+                  // initialselectedPage == 1
+                  //     ? Container()
+                  //     : todoBox.length + completedBox.length == 0
+                  //         ? whiteScreen(context)
+                  //         : ProgressBar(),
 
                   SlideInUp(
                     child: settingsBox.get("selectedPage") == null

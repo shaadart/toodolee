@@ -175,19 +175,19 @@ class _TodoCardState extends State<TodoCard> {
                                                   child: Text(
                                                       '${todo.todoRemainder.toString()}'),
                                                 ),
-                                          (todo.todoRemainder) == null ||
-                                                  todo.todoEmoji == "null"
-                                              ? Container()
-                                              : Opacity(
-                                                  opacity: 0.5,
-                                                  child: Text(
-                                                    "•",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      //color: Colors.black54
-                                                    ),
-                                                  ),
-                                                ),
+                                          // (todo.todoRemainder) == null ||
+                                          //         todo.todoEmoji == "null"
+                                          //     ? Container()
+                                          //     : Opacity(
+                                          //         opacity: 0.5,
+                                          //         child: Text(
+                                          //           "•",
+                                          //           style: TextStyle(
+                                          //             fontSize: 14,
+                                          //             //color: Colors.black54
+                                          //           ),
+                                          //         ),
+                                          //       ),
                                           (todo.todoEmoji) == "null"
                                               ? Container()
                                               : Text('${todo.todoEmoji}',

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:confetti/confetti.dart';
 import 'package:davinci/core/davinci_capture.dart';
@@ -61,12 +62,12 @@ class _StreakCardState extends State<StreakCard> {
         alignment: Alignment.topCenter,
         child: ConfettiWidget(
           maxBlastForce: 30,
-          minBlastForce: 5,
+          minBlastForce: 15,
           // radial value - LEFT
           // apply drag to the confetti
           // blastDirection: pi,
           emissionFrequency: 0.1, // how often it should emit
-          numberOfParticles: 10, // number of particles to emit
+          numberOfParticles: 20, // number of particles to emit
           gravity: 0.1, // gravity
           confettiController: controllerbottomCenter,
           blastDirectionality: BlastDirectionality
@@ -368,6 +369,22 @@ class _StreakCardState extends State<StreakCard> {
                                                           20),
                                                   child:
                                                       CircularStepProgressIndicator(
+                                                    gradientColor:
+                                                        LinearGradient(
+                                                      colors: [
+                                                        //Color(0xfff187fb), //bestcolor (till now)
+                                                        Color(0xff5de0f0),
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        // Theme.of(context)
+                                                        //     .colorScheme
+                                                        //     .primary,
+                                                        // Theme.of(context)
+                                                        //     .colorScheme
+                                                        //     .primary,
+                                                      ],
+                                                    ),
                                                     totalSteps:
                                                         streako.streakDays,
                                                     currentStep:
@@ -384,26 +401,45 @@ class _StreakCardState extends State<StreakCard> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .shortestSide /
-                                                            2.2,
+                                                            2.5,
                                                     height:
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .shortestSide /
-                                                            2.2,
-                                                    selectedStepSize: 15,
+                                                            2.5,
+                                                    selectedStepSize: 16,
                                                     roundedCap: (_, __) => true,
                                                     child: Center(
-                                                      child: Text(
-                                                          "${streako.streakCount} Days",
-                                                          style: TextStyle(
-                                                              fontSize: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .shortestSide /
-                                                                  20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700)),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                              "${streako.streakCount} Days",
+                                                              style: TextStyle(
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .shortestSide /
+                                                                      20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700)),
+                                                          Opacity(
+                                                            opacity: 0.5,
+                                                            child: Text(
+                                                                "${streako.streakDays - streako.streakCount} left",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .subtitle2),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -445,10 +481,9 @@ class _StreakCardState extends State<StreakCard> {
                                                       // mode: PlayerMode.LOW_LATENCY,
                                                     );
                                                     setState(() {
-                                                      StreakModel streak =
-                                                          StreakModel(
-                                                              streakCount: streako
-                                                                  .streakCount++);
+                                                      streako.streakCount++;
+
+                                                      streako.save();
 
                                                       // what I'm supposed to do here
                                                     });
@@ -485,16 +520,16 @@ class _StreakCardState extends State<StreakCard> {
                                                     child: Text(
                                                         '${streako.streakRemainder.toString()}'),
                                                   ),
-                                                  Opacity(
-                                                    opacity: 0.5,
-                                                    child: Text(
-                                                      "•",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        //color: Colors.black54
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  // Opacity(
+                                                  //   opacity: 0.5,
+                                                  //   child: Text(
+                                                  //     "•",
+                                                  //     style: TextStyle(
+                                                  //       fontSize: 14,
+                                                  //       //color: Colors.black54
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   Text('${streako.streakEmoji}',
                                                       style: TextStyle(
                                                         fontSize: 20,

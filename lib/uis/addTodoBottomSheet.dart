@@ -226,7 +226,7 @@ void addTodoBottomSheet(context) {
             });
 
             if (todo.todoName != null) {
-              deleteQuotes();
+              // deleteQuotes();
               setState(() {
                 initialselectedPage = 0;
 
@@ -296,7 +296,7 @@ void addTodoBottomSheet(context) {
                                   maxLength: 20,
                                   onFieldSubmitted: (value) {
                                     setTodo();
-                                    deleteQuotes();
+                                    // deleteQuotes();
                                     todoName = null;
                                     titleController.clear();
                                   },
@@ -437,7 +437,7 @@ void addTodoBottomSheet(context) {
                                                       .scaffoldBackgroundColor,
                                                 ),
                                                 label: Text(
-                                                  "Add Todo",
+                                                  "Add Toodo",
                                                   style: TextStyle(
                                                     color: Theme.of(context)
                                                         .scaffoldBackgroundColor,
