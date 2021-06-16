@@ -56,7 +56,7 @@ packages:
       name: awesome_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.6+7"
+    version: "0.0.6+9"
   better_cupertino_slider:
     dependency: "direct main"
     description:
@@ -119,7 +119,7 @@ packages:
       name: built_collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.1.0"
   built_value:
     dependency: transitive
     description:
@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  cron:
+    dependency: "direct main"
+    description:
+      name: cron
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   crypto:
     dependency: transitive
     description:
@@ -328,6 +335,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_background_service:
+    dependency: "direct main"
+    description:
+      name: flutter_background_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   flutter_email_sender:
     dependency: transitive
     description:
@@ -335,6 +349,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
+  flutter_isolate:
+    dependency: "direct main"
+    description:
+      name: flutter_isolate
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -368,6 +389,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+  flutter_startup:
+    dependency: "direct main"
+    description:
+      name: flutter_startup
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -469,6 +497,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  jiffy:
+    dependency: "direct main"
+    description:
+      name: jiffy
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   js:
     dependency: transitive
     description:
@@ -511,6 +546,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  move_to_background:
+    dependency: "direct main"
+    description:
+      name: move_to_background
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   multi_value_listenable_builder:
     dependency: "direct main"
     description:
@@ -718,7 +760,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   source_helper:
     dependency: transitive
     description:
@@ -781,14 +823,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.66+1"
+    version: "19.1.67"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.66"
+    version: "19.1.67"
   term_glyph:
     dependency: transitive
     description:
@@ -893,7 +935,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.5"
   workmanager:
     dependency: "direct main"
     description:
@@ -923,5 +965,5 @@ packages:
     source: hosted
     version: "0.0.3"
 sdks:
-  dart: ">=2.12.1 <3.0.0"
+  dart: ">=2.13.0 <3.0.0"
   flutter: ">=2.0.4"

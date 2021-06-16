@@ -1804,7 +1804,13 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                         player.play(
                           'sounds/ui_tap-variant-01.wav',
                           stayAwake: false,
+
                           // mode: PlayerMode.LOW_LATENCY,
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DefaultedApp()),
                         );
                       }),
               title: todoBox.length >= 1

@@ -1,10 +1,10 @@
 //import 'package:flutter/material.dart';
 import 'package:hive/hive.dart'; //Local Database, Easy....
 
-part 'streak_model.g.dart';
+part 'completed_streak_model.g.dart';
 
-@HiveType(typeId: 1)
-class StreakModel extends HiveObject {
+@HiveType(typeId: 3)
+class CompletedStreakModel extends HiveObject {
   @HiveField(0)
   String streakName;
   @HiveField(1)
@@ -18,7 +18,7 @@ class StreakModel extends HiveObject {
   @HiveField(5)
   bool isCompleted;
 
-  StreakModel(
+  CompletedStreakModel(
       {this.streakName,
       this.streakCount,
       this.streakEmoji,

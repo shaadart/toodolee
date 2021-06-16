@@ -101,7 +101,7 @@ class _ProgressBarState extends State<ProgressBar> {
                                     ),
                                     TextSpan(
                                         text:
-                                            '${completedBox.length}/${todoBox.length + completedBox.length}',
+                                            '${completedBox.length}/${todoBox.length + completedBox.length + streakBox.length}',
                                         style: TextStyle(
                                           fontSize: MediaQuery.of(context)
                                                   .size
@@ -133,7 +133,8 @@ class _ProgressBarState extends State<ProgressBar> {
 }
 
 progressBar(context) {
-  double runningTodoCount = todoBox.length.toDouble();
+  double runningTodoCount =
+      todoBox.length.toDouble() + streakBox.length.toDouble();
   double completedTodoCount = completedBox.length.toDouble();
 
   final List<ChartData> chartData = [

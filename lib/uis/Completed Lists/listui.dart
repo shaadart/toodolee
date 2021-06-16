@@ -9,14 +9,19 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:toodo/main.dart';
-
+import 'package:toodo/models/completed_streak_model.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/todo_model.dart';
-import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
+
+import '../quotes.dart';
+import '../whiteScreen.dart';
+
+
+
 
 String firstButtonText = 'Take photo';
 Box<TodoModel> box;
@@ -402,6 +407,8 @@ class _TodoCardState extends State<TodoCard> {
                         }),
                       );
                     }));
+          } else if (todoBox.length <= 0) {
+            whiteScreen(context);
           }
         });
   }

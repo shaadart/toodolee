@@ -4,42 +4,41 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:date_format/date_format.dart';
+import 'package:cron/cron.dart';
 import 'package:flappy/flappy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:toodo/pages/streakPage.dart';
-import 'package:toodo/uis/quotes.dart';
-import 'package:toodo/uis/streakCompletedDialoges.dart';
-import 'package:toodo/uis/streakListUi.dart';
-import 'dart:async';
+import 'package:jiffy/jiffy.dart';
+import 'package:move_to_background/move_to_background.dart';
+import 'package:toodo/processes.dart';
 
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:intl/intl.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/streak_model.dart';
+import 'package:toodo/models/completed_streak_model.dart';
 import 'package:toodo/pages/onboardingScreen.dart';
-
 import 'package:toodo/uis/progressbar.dart';
-
 import 'package:toodo/pages/settingspagedefault.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
-import 'package:toodo/uis/completedListUi.dart';
+
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/pages/morePage.dart';
-import 'package:toodo/uis/listui.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:toodo/uis/whiteScreen.dart';
-import 'package:workmanager/workmanager.dart';
-
 import 'models/todo_model.dart';
+import 'uis/Completed Lists/completedListUi.dart';
+import 'uis/Completed Lists/listui.dart';
+import 'uis/Streak/streakCompletedUi.dart';
+import 'uis/Streak/streakListUi.dart';
 
 //import 'pages/weatherCard.dart';
 
@@ -61,13 +60,14 @@ const String settingsName = "settings";
 const String currentBoxName = "currentDateBox";
 const String onboardingScreenBoxName = "onboardingScreenBox";
 const String streakBoxName = "streakBox";
+const String completedStreakBoxName = "completeStreakBox";
 //var  = ValueNotifier<int>(2);
 
 ValueNotifier<int> totalTodoCount = ValueNotifier(
     10 - (todoBox.length + completedBox.length + streakBox.length));
 
 //limiting the toodolee count to 10.
-
+final cron = Cron();
 final player = AudioCache(); //Plays Sounds
 Box<CompletedTodoModel> completedBox; //For Box
 Box settingsBox;
@@ -78,36 +78,14 @@ Box dailyRemainderBox;
 Box boredBox;
 Box currentDateBox;
 Box<StreakModel> streakBox;
+Box<CompletedStreakModel> completedStreakBox;
 String dailyRemainder = "6:30";
 
-int minutesLeftTillTwelveAm() {
-  DateTime now = DateTime.now();
-  var twelveAmString = "24:00";
-  var currentTimeString = DateFormat('kk:mm').format(now);
-
-  String removeunwantedSymbolsfromtwelveAm =
-      twelveAmString.replaceAll(":", "."); //24.00
-  String removeunwantedSymbolsfromCurrentTime =
-      currentTimeString.replaceAll(":", "."); //19.12
-
-  double twelveAm = double.parse(removeunwantedSymbolsfromtwelveAm);
-  double currentTime = double.parse(removeunwantedSymbolsfromCurrentTime);
-
-  double remainingTime = twelveAm - currentTime;
-  double rawSeconds = (remainingTime * 3600);
-  int seconds = rawSeconds.toInt();
-
-  return seconds;
-}
-
 int initialselectedPage = 0;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // WorkManager.
-  // Workmanager.initialize(callbackDispatcher);
 
-  //  Workmanager.registerPeriodicTask("100", reset,
-  //      frequency: Duration(hours: 24), initialDelay: Duration(seconds: 40));
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors
         .transparent, //Making Status Bar (battery, time, notifications etc) to Transparent
@@ -120,14 +98,16 @@ void main() async {
   Hive.registerAdapter(TodoModelAdapter());
   Hive.registerAdapter(CompletedTodoModelAdapter());
   Hive.registerAdapter(StreakModelAdapter());
+  Hive.registerAdapter(CompletedStreakModelAdapter());
 
   //Opening Boxes
   await Hive.openBox(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
   await Hive.openBox<StreakModel>(streakBoxName);
+  await Hive.openBox<CompletedStreakModel>(completedStreakBoxName);
   await Hive.openBox(welcomeBoringCardname);
-
+  await Hive.openBox(quotesCardname);
   await Hive.openBox(dailyRemainderBoxName);
   await Hive.openBox(boringcardName);
   await Hive.openBox(settingsName);
@@ -177,6 +157,7 @@ void main() async {
       ),
     ],
   );
+
   runApp(MyApp());
 
   //dekhke he laglaa hai // Running the App
@@ -221,7 +202,12 @@ class MyApp extends StatelessWidget {
                 // mode: PlayerMode.LOW_LATENCY,
               );
 
-              return MaterialApp(home: Splash(), title: 'Toodolee');
+              return WillPopScope(
+                  onWillPop: () async {
+                    MoveToBackground.moveTaskToBack();
+                    return false;
+                  },
+                  child: MaterialApp(home: Splash(), title: 'Toodolee'));
             } else {
 //Ghost White: 0xffF6F8FF
 //Lemon Glacier :0xffFBFB0E
@@ -306,10 +292,7 @@ class _SplashState extends State<Splash> {
     currentDateBox = Hive.box(currentBoxName);
     onboardingScreenBox = Hive.box(onboardingScreenBoxName);
     streakBox = Hive.box<StreakModel>(streakBoxName);
-
-    getCurrentDate();
-
-    resettingToodoleeApp();
+    completedStreakBox = Hive.box<CompletedStreakModel>(completedStreakBoxName);
   }
 
   @override
@@ -369,6 +352,14 @@ class _DefaultedAppState extends State<DefaultedApp> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    resetToodoleeMidNight();
+
+    ///whatever you want to run on page build
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
@@ -414,18 +405,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
-                    Workmanager().initialize(
-                      callbackDispatcher,
-                      isInDebugMode: true,
-                    );
-
-                    Workmanager().registerOneOffTask(
-                      "2",
-                      simpleDelayedTask,
-                      initialDelay: Duration(seconds: 1),
-                    );
-                    // streakBox.clear();
-
+     
                     setState(() {
                       showEmojiKeyboard = false;
                       todoEmoji = null;
@@ -462,8 +442,8 @@ class _DefaultedAppState extends State<DefaultedApp> {
               elevation: 10.0,
 
               ///configuration for SnakeNavigationBar.color
-              snakeViewColor: Theme.of(context).accentColor.withOpacity(0.6),
-              selectedItemColor: Theme.of(context).scaffoldBackgroundColor,
+              snakeViewColor: Theme.of(context).bottomAppBarColor,
+              selectedItemColor: Theme.of(context).accentColor,
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
               showUnselectedLabels: showUnselectedLabels,
               showSelectedLabels: showSelectedLabels,
@@ -601,13 +581,6 @@ class _TodoAppState extends State<TodoApp> {
     // Note: This is a GlobalKey<FormState>,
     // not a GlobalKey<MyCustomFormState>.
 
-    DateTime now = DateTime.now();
-
-    var year = now.year;
-    var month = now.month;
-    var day = now.day;
-    print(formatDate(DateTime(year, month, day), [yy, ' ', M, ' ', d])
-        .split(" "));
     settingsBox.put("selectedChipPage", 0);
 
     return ValueListenableBuilder<int>(
@@ -792,15 +765,21 @@ class _TodoAppState extends State<TodoApp> {
                           })
                       : Container(),
 
-                  // todoBox.length <= 0 &&
-                  //         completedBox.length <= 0 &&
-                  //         streakBox.length <= 0
-                  //     ? whiteScreen(context)
-                  //     : Container(),
-                  // // todoBox.length > 0 || completedBox.length > 0
-                  // //     ? ProgressBar()
-                  // //     : Container(),
+                  todoBox.length <= 0 && completedBox.length <= 0
+                      ? initialselectedPage == 1
+                          ? Container()
+                          : whiteScreen(context)
+                      : Container(),
+                  todoBox.length <= 0 &&
+                          completedBox.length <= 0 &&
+                          streakBox.length <= 0
+                      ? whiteScreen(context)
+                      : Container(),
 
+                  todoBox.length > 0 || completedBox.length > 0
+                      ? ProgressBar()
+                      : Container(),
+                  CompletedStreakCard(),
                   // initialselectedPage == 1
                   //     ? Container()
                   //     : todoBox.length + completedBox.length == 0
@@ -921,7 +900,7 @@ setDailyRemainderMethod(time, context) {
 
     AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: 20,
+            id: 50,
             channelKey: 'dailyNotific',
             title: "Champion this Day 🏆",
             body: "Tap to and write toodo"),
@@ -929,13 +908,12 @@ setDailyRemainderMethod(time, context) {
           hour: hour,
           minute: minute,
           allowWhileIdle: true,
-          repeats: true,
           timeZone: AwesomeNotifications.localTimeZoneIdentifier,
         ));
   }
 }
 
-setStreakRemainderMethod(time, name, emoji, context) {
+setStreakRemainderMethod(time, name, emoji, id, context) {
   int hour = int.parse(time.first);
   print(hour);
 
@@ -952,16 +930,16 @@ setStreakRemainderMethod(time, name, emoji, context) {
 
   AwesomeNotifications().createNotification(
       content: NotificationContent(
-          id: 30,
+          id: id,
           channelKey: 'streakNotific',
-          title: "$name $emoji",
+          title: emoji == "null" ? "$name" : "$name $emoji",
           body: "Save the Streak, its $hour:$minute"),
       schedule: NotificationCalendar(
         hour: hour,
         minute: minute,
         // interval: 86400,
-        allowWhileIdle: true,
+        //allowWhileIdle: true,
 
-        timeZone: AwesomeNotifications.localTimeZoneIdentifier,
+        timeZone: AwesomeNotifications.rootNativePath,
       ));
 }

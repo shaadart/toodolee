@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
@@ -39,7 +40,7 @@ class _QuotesState extends State<Quotes> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: quotesBox.listenable(),
+        valueListenable: Hive.box(quotesCardname).listenable(),
         builder: (context, quotes, _) {
           if (quotes.isEmpty) {
             getQuotes(context);
@@ -342,7 +343,7 @@ class _QuotesState extends State<Quotes> {
                       // mode: PlayerMode.LOW_LATENCY,
                     );
                     Share.share(
-                      "${quotesBox.get("quote")[0]} \n \n @${quotesBox.get("quote")[1]} \n @toodolee",
+                      "${Hive.box(quotesCardname).get("quote")[0]} \n \n @${Hive.box(quotesCardname).get("quote")[1]} \n @toodolee",
                     );
                   },
                   icon: Icon(CarbonIcons.share,
@@ -406,12 +407,12 @@ getQuotes(context) async {
   var myquotes = json.decode(response);
   var rangeofQuotes = random(0, lengthofJSON);
 
-  quotesBox.put("quote",
+  Hive.box(quotesCardname).put("quote",
       [myquotes[rangeofQuotes]["text"], myquotes[rangeofQuotes]["author"]]);
 }
 
 void deleteQuotes() {
-  quotesBox.clear();
+  Hive.box(quotesCardname).clear();
   print("Quotes Fired");
 }
 

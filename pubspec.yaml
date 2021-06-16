@@ -63,15 +63,18 @@ dependencies:
   date_format: ^2.0.2
   multi_value_listenable_builder: ^0.0.1
   flutter_mailer: ^2.0.0
-
+  jiffy: ^4.1.0
   # flt_worker: ^0.1.0
   workmanager: ^0.4.1
+  move_to_background: ^1.0.2
   yudiz_modal_sheet: ^0.0.3
   better_cupertino_slider: ^1.0.0
   step_progress_indicator: ^1.0.0
   confetti: ^0.5.5
-  
- 
+  cron: ^0.3.0
+  flutter_background_service: ^0.1.5
+  flutter_isolate: ^2.0.0
+  flutter_startup: ^0.0.2
   # app_settings: any
   
 

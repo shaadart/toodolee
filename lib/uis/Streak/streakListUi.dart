@@ -13,16 +13,18 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:toodo/main.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/streak_model.dart';
-import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
+import 'package:toodo/models/completed_streak_model.dart';
+import 'package:toodo/uis/quotes.dart';
 
 void incrementCount() {
   totalTodoCount.value++;
 }
 
 Box<StreakModel> sbox;
+StreakModel streako;
 
 class StreakCard extends StatefulWidget {
   const StreakCard({
@@ -107,8 +109,14 @@ class _StreakCardState extends State<StreakCard> {
                         separatorBuilder: (_, index) => Container(),
                         itemBuilder: (_, index) {
                           final int key = keys[index];
-                          final StreakModel streako = sbox.get(key);
-
+                          streako = sbox.get(key);
+                          String completedStreakName = streako.streakName;
+                          String completedStreakEmoji = streako.streakEmoji;
+                          String completedStreakRemainder =
+                              streako.streakRemainder;
+                          int completedStreakDays = streako.streakDays;
+                          int completedStreakCount = streako.streakCount;
+                          bool completedStreakCompleted = true;
                           rewardingAlertDialogs() {
                             return Container(
                               height:
@@ -321,6 +329,7 @@ class _StreakCardState extends State<StreakCard> {
                               ),
                             );
                           }
+
                           // String completedTodoName = streak.streakName;
                           // String completedTodoEmoji = streak.streakEmoji;
                           // String completedTodoRemainder = streak.streakRemainder;
@@ -463,30 +472,54 @@ class _StreakCardState extends State<StreakCard> {
                                               ListTile(
                                                 leading: IconButton(
                                                   onPressed: () {
-                                                    controllerbottomCenter
-                                                        .play();
-                                                    showDialog(
-                                                        useRootNavigator: false,
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return Dialog(
-                                                              child:
-                                                                  rewardingAlertDialogs());
-                                                        });
+                                                    // streako.streakCount++;
+                                                    // // streako.isCompleted =
+                                                    // //     true;
+                                                    // streako.save();
 
+                                                    if (streako.streakDays ==
+                                                        streako.streakCount) {
+                                                      controllerbottomCenter
+                                                          .play();
+                                                      showDialog(
+                                                          useRootNavigator:
+                                                              false,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Dialog(
+                                                                child:
+                                                                    rewardingAlertDialogs());
+                                                          });
+                                                    }
                                                     // deleteQuotes();
                                                     player.play(
                                                       'sounds/hero_decorative-celebration-03.wav',
                                                       stayAwake: false,
                                                       // mode: PlayerMode.LOW_LATENCY,
                                                     );
-                                                    setState(() {
-                                                      streako.streakCount++;
-
-                                                      streako.save();
-
-                                                      // what I'm supposed to do here
-                                                    });
+                                                    if (streako.isCompleted ==
+                                                        false) {
+                                                      CompletedStreakModel
+                                                          completedStreak =
+                                                          CompletedStreakModel(
+                                                        streakName:
+                                                            completedStreakName,
+                                                        streakEmoji:
+                                                            completedStreakEmoji,
+                                                        streakRemainder:
+                                                            completedStreakRemainder,
+                                                        streakDays:
+                                                            completedStreakDays,
+                                                        streakCount:
+                                                            completedStreakCount +
+                                                                1,
+                                                        isCompleted:
+                                                            completedStreakCompleted,
+                                                      );
+                                                      streakBox.deleteAt(index);
+                                                      completedStreakBox
+                                                          .add(completedStreak);
+                                                    }
                                                   },
                                                   icon: Icon(
                                                       CarbonIcons.radio_button,
@@ -530,10 +563,13 @@ class _StreakCardState extends State<StreakCard> {
                                                   //     ),
                                                   //   ),
                                                   // ),
-                                                  Text('${streako.streakEmoji}',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                      )),
+                                                  streako.streakEmoji == "null"
+                                                      ? Container()
+                                                      : Text(
+                                                          '${streako.streakEmoji}',
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                          )),
                                                   Container(
                                                       height:
                                                           MediaQuery.of(context)
@@ -665,31 +701,16 @@ class _StreakCardState extends State<StreakCard> {
                                                                           onPressed:
                                                                               () async {
                                                                             await sbox.deleteAt(index);
+
                                                                             incrementCount();
                                                                             deleteQuotes();
-                                                                            //
-                                                                            // Locally locally = Locally(
-                                                                            //   context: context,
-                                                                            //   payload: 'test',
 
-                                                                            //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-                                                                            //   appIcon: 'toodoleeicon',
-
-                                                                            //   pageRoute: MaterialPageRoute(
-                                                                            //       builder: (BuildContext
-                                                                            //           context) {
-                                                                            //     return DefaultedApp();
-                                                                            //   }),
-                                                                            // );
-
-                                                                            // locally.cancel(0);
                                                                             player.play(
                                                                               'sounds/navigation_transition-left.wav',
                                                                               stayAwake: false,
                                                                               // mode: PlayerMode.LOW_LATENCY,
                                                                             );
 
-                                                                            setState(() {});
                                                                             Navigator.pop(context);
                                                                           },
                                                                           child:

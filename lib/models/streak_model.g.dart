@@ -22,13 +22,14 @@ class StreakModelAdapter extends TypeAdapter<StreakModel> {
       streakEmoji: fields[2] as String,
       streakRemainder: fields[3] as String,
       streakDays: fields[4] as int,
+      isCompleted: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, StreakModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.streakName)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class StreakModelAdapter extends TypeAdapter<StreakModel> {
       ..writeByte(3)
       ..write(obj.streakRemainder)
       ..writeByte(4)
-      ..write(obj.streakDays);
+      ..write(obj.streakDays)
+      ..writeByte(5)
+      ..write(obj.isCompleted);
   }
 
   @override

@@ -18,7 +18,7 @@ import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/streak_model.dart';
 import 'package:toodo/models/todo_model.dart';
 
-import 'package:toodo/uis/quotes.dart';
+
 import 'package:yudiz_modal_sheet/yudiz_modal_sheet.dart';
 
 Box<TodoModel> todoBox;
@@ -566,13 +566,16 @@ class _SetChallengeState extends State<SetChallenge> {
               style:
                   TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
           onPressed: () {
+            setState(() {
+              initialselectedPage = 1;
+            });
             streak = StreakModel(
-              streakName: todoName,
-              streakCount: 0,
-              streakRemainder: todoRemainder,
-              streakEmoji: todoEmoji.toString(),
-              streakDays: userDemandedDayCount,
-            );
+                streakName: todoName,
+                streakCount: 0,
+                streakRemainder: todoRemainder,
+                streakEmoji: todoEmoji.toString(),
+                streakDays: userDemandedDayCount,
+                isCompleted: false);
             streakBox.add(streak);
 
             if (streak.streakRemainder.contains("PM") == true) {
@@ -607,20 +610,20 @@ class _SetChallengeState extends State<SetChallenge> {
               print(hour);
               print(minute);
               setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, context);
+                  streak.streakEmoji, totalTodoCount.value, context);
             } else if (streak.streakRemainder.contains("AM") == true) {
               var splittingSpace = streak.streakRemainder.split(" ");
               var removeAM = splittingSpace.removeAt(0);
 
               var remainderTime = removeAM.split(":");
               setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, context);
+                  streak.streakEmoji, totalTodoCount.value, context);
             } else if (streak.streakRemainder.contains("AM") == false &&
                 streak.streakRemainder.contains("PM") == false) {
               var remainderTime = streak.streakRemainder.split(":");
 
               setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, context);
+                  streak.streakEmoji, totalTodoCount.value, context);
             }
 
             player.play(
