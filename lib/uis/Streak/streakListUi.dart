@@ -10,21 +10,22 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:toodo/Notification/notificationsAddSubtract.dart';
 import 'package:toodo/main.dart';
 import 'package:share/share.dart';
-import 'package:toodo/models/streak_model.dart';
+import 'package:toodo/models/Streak%20Model/streak_model.dart';
+import 'package:toodo/uis/Streak/streakCompletedUi.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
-import 'package:toodo/models/completed_streak_model.dart';
+import 'package:toodo/models/Streak%20Model/completed_streak_model.dart';
 import 'package:toodo/uis/quotes.dart';
+
+import '../whiteScreen.dart';
 
 void incrementCount() {
   totalTodoCount.value++;
 }
-
-Box<StreakModel> sbox;
-StreakModel streako;
 
 class StreakCard extends StatefulWidget {
   const StreakCard({
@@ -107,16 +108,17 @@ class _StreakCardState extends State<StreakCard> {
                         itemCount: sbox.length,
                         shrinkWrap: true,
                         separatorBuilder: (_, index) => Container(),
+                        // ignore: missing_return
                         itemBuilder: (_, index) {
                           final int key = keys[index];
-                          streako = sbox.get(key);
+                          StreakModel streako = sbox.get(key);
                           String completedStreakName = streako.streakName;
                           String completedStreakEmoji = streako.streakEmoji;
                           String completedStreakRemainder =
                               streako.streakRemainder;
                           int completedStreakDays = streako.streakDays;
                           int completedStreakCount = streako.streakCount;
-                          bool completedStreakCompleted = true;
+                          bool completedStreakCompleted = false;
                           rewardingAlertDialogs() {
                             return Container(
                               height:
@@ -138,7 +140,7 @@ class _StreakCardState extends State<StreakCard> {
                                             textAlign: TextAlign.center,
                                           ),
                                           subtitle: Text(
-                                            '${(streako.streakName).toString()}',
+                                            '${(completedStreakName).toString()}',
                                             textAlign: TextAlign.center,
                                           )),
                                       Container(
@@ -270,10 +272,10 @@ class _StreakCardState extends State<StreakCard> {
                                                           𝗛𝗲𝘆𝗽𝗽𝗶𝗲,
                                                           <br>
                                                           Declare that I have won,<br>
-                                                          I Have Completed ${streako.streakName} Challenge!,
+                                                          I Have Completed $completedStreakName Challenge!,
                                                           I did the Challenge for,
                                                           <br>
-                                                          ${streako.streakRemainder} everyday for ${streako.streakDays} days. 
+                                                          $completedStreakRemainder everyday for ${completedStreakDays} days. 
                                                           <br>
                                                           <br>
                                                           <br>
@@ -295,7 +297,7 @@ class _StreakCardState extends State<StreakCard> {
                                                           
                                                           ''',
                                                       subject:
-                                                          'Challenge, ${streako.streakName}',
+                                                          'Challenge, $completedStreakName',
                                                       recipients: [
                                                         'toodolee@gmail.com'
                                                       ],
@@ -329,10 +331,6 @@ class _StreakCardState extends State<StreakCard> {
                               ),
                             );
                           }
-
-                          // String completedTodoName = streak.streakName;
-                          // String completedTodoEmoji = streak.streakEmoji;
-                          // String completedTodoRemainder = streak.streakRemainder;
 
                           return Padding(
                               padding: EdgeInsets.fromLTRB(
@@ -378,29 +376,16 @@ class _StreakCardState extends State<StreakCard> {
                                                           20),
                                                   child:
                                                       CircularStepProgressIndicator(
-                                                    gradientColor:
-                                                        LinearGradient(
-                                                      colors: [
-                                                        //Color(0xfff187fb), //bestcolor (till now)
-                                                        Color(0xff5de0f0),
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
-                                                        // Theme.of(context)
-                                                        //     .colorScheme
-                                                        //     .primary,
-                                                        // Theme.of(context)
-                                                        //     .colorScheme
-                                                        //     .primary,
-                                                      ],
-                                                    ),
                                                     totalSteps:
-                                                        streako.streakDays,
+                                                        completedStreakDays,
                                                     currentStep:
-                                                        streako.streakCount,
+                                                        completedStreakCount,
                                                     stepSize: 6,
                                                     selectedColor:
-                                                        Color(0xff4785FF),
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    // Color(0xff4785FF),
                                                     unselectedColor: Theme.of(
                                                             context)
                                                         .scaffoldBackgroundColor,
@@ -416,7 +401,7 @@ class _StreakCardState extends State<StreakCard> {
                                                                 .size
                                                                 .shortestSide /
                                                             2.5,
-                                                    selectedStepSize: 16,
+                                                    selectedStepSize: 10,
                                                     roundedCap: (_, __) => true,
                                                     child: Center(
                                                       child: Column(
@@ -428,7 +413,7 @@ class _StreakCardState extends State<StreakCard> {
                                                                 .center,
                                                         children: [
                                                           Text(
-                                                              "${streako.streakCount} Days",
+                                                              "$completedStreakCount Days",
                                                               style: TextStyle(
                                                                   fontSize: MediaQuery.of(
                                                                               context)
@@ -441,7 +426,7 @@ class _StreakCardState extends State<StreakCard> {
                                                           Opacity(
                                                             opacity: 0.5,
                                                             child: Text(
-                                                                "${streako.streakDays - streako.streakCount} left",
+                                                                "${completedStreakDays - completedStreakCount} left",
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
@@ -472,13 +457,14 @@ class _StreakCardState extends State<StreakCard> {
                                               ListTile(
                                                 leading: IconButton(
                                                   onPressed: () {
-                                                    // streako.streakCount++;
+                                                    // completedStreakCount++;
                                                     // // streako.isCompleted =
                                                     // //     true;
                                                     // streako.save();
 
-                                                    if (streako.streakDays ==
-                                                        streako.streakCount) {
+                                                    if (completedStreakDays -
+                                                            completedStreakCount ==
+                                                        1) {
                                                       controllerbottomCenter
                                                           .play();
                                                       showDialog(
@@ -497,29 +483,36 @@ class _StreakCardState extends State<StreakCard> {
                                                       stayAwake: false,
                                                       // mode: PlayerMode.LOW_LATENCY,
                                                     );
-                                                    if (streako.isCompleted ==
-                                                        false) {
-                                                      CompletedStreakModel
-                                                          completedStreak =
-                                                          CompletedStreakModel(
-                                                        streakName:
-                                                            completedStreakName,
-                                                        streakEmoji:
-                                                            completedStreakEmoji,
-                                                        streakRemainder:
-                                                            completedStreakRemainder,
-                                                        streakDays:
-                                                            completedStreakDays,
-                                                        streakCount:
-                                                            completedStreakCount +
-                                                                1,
-                                                        isCompleted:
-                                                            completedStreakCompleted,
-                                                      );
-                                                      streakBox.deleteAt(index);
-                                                      completedStreakBox
-                                                          .add(completedStreak);
-                                                    }
+
+                                                    // compStreak.isCompleted =
+                                                    //     false;
+                                                    // compStreak.save();
+                                                    cancelNotifications(
+                                                        completedStreakRemainder,
+                                                        context);
+                                                    // completedStreakCompleted =
+                                                    //     true;
+                                                    // completedStreakCount++;
+                                                    // streako.save();
+                                                    CompletedStreakModel
+                                                        completedStreak =
+                                                        CompletedStreakModel(
+                                                      streakName:
+                                                          completedStreakName,
+                                                      streakEmoji:
+                                                          completedStreakEmoji,
+                                                      streakRemainder:
+                                                          completedStreakRemainder,
+                                                      streakDays:
+                                                          completedStreakDays,
+                                                      streakCount:
+                                                          completedStreakCount +
+                                                              1,
+                                                      isCompleted: false,
+                                                    );
+                                                    streakBox.deleteAt(index);
+                                                    completedStreakBox
+                                                        .add(completedStreak);
                                                   },
                                                   icon: Icon(
                                                       CarbonIcons.radio_button,
@@ -528,7 +521,7 @@ class _StreakCardState extends State<StreakCard> {
                                                 title: Opacity(
                                                   opacity: 0.8,
                                                   child: Text(
-                                                    '${(streako.streakName).toString()}',
+                                                    '${(completedStreakName).toString()}',
                                                     style: TextStyle(
                                                       fontFamily: "WorkSans",
                                                       fontStyle:
@@ -551,22 +544,12 @@ class _StreakCardState extends State<StreakCard> {
                                                   Opacity(
                                                     opacity: 0.7,
                                                     child: Text(
-                                                        '${streako.streakRemainder.toString()}'),
+                                                        '${completedStreakRemainder.toString()}'),
                                                   ),
-                                                  // Opacity(
-                                                  //   opacity: 0.5,
-                                                  //   child: Text(
-                                                  //     "•",
-                                                  //     style: TextStyle(
-                                                  //       fontSize: 14,
-                                                  //       //color: Colors.black54
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                  streako.streakEmoji == "null"
+                                                  completedStreakEmoji == "null"
                                                       ? Container()
                                                       : Text(
-                                                          '${streako.streakEmoji}',
+                                                          '$completedStreakEmoji',
                                                           style: TextStyle(
                                                             fontSize: 20,
                                                           )),
@@ -623,17 +606,17 @@ class _StreakCardState extends State<StreakCard> {
                                                                               // mode: PlayerMode.LOW_LATENCY,
                                                                             );
                                                                             Navigator.pop(context);
-                                                                            if (streako.streakEmoji == "null" &&
-                                                                                streako.streakRemainder == null) {
-                                                                              Share.share("${streako.streakName} \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                            if (completedStreakEmoji == "null" &&
+                                                                                completedStreakRemainder == null) {
+                                                                              Share.share("$completedStreakName \n \n @toodoleeApp", subject: "Today's Toodo");
                                                                             } else if (todo.todoRemainder ==
                                                                                 null) {
-                                                                              Share.share("${streako.streakName} \n ${streako.streakEmoji}  \n \n @toodoleeApp", subject: "Today's Toodo");
-                                                                            } else if (streako.streakEmoji ==
+                                                                              Share.share("$completedStreakName \n $completedStreakEmoji  \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                            } else if (completedStreakEmoji ==
                                                                                 "null") {
-                                                                              Share.share("${streako.streakRemainder}⏰ \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              Share.share("$completedStreakRemainder⏰ \n \n @toodoleeApp", subject: "Today's Toodo");
                                                                             } else {
-                                                                              Share.share("${streako.streakName} ${streako.streakEmoji} \n at ${streako.streakRemainder} \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              Share.share("$completedStreakName $completedStreakEmoji \n at $completedStreakRemainder \n \n @toodoleeApp", subject: "Today's Toodo");
                                                                             }
                                                                           },
                                                                           child:
@@ -704,7 +687,8 @@ class _StreakCardState extends State<StreakCard> {
 
                                                                             incrementCount();
                                                                             deleteQuotes();
-
+                                                                            cancelNotifications(completedStreakRemainder,
+                                                                                context);
                                                                             player.play(
                                                                               'sounds/navigation_transition-left.wav',
                                                                               stayAwake: false,

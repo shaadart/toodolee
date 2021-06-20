@@ -1,29 +1,15 @@
-import 'package:animate_do/animate_do.dart';
-
 import 'package:flutter/material.dart';
-//import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:toodo/Notification/notificationsAddSubtract.dart';
 import 'package:toodo/main.dart';
-
-//import 'package:share/share.dart';
-//import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:toodo/models/completed_todo_model.dart';
-
-
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:toodo/main.dart';
-
 import 'package:share/share.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
-import 'package:carbon_icons/carbon_icons.dart';
 import 'package:toodo/uis/quotes.dart';
-
+import 'package:toodo/uis/whiteScreen.dart';
 import 'listui.dart';
 
 Box<CompletedTodoModel> cbox;
@@ -69,7 +55,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                       child: Text(
                         'Completing is the new full',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ),
@@ -130,75 +116,30 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                       stayAwake: false,
                                       // mode: PlayerMode.LOW_LATENCY,
                                     );
-                                    setState(() {
-                                      if (comptodo.isCompleted) {
-                                        TodoModel incompletedTodo = TodoModel(
-                                          todoName: comptodo.completedTodoName,
-                                          todoEmoji:
-                                              comptodo.completedTodoEmoji,
-                                          todoRemainder:
-                                              comptodo.completedTodoRemainder,
-                                          isCompleted: comptodo.isCompleted =
-                                              false,
-                                        );
-                                        completedBox.deleteAt(index);
-                                        todoBox.add(incompletedTodo);
 
-                                        // _listKey.currentState.removeItem(
-                                        //     index,
-                                        //     (context, animation) =>
-                                        //         Container());
-
-                                        /// what I'm supposed to do here
-
+                                    if (comptodo.isCompleted == true) {
+                                      if (comptodo.completedTodoRemainder !=
+                                          null) {
+                                        restartRemainderNotifications(
+                                            comptodo.completedTodoName,
+                                            comptodo.completedTodoRemainder,
+                                            context);
                                       }
-                                      //     comptodo.isCompleted = !comptodo.isCompleted;
-                                      //     if (comptodo.isCompleted == true) {
-                                      //       CompletedTodoModel completedTodo = CompletedTodoModel(
-                                      //         completedTodoName: comptodo.completedTodoName,
-                                      //         completedTodoEmoji: comptodo.completedTodoEmoji,
-                                      //         completedTodoRemainder: comptodo.completedTodoRemainder,
-                                      //         isCompleted: comptodo.isCompleted = false,
-                                      //       );
-                                      //       todoBox.put(key, completedTodo);
-                                      //     } else {
-                                      //       TodoModel incompletedTodo = TodoModel(
-                                      //         todoName: todo.todoName,
-                                      //         todoEmoji: todo.todoEmoji,
-                                      //         todoRemainder: todo.todoRemainder,
-                                      //         isCompleted: todo.isCompleted = false,
-                                      //       );
-                                      //       todoBox.put(key, incompletedTodo);
-                                      //     }
-                                      //   });
-                                      //   // setState(() {
-                                      //   //   todo.isCompleted = !todo.isCompleted;
-
-                                      //   // });
-                                      // },
-
-                                      // child:
-                                      // ListTile(
-                                      //     trailing: Text(
-                                      //         "${comptodo.completedTodoEmoji}"),
-                                      //     title: Text(
-                                      //         "${comptodo.completedTodoName}"),
-                                      //     subtitle: Text(
-                                      //         "${comptodo.completedTodoRemainder}"));
-                                    });
+                                      TodoModel incompletedTodo = TodoModel(
+                                        todoName: comptodo.completedTodoName,
+                                        todoEmoji: comptodo.completedTodoEmoji,
+                                        todoRemainder:
+                                            comptodo.completedTodoRemainder,
+                                        isCompleted: comptodo.isCompleted =
+                                            false,
+                                      );
+                                      completedBox.deleteAt(index);
+                                      todoBox.add(incompletedTodo);
+                                    }
                                   },
                                   icon: Icon(CarbonIcons.checkmark_filled,
                                       color: Colors.blue),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
-                                //   // child: Text(
-                                //   //   'Greyhound d ',
-                                //   //   style:
-                                //   //       TextStyle(color: Colors.black.withOpacity(0.6)),
-                                //   // ),
-                                // ),
-
                                 trailing: IconButton(
                                   color: Colors.blue,
                                   onPressed: () {
@@ -273,6 +214,9 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                         ),
                       );
                     }));
+          } else if (completedBox.length <= 0 &&
+              completedStreakBox.length <= 0) {
+            whiteScreen(context);
           }
         });
   }

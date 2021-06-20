@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:davinci/core/davinci_capture.dart';
 import 'package:davinci/core/davinci_core.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +8,10 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:toodo/Notification/notificationsAddSubtract.dart';
 
 import 'package:toodo/main.dart';
-import 'package:toodo/models/completed_streak_model.dart';
+import 'package:toodo/models/Streak%20Model/completed_streak_model.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/todo_model.dart';
@@ -19,9 +21,6 @@ import 'dart:core';
 
 import '../quotes.dart';
 import '../whiteScreen.dart';
-
-
-
 
 String firstButtonText = 'Take photo';
 Box<TodoModel> box;
@@ -108,34 +107,35 @@ class _TodoCardState extends State<TodoCard> {
                                       ListTile(
                                         leading: IconButton(
                                             onPressed: () {
-                                              setState(() {
-                                                todo.isCompleted =
-                                                    !todo.isCompleted;
-                                                if (todo.isCompleted == true) {
-                                                  CompletedTodoModel
-                                                      completedTodo =
-                                                      CompletedTodoModel(
-                                                    completedTodoName:
-                                                        completedTodoName,
-                                                    completedTodoEmoji:
-                                                        completedTodoEmoji,
-                                                    completedTodoRemainder:
-                                                        completedTodoRemainder,
-                                                    isCompleted:
-                                                        todo.isCompleted = true,
-                                                  );
-                                                  print(completedTodo
-                                                      .completedTodoName);
-                                                  completedBox
-                                                      .add(completedTodo);
-                                                  todoBox.deleteAt(index);
-                                                  print(completedBox.length);
-                                                }
-                                              });
+                                              if (todo.isCompleted == false) {
+                                                CompletedTodoModel
+                                                    completedTodo =
+                                                    CompletedTodoModel(
+                                                  completedTodoName:
+                                                      completedTodoName,
+                                                  completedTodoEmoji:
+                                                      completedTodoEmoji,
+                                                  completedTodoRemainder:
+                                                      completedTodoRemainder,
+                                                  isCompleted:
+                                                      todo.isCompleted = true,
+                                                );
+                                                print(completedTodo
+                                                    .completedTodoName);
+                                                completedBox.add(completedTodo);
+                                                todoBox.deleteAt(index);
+                                                if (completedTodoRemainder !=
+                                                    null) {
+                                                  cancelNotifications(
+                                                      completedTodoRemainder,
+                                                      context);
+                                                } // Cancelling the Notifications
+                                                print(completedBox.length);
+                                              }
+
                                               player.play(
                                                 'sounds/notification_simple-02.wav',
                                                 stayAwake: false,
-                                                // mode: PlayerMode.LOW_LATENCY,
                                               );
                                             },
                                             icon: Icon(CarbonIcons.radio_button,
@@ -349,22 +349,14 @@ class _TodoCardState extends State<TodoCard> {
                                                                 index);
                                                             incrementCount();
                                                             deleteQuotes();
-                                                            //
-                                                            // Locally locally = Locally(
-                                                            //   context: context,
-                                                            //   payload: 'test',
+                                                            print("cancel");
 
-                                                            //   //pageRoute: MaterialPageRoute(builder: (context) => MorePage(title: "Hey Test Notification", message: "You need to Work for allah...")),
-                                                            //   appIcon: 'toodoleeicon',
-
-                                                            //   pageRoute: MaterialPageRoute(
-                                                            //       builder: (BuildContext
-                                                            //           context) {
-                                                            //     return DefaultedApp();
-                                                            //   }),
-                                                            // );
-
-                                                            // locally.cancel(0);
+                                                            if (completedTodoRemainder !=
+                                                                null) {
+                                                              cancelNotifications(
+                                                                  completedTodoRemainder,
+                                                                  context);
+                                                            }
                                                             player.play(
                                                               'sounds/navigation_transition-left.wav',
                                                               stayAwake: false,
@@ -408,7 +400,7 @@ class _TodoCardState extends State<TodoCard> {
                       );
                     }));
           } else if (todoBox.length <= 0) {
-            whiteScreen(context);
+            return whiteScreen(context);
           }
         });
   }

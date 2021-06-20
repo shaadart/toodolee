@@ -15,9 +15,8 @@ import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/completed_todo_model.dart';
-import 'package:toodo/models/streak_model.dart';
+import 'package:toodo/models/Streak%20Model/streak_model.dart';
 import 'package:toodo/models/todo_model.dart';
-
 
 import 'package:yudiz_modal_sheet/yudiz_modal_sheet.dart';
 
@@ -158,65 +157,40 @@ void addTodoBottomSheet(context) {
                 print("No Remainders Set");
               } else if (todo.todoRemainder != null) {
                 if (todo.todoRemainder.contains("PM") == true) {
-                  var splittingSpace = todo.todoRemainder.split(" ");
-                  var removePM = splittingSpace.removeAt(0);
-
-                  var removeUnwantedSymbol = removePM.split(":");
-
-                  Map convertTimetotwentyFourHourClock = {
-                    1: 13,
-                    2: 14,
-                    3: 15,
-                    4: 16,
-                    5: 17,
-                    6: 18,
-                    7: 19,
-                    8: 20,
-                    9: 21,
-                    10: 22,
-                    11: 23,
-                    12: 12
-                  };
-                  var hourToBeChanged = int.parse(removeUnwantedSymbol.first);
-
-                  var hour = convertTimetotwentyFourHourClock[hourToBeChanged];
-                  var minute = removeUnwantedSymbol.last;
-
-                  var remainderTime = [hour.toString(), minute.toString()];
-                  print(remainderTime);
-                  print(hour);
-                  print(minute);
-
-                  setRemainderMethod(remainderTime, todo.todoName,
-                      totalTodoCount.value, context);
+                  setRemainderMethod(
+                      getRemainderTime(todo.todoRemainder, context),
+                      todo.todoName,
+                      (getRemainderTime(todo.todoRemainder, context).first +
+                          getRemainderTime(todo.todoRemainder, context).last),
+                      context);
+                  print(
+                      "${((getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last))} is the current value of the channel id");
                 } else if (todo.todoRemainder.contains("AM") == true) {
-                  var splittingSpace = todo.todoRemainder.split(" ");
-                  var removeAM = splittingSpace.removeAt(0);
-
-                  var remainderTime = removeAM.split(":");
-
-                  setRemainderMethod(remainderTime, todo.todoName,
-                      totalTodoCount.value, context);
+                  setRemainderMethod(
+                      getRemainderTime(todo.todoRemainder, context),
+                      todo.todoName,
+                      (getRemainderTime(todo.todoRemainder, context).first +
+                          getRemainderTime(todo.todoRemainder, context).last),
+                      context);
+                  print(
+                      "${(getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last)} is the current value of the channel id");
                 } else if (todo.todoRemainder.contains("AM") == false &&
                     todo.todoRemainder.contains("PM") == false) {
-                  var remainderTime = todo.todoRemainder.split(":");
-
-                  setRemainderMethod(remainderTime, todo.todoName,
-                      totalTodoCount.value, context);
+                  setRemainderMethod(
+                      getRemainderTime(todo.todoRemainder, context),
+                      todo.todoName,
+                      (getRemainderTime(todo.todoRemainder, context).first +
+                          getRemainderTime(todo.todoRemainder, context).last),
+                      context);
+                  print(
+                      "${(getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last)} is the current value of the channel id");
                 }
               }
             } else if (todoName.runtimeType == Null ||
                 (todo.todoName).runtimeType == Null) {
               print("No means no I will not do anything, hmmm");
             }
-            // : setRemainderMethod(
-            //     todo.todoRemainder,
-            //     todo.todoName,
-            //     todoBox.length +
-            //         completedBox.length,
-            //     context);
-            print(
-                "${totalTodoCount.value} is the current value of the channel id");
+
             setState(() {
               // todoName == null;
               // todoRemainder = null;
@@ -579,53 +553,38 @@ class _SetChallengeState extends State<SetChallenge> {
             streakBox.add(streak);
 
             if (streak.streakRemainder.contains("PM") == true) {
-              Map convertTimetotwentyFourHourClock = {
-                1: 13,
-                2: 14,
-                3: 15,
-                4: 16,
-                5: 17,
-                6: 18,
-                7: 19,
-                8: 20,
-                9: 21,
-                10: 22,
-                11: 23,
-                12: 12
-              };
-
-              var splittingSpace = streak.streakRemainder.split(" ");
-              var removePM = splittingSpace.removeAt(0);
-
-              var removeUnwantedSymbol = removePM.split(":");
-
-              var hourToBeChanged = int.parse(removeUnwantedSymbol.first);
-
-              var hour = convertTimetotwentyFourHourClock[hourToBeChanged];
-              var minute = removeUnwantedSymbol.last;
-
-              var remainderTime = [hour.toString(), minute.toString()];
-
-              print(remainderTime);
-              print(hour);
-              print(minute);
-              setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, totalTodoCount.value, context);
+              setStreakRemainderMethod(
+                  getRemainderTime(streak.streakRemainder, context),
+                  streak.streakName,
+                  streak.streakEmoji,
+                  (getRemainderTime(streak.streakRemainder, context).first +
+                      getRemainderTime(streak.streakRemainder, context).last *
+                          100),
+                  context);
+              print(
+                  "${getRemainderTime(streak.streakRemainder, context).first + getRemainderTime(streak.streakRemainder, context).last * 100}");
             } else if (streak.streakRemainder.contains("AM") == true) {
-              var splittingSpace = streak.streakRemainder.split(" ");
-              var removeAM = splittingSpace.removeAt(0);
-
-              var remainderTime = removeAM.split(":");
-              setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, totalTodoCount.value, context);
+              setStreakRemainderMethod(
+                  getRemainderTime(streak.streakRemainder, context),
+                  streak.streakName,
+                  streak.streakEmoji,
+                  (getRemainderTime(streak.streakRemainder, context).first +
+                      getRemainderTime(streak.streakRemainder, context).last *
+                          100),
+                  context);
+              print(
+                  "${getRemainderTime(streak.streakRemainder, context).first + getRemainderTime(streak.streakRemainder, context).last * 100}");
             } else if (streak.streakRemainder.contains("AM") == false &&
                 streak.streakRemainder.contains("PM") == false) {
-              var remainderTime = streak.streakRemainder.split(":");
-
-              setStreakRemainderMethod(remainderTime, streak.streakName,
-                  streak.streakEmoji, totalTodoCount.value, context);
+              setStreakRemainderMethod(
+                  getRemainderTime(streak.streakRemainder, context),
+                  streak.streakName,
+                  streak.streakEmoji,
+                  (getRemainderTime(streak.streakRemainder, context).first +
+                      getRemainderTime(streak.streakRemainder, context).last *
+                          100),
+                  context);
             }
-
             player.play(
               'sounds/hero_decorative-celebration-02.wav',
               stayAwake: false,
@@ -646,115 +605,46 @@ class _SetChallengeState extends State<SetChallenge> {
   }
 }
 
-class CompletedStreak extends StatefulWidget {
-  const CompletedStreak({Key key}) : super(key: key);
+getRemainderTime(time, context) {
+  if (time.contains("PM") == true) {
+    var splittingSpace = time.split(" ");
+    var removePM = splittingSpace.removeAt(0);
 
-  @override
-  _CompletedStreakState createState() => _CompletedStreakState();
-}
+    var removeUnwantedSymbol = removePM.split(":");
 
-class _CompletedStreakState extends State<CompletedStreak> {
-  ConfettiController controllerTopCenter;
+    Map convertTimetotwentyFourHourClock = {
+      1: 13,
+      2: 14,
+      3: 15,
+      4: 16,
+      5: 17,
+      6: 18,
+      7: 19,
+      8: 20,
+      9: 21,
+      10: 22,
+      11: 23,
+      12: 12
+    };
+    var hourToBeChanged = int.parse(removeUnwantedSymbol.first);
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setState(() {
-      initController();
-    });
-  }
+    var hour = convertTimetotwentyFourHourClock[hourToBeChanged];
+    var minute = removeUnwantedSymbol.last;
 
-  void initController() {
-    controllerTopCenter =
-        ConfettiController(duration: const Duration(seconds: 1));
-  }
+    var remainderTime = [hour.toString(), minute.toString()];
+    print(remainderTime);
+    print(hour);
+    print(minute);
 
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Stack(
-        children: <Widget>[
-          buildConfettiWidget(controllerTopCenter, pi / 1),
-          buildConfettiWidget(controllerTopCenter, pi / 4),
-          Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: Text("Hellow"),
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.height * 0.5,
-                ),
-              ],
-            ),
-          ),
-          buildButton()
-        ],
-      ),
-    );
-  }
+    return [int.parse(remainderTime[0]), int.parse(remainderTime[1])];
+  } else if (time.contains("AM") == true) {
+    var splittingSpace = time.split(" ");
+    var removeAM = splittingSpace.removeAt(0);
 
-  Align buildButton() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 100),
-        child: RaisedButton(
-          onPressed: () {
-            controllerTopCenter.play();
-          },
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          color: Colors.red,
-          textColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "Congratulations!",
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Align buildConfettiWidget(controller, double blastDirection) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: ConfettiWidget(
-        colors: [
-          Colors.green,
-          Theme.of(context).primaryColor,
-          Colors.redAccent,
-          Theme.of(context).accentColor,
-        ],
-        // colors: [
-        //   Theme.of(context).accentColor,
-        //   Theme.of(context).scaffoldBackgroundColor,
-        //   Theme.of(context).canvasColor,
-        //   Theme.of(context).primaryColor,
-        //   Theme.of(context).primaryColorLight,
-        //   Theme.of(context).primaryColorDark,
-        //   Theme.of(context).colorScheme.onSurface,
-        //   Theme.of(context).colorScheme.secondaryVariant
-        // ],
-        maximumSize: Size(20, 15),
-        shouldLoop: true,
-        confettiController: controller,
-        blastDirection: blastDirection,
-        blastDirectionality: BlastDirectionality.explosive,
-        maxBlastForce: 30, // set a lower max blast force
-        minBlastForce: 5, // set a lower min blast force
-        emissionFrequency: 0.3,
-        numberOfParticles: 1, // a lot of particles at once
-        gravity: 0.4,
-      ),
-    );
+    var remainderTime = removeAM.split(":");
+    return [int.parse(remainderTime[0]), int.parse(remainderTime[1])];
+  } else if (time.contains("AM") == false && time.contains("PM") == false) {
+    var remainderTime = time.split(":");
+    return [int.parse(remainderTime[0]), int.parse(remainderTime[1])];
   }
 }

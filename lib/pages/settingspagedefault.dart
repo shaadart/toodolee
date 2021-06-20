@@ -212,8 +212,7 @@ class _SettingPageState extends State<SettingPage> {
                 // <-- Collapses when tapped on
                 Column(
                   children: [
-                    Card(
-                        child: ListTile(
+                    ListTile(
                       title: Opacity(
                         opacity: 0.6,
                         child: Text("Tommorow, Start Journey at"),
@@ -228,8 +227,8 @@ class _SettingPageState extends State<SettingPage> {
                                   : "${dailyRemainderBox.get("remainderTime")[0]}:${dailyRemainderBox.get('remainderTime')[1]} $suffix",
                               style: TextStyle(
                                   color: Colors.blue, fontFamily: "WorkSans"))),
-                    )),
-
+                    ),
+                    Divider(),
                     ValueListenableBuilder(
                       valueListenable: settingsBox.listenable(),
                       builder: (context, dailyNotification, child) {
@@ -473,8 +472,8 @@ class _SettingPageState extends State<SettingPage> {
                 CarbonIcons.thumbs_up,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
-              trailing: Icon(CarbonIcons.gift,
-                  color: Theme.of(context).backgroundColor),
+              // trailing: Icon(CarbonIcons.gift,
+              //     color: Theme.of(context).backgroundColor),
             ),
           ),
           Divider(),
@@ -515,6 +514,7 @@ class _SettingPageState extends State<SettingPage> {
                         icon: Icon(CarbonIcons.delete),
                         onPressed: () async {
                           onboardingScreenBox.put("shownOnBoard", false);
+                          settingsBox.clear();
                           // https://toodolee.blogspot.com/p/meeeet-you-tooodoleee-i-am-giving-you.html
                           //https://www.instagram.com/project_coded/
                         }),

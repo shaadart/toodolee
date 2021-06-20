@@ -10,10 +10,11 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:toodo/models/completed_streak_model.dart';
+import 'package:toodo/models/Streak Model/completed_streak_model.dart';
+
 import 'package:toodo/main.dart';
 import 'package:share/share.dart';
-import 'package:toodo/models/streak_model.dart';
+import 'package:toodo/models/Streak Model/streak_model.dart';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
@@ -109,76 +110,14 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                         itemBuilder: (_, index) {
                           final int ckey = keys[index];
                           compStreak = csbox.get(ckey);
-                          deleteStreakfromCompleted() {
-                            setState(() {
-                              StreakModel streak = StreakModel(
-                                streakName: compStreak.streakName,
-                                streakEmoji: compStreak.streakEmoji,
-                                streakRemainder: compStreak.streakRemainder,
-                                streakDays: compStreak.streakDays,
-                                streakCount: compStreak.streakCount--,
-                                isCompleted: compStreak.isCompleted = true,
-                              );
-                              csbox.deleteAt(index);
-                              streakBox.add(streak);
-                            });
-                          }
-
-                          resetStreakMidNight() {
-                            if (settingsBox.get("todayDate") == null &&
-                                settingsBox.get("nextDayDate") == null) {
-                              DateTime now = DateTime.now();
-
-                              var year = now.year;
-                              var month = now.month;
-                              var day = now.day;
-
-                              var nextDayDate = Jiffy()
-                                  .add(duration: Duration(days: 1))
-                                  .yMMMMd
-                                  .replaceAll(",", "")
-                                  .split(" ");
-                              print(nextDayDate);
-
-                              settingsBox.put("todayDate", [year, month, day]);
-                              settingsBox.put("nextDayDate", nextDayDate[1]);
-
-                              deleteStreakfromCompleted();
-
-                              // streako.isCompleted = false;
-                              print("streak is reset-ed");
-                            } else {
-                              DateTime now = DateTime.now();
-
-                              var year = now.year;
-                              var month = now.month;
-                              var day = now.day;
-
-                              if ((year == settingsBox.get("todayDate")[0] &&
-                                      month ==
-                                          settingsBox.get("todayDate")[1] &&
-                                      day == settingsBox.get("todayDate")[2]) ||
-                                  (year ==
-                                          settingsBox.get("monthFirstDay")[0] &&
-                                      settingsBox.get("monthFirstDay")[1] ==
-                                          month &&
-                                      settingsBox.get("monthFirstDay")[2] ==
-                                          day) ||
-                                  (settingsBox.get("nextDayDate")[1] ==
-                                      settingsBox.get("todayDate")[2])) {
-                                print("nothing to do");
-                              } else {
-                                deleteStreakfromCompleted();
-
-                                print("everything is reset-ed");
-                                settingsBox
-                                    .put("todayDate", [year, month, day]);
-                              }
-                            }
-                          }
-                          //comptodo.completedTodoName = todoName;
-
-                          //todo.isCompleted = false;
+                          String incompletedStreakName = compStreak.streakName;
+                          String incompletedStreakEmoji =
+                              compStreak.streakEmoji;
+                          var incompletedStreakRemainder =
+                              compStreak.streakRemainder;
+                          int incompletedStreakDays = compStreak.streakDays;
+                          int incompletedStreakCount = compStreak.streakCount;
+                          bool incompletedStreakCompleted = true;
                           return Padding(
                             padding: EdgeInsets.fromLTRB(
                                 MediaQuery.of(context).size.shortestSide / 35,
@@ -195,7 +134,7 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                                     title: Opacity(
                                       opacity: 0.8,
                                       child: Text(
-                                        '${(compStreak.streakName).toString()}',
+                                        '${(incompletedStreakName).toString()}',
                                         style: TextStyle(
                                           decoration:
                                               TextDecoration.lineThrough,
@@ -221,20 +160,20 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                                           stayAwake: false,
                                           // mode: PlayerMode.LOW_LATENCY,
                                         );
-                                        if (compStreak.isCompleted == true) {
-                                          StreakModel incompleteStreak =
-                                              StreakModel(
-                                            streakName: compStreak.streakName,
-                                            streakEmoji: compStreak.streakEmoji,
-                                            streakRemainder:
-                                                compStreak.streakRemainder,
-                                            streakDays: compStreak.streakDays,
-                                            streakCount: compStreak.streakCount,
-                                            isCompleted: false,
-                                          );
-                                          completedStreakBox.deleteAt(index);
-                                          streakBox.add(incompleteStreak);
-                                        }
+
+                                        StreakModel incompleteStreak =
+                                            StreakModel(
+                                          streakName: incompletedStreakName,
+                                          streakEmoji: incompletedStreakEmoji,
+                                          streakRemainder:
+                                              incompletedStreakRemainder,
+                                          streakDays: incompletedStreakDays,
+                                          streakCount:
+                                              incompletedStreakCount - 1,
+                                          isCompleted: true,
+                                        );
+                                        streakBox.add(incompleteStreak);
+                                        completedStreakBox.deleteAt(index);
                                       },
                                       icon: Icon(CarbonIcons.checkmark_filled,
                                           color: Colors.blue),
@@ -278,7 +217,7 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                                                     Navigator.pop(context);
 
                                                     Share.share(
-                                                        "Hey 👋, Todays Todo is Completed, \n \n ${streako.streakName} \n \n 🎉🎉🎉",
+                                                        "Hey 👋, Todays Todo is Completed, \n \n ${incompletedStreakName} \n \n 🎉🎉🎉",
                                                         subject:
                                                             "Today's Toodo");
                                                   },
@@ -319,7 +258,7 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                                       icon: Icon(
                                           CarbonIcons.overflow_menu_horizontal),
                                     ),
-                                    subtitle: Text("${compStreak.streakCount}"),
+                                    subtitle: Text("$incompletedStreakCount"),
                                   ),
                                 ],
                               ),
@@ -328,7 +267,7 @@ class _CompletedStreakCardState extends State<CompletedStreakCard> {
                         }),
                     Center(child: buildConfettiWidget()),
                     // LinearProgressIndicator(
-                    //   value: compStreak.streakDays.toDouble(),
+                    //   value: incompletedStreakDays.toDouble(),
                     // )
                   ],
                 ));

@@ -86,24 +86,17 @@ class _QuotesState extends State<Quotes> {
                         // color: Colors.transparent,
                         child: GradientCard(
                           gradient: Gradients.buildGradient(
-                              Alignment.topRight, Alignment.bottomLeft, [
+                              Alignment.topRight, Alignment.topLeft, [
                             Colors.blueAccent[700],
+                            Color(0xff4785FF),
                             Colors.blue,
-                            Colors.blueAccent[100],
-                            // Colors.black54,
-                            //  Colors.black87,
-                            //  Colors.black87,
+                            //Colors.blueAccent[100],
+
+                            Colors.blue[500], Colors.blue[300]
                           ]),
                           semanticContainer: true,
                           child: Wrap(
                             children: [
-                              // ElevatedButton(
-                              //   onPressed: () {
-                              //     deleteQuotes();
-                              //   },
-                              //   child: Text("Delete All"),
-                              // ),
-
                               WillPopScope(
                                 onWillPop: () {
                                   if (showToolTip) {
@@ -148,12 +141,12 @@ class _QuotesState extends State<Quotes> {
                                                                         context)
                                                                     .size
                                                                     .width /
-                                                                25
+                                                                24
                                                             : MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width /
-                                                                20))),
+                                                                18))),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.all(

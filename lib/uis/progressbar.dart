@@ -101,7 +101,7 @@ class _ProgressBarState extends State<ProgressBar> {
                                     ),
                                     TextSpan(
                                         text:
-                                            '${completedBox.length}/${todoBox.length + completedBox.length + streakBox.length}',
+                                            '${completedBox.length + completedStreakBox.length}/${todoBox.length + completedBox.length + streakBox.length}',
                                         style: TextStyle(
                                           fontSize: MediaQuery.of(context)
                                                   .size

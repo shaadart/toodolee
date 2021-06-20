@@ -20,7 +20,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.10.0 <3.0.0"
   #sdk: "2.12"
-dependency_overrides:
+  dependency_overrides:
 
   #audioplayers: 
   
@@ -71,11 +71,9 @@ dependencies:
   better_cupertino_slider: ^1.0.0
   step_progress_indicator: ^1.0.0
   confetti: ^0.5.5
-  cron: ^0.3.0
   flutter_background_service: ^0.1.5
-  flutter_isolate: ^2.0.0
-  flutter_startup: ^0.0.2
   # app_settings: any
+  
   
 
 dev_dependencies:

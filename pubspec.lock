@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  cron:
-    dependency: "direct main"
-    description:
-      name: cron
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   crypto:
     dependency: transitive
     description:
@@ -349,13 +342,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
-  flutter_isolate:
-    dependency: "direct main"
-    description:
-      name: flutter_isolate
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -389,13 +375,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
-  flutter_startup:
-    dependency: "direct main"
-    description:
-      name: flutter_startup
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -966,4 +945,5 @@ packages:
     version: "0.0.3"
 sdks:
   dart: ">=2.13.0 <3.0.0"
+  dependency_overrides: any
   flutter: ">=2.0.4"
