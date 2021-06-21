@@ -1,7 +1,7 @@
 import 'package:date_format/date_format.dart';
+import 'package:hive/hive.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:toodo/main.dart';
-import 'package:toodo/uis/Streak/streakCompletedUi.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 
 import 'uis/Streak/streakListUi.dart';
@@ -87,16 +87,24 @@ resetStreakMidNight(context) {
     print(nextMonthMonth);
     print(nextMonthDay);
     print(nextMonthYear);
-    // var monthFirstDay = formatDate(
-    //     DateTime(nextMonthYear, nextMonthMonth, nextMonthDay),
-    //     [yy, ' ', M, ' ', d]).split(" ");
+
     settingsBox.put("todayDate", [year, month, day]);
     settingsBox.put("nextDayDate", nextDayDate[1]);
     settingsBox
         .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
 
-    //deleteStreakfromCompleted(context);
-    // streako.isCompleted = false;
+    print(streakBox.keys.toList());
+    for (final key in streakBox.keys.toList()) {
+      var streak = streakBox.get(key);
+
+      if (streak.isCompleted) {
+        streak.isCompleted = false;
+        streakBox.put(key, streak);
+      } else {
+        streakBox.delete(key);
+      }
+    }
+
     print("everything is reset-ed");
   } else {
     DateTime now = DateTime.now();
@@ -116,29 +124,31 @@ resetStreakMidNight(context) {
     var nextMonthYear = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").year;
     var nextMonthMonth = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").month;
     var nextMonthDay = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").date;
-    if ((year == settingsBox.get("todayDate")[0] &&
-            month == settingsBox.get("todayDate")[1] &&
-            day == settingsBox.get("todayDate")[2]) ||
-        (nextMonthYear == settingsBox.get("monthFirstDay")[0] &&
-            nextMonthMonth == settingsBox.get("monthFirstDay")[0] &&
-            nextMonthDay == settingsBox.get("monthFirstDay")[2])) {
-      print("nothing to do");
-    } else if (day == settingsBox.get("nextDay")) {
-      //deleteStreakfromCompleted(context);
+
+    var nextDayDate = Jiffy()
+        .add(duration: Duration(days: 1))
+        .yMMMMd
+        .replaceAll(",", "")
+        .split(" ");
+    print(nextDayDate);
+    if (day == settingsBox.get("nextDayDate")) {
+      print(streakBox.keys.toList());
+      for (final key in streakBox.keys.toList()) {
+        var streak = streakBox.get(key);
+
+        if (streak.isCompleted) {
+          streak.isCompleted = false;
+          streakBox.put(key, streak);
+        } else {
+          streakBox.delete(key);
+        }
+      }
+
       print("everything is reset-ed");
       settingsBox.put("todayDate", [year, month, day]);
       settingsBox
           .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
-    } else if (((year != settingsBox.get("todayDate")[0] &&
-                month != settingsBox.get("todayDate")[1] &&
-                day != settingsBox.get("todayDate")[2]) ||
-            (nextMonthYear != settingsBox.get("monthFirstDay")[0] &&
-                nextMonthMonth != settingsBox.get("monthFirstDay")[0] &&
-                nextMonthDay != settingsBox.get("monthFirstDay")[2])) ||
-        //streako.streakName == null ||
-        settingsBox.get("nextDayDate") != day) {
-      streakBox.clear();
-      completedStreakBox.clear();
+      settingsBox.put("nextDayDate", nextDayDate[1]);
     }
   }
 }

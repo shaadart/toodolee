@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:app_settings/app_settings.dart';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
@@ -168,16 +169,16 @@ class _SettingPageState extends State<SettingPage> {
                     title: Text("Send Instant Invites"),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Share.share(
-                        "If your Days are Limited, Your Time is Limited, Why are not your Things?\n\nLife is All About Limiting the things to get unlimited things and results...\n Download Up Toodolee, it's all about being limitlesss.");
-                  },
-                  child: ListTile(
-                    leading: Icon(CarbonIcons.phone),
-                    title: Text("Invite by Call"),
-                  ),
-                ),
+                // MaterialButton(
+                //   onPressed: () {
+                //     Share.share(
+                //         "If your Days are Limited, Your Time is Limited, Why are not your Things?\n\nLife is All About Limiting the things to get unlimited things and results...\n Download Up Toodolee, it's all about being limitlesss.");
+                //   },
+                //   child: ListTile(
+                //     leading: Icon(CarbonIcons.phone),
+                //     title: Text("Invite by Call"),
+                //   ),
+                // ),
 
                 MaterialButton(
                   onPressed: () {},
@@ -372,15 +373,15 @@ class _SettingPageState extends State<SettingPage> {
                   ],
                 ),
               ]),
-              // GestureDetector(
-              //   onTap: () {
-              //     AppSettings.openNotificationSettings();
-              //   },
-              //   child: ListTile(
-              //     trailing: IconButton(icon: Icon(CarbonIcons.launch), onPressed: (){AppSettings.openNotificationSettings();}),
-              //     title: Text("Check Notifications Settings"),
-              //   ),
-              // )
+              GestureDetector(
+                onTap: () {
+                  AppSettings.openNotificationSettings();
+                },
+                child: ListTile(
+                  trailing: IconButton(icon: Icon(CarbonIcons.launch), onPressed: (){AppSettings.openNotificationSettings();}),
+                  title: Text("Check Notifications Settings"),
+                ),
+              )
             ],
           ),
           Divider(),

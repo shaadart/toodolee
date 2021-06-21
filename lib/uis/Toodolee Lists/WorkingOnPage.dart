@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:toodo/uis/Completed%20Lists/completedListUi.dart';
-import 'package:toodo/uis/Streak/streakCompletedUi.dart';
 import 'package:toodo/uis/Streak/streakListUi.dart';
 import 'package:toodo/uis/bored.dart';
 import 'package:toodo/uis/quotes.dart';
 
 import '../progressbar.dart';
+import 'listui.dart';
 
-class CompletedPage extends StatefulWidget {
+class WorkingOnPage extends StatefulWidget {
   @override
-  _CompletedPageState createState() => _CompletedPageState();
+  _WorkingOnPageState createState() => _WorkingOnPageState();
 }
 
-class _CompletedPageState extends State<CompletedPage> {
+class _WorkingOnPageState extends State<WorkingOnPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [ProgressBar(), CompletedTodoCard(), CompletedStreakCard()],
+      children: [ProgressBar(), TodoCard()],
     );
   }
 }

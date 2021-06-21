@@ -8,7 +8,7 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:toodo/Notification/notificationsAddSubtract.dart';
+import 'package:toodo/Notification/NotificationsCancelAndRestart.dart';
 
 import 'package:toodo/main.dart';
 import 'package:toodo/models/Streak%20Model/completed_streak_model.dart';
@@ -22,9 +22,7 @@ import 'dart:core';
 import '../quotes.dart';
 import '../whiteScreen.dart';
 
-String firstButtonText = 'Take photo';
 Box<TodoModel> box;
-var todoList = [];
 void incrementCount() {
   totalTodoCount.value++;
 }
@@ -345,18 +343,18 @@ class _TodoCardState extends State<TodoCard> {
                                                         Divider(),
                                                         MaterialButton(
                                                           onPressed: () async {
-                                                            await box.deleteAt(
-                                                                index);
-                                                            incrementCount();
-                                                            deleteQuotes();
-                                                            print("cancel");
-
                                                             if (completedTodoRemainder !=
                                                                 null) {
                                                               cancelNotifications(
                                                                   completedTodoRemainder,
                                                                   context);
                                                             }
+                                                            await box.deleteAt(
+                                                                index);
+                                                            incrementCount();
+                                                            deleteQuotes();
+                                                            print("cancel");
+
                                                             player.play(
                                                               'sounds/navigation_transition-left.wav',
                                                               stayAwake: false,

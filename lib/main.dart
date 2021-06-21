@@ -4,7 +4,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-
 import 'package:flappy/flappy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jiffy/jiffy.dart';
@@ -17,13 +16,11 @@ import 'package:carbon_icons/carbon_icons.dart'; //It is an Icons Library
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
-import 'package:intl/intl.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/Streak Model/streak_model.dart';
 import 'package:toodo/models/Streak Model/completed_streak_model.dart';
 import 'package:toodo/pages/onboardingScreen.dart';
-import 'package:toodo/uis/progressbar.dart';
-import 'package:toodo/pages/settingspagedefault.dart';
+import 'package:toodo/uis/Toodolee%20Lists/WorkingOnPage.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/pages/morePage.dart';
@@ -33,11 +30,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/whiteScreen.dart';
 import 'models/todo_model.dart';
-import 'uis/Completed Lists/completedListPage.dart';
 import 'uis/Completed Lists/completedListUi.dart';
-import 'uis/Completed Lists/listui.dart';
-import 'uis/Streak/streakCompletedUi.dart';
-import 'uis/Streak/streakListUi.dart';
+import 'uis/Streak/streakPage.dart';
+import 'uis/Toodolee Lists/CompletedPage.dart';
 
 //import 'pages/weatherCard.dart';
 
@@ -193,7 +188,7 @@ class MyApp extends StatelessWidget {
       appName: 'Toodolee',
       receiverEmails: ['projectcodedorg@gmail.com'],
       child: FutureBuilder(
-          future: Future.delayed(Duration(seconds: 3)),
+          future: Future.delayed(Duration(seconds: 0)),
           builder: (context, AsyncSnapshot snapshot) {
             // Show splash screen while waiting for app resources to load:
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -372,13 +367,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
-                    // print("${streakBox.path} is the key");
-                    // if (compStreak.isCompleted == true) {
-                    //   compStreak.isCompleted = false;
-                    //   compStreak.save();
-                    //   print("ran the completed == true");
-                    // }
-
                     setState(() {
                       showEmojiKeyboard = false;
                       // todoEmoji = null;
@@ -391,6 +379,9 @@ class _DefaultedAppState extends State<DefaultedApp> {
                     addTodoBottomSheet(context);
 
                     print("Add it");
+                   
+
+                   
                   },
                   child: Icon(CarbonIcons.add),
                 ),
@@ -542,7 +533,7 @@ class _TodoAppState extends State<TodoApp> {
 
   // list of string options
 
-  List pages = [TodoCard(), StreakCard(), CompletedPage()];
+  List pages = [WorkingOnPage(), StreakPage(), CompletedPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -778,9 +769,11 @@ class _TodoAppState extends State<TodoApp> {
                             child: FadeInUp(
                               duration: Duration(milliseconds: 2000),
                               child: Text(
-                                todoBox.length == 10
+                                todoBox.length == 10 ||
+                                        streakBox.length == 10 ||
+                                        completedBox.length == 10
                                     ? ""
-                                    : "You can add : $remainingTodoCount more ",
+                                    : "You can add : $remainingTodoCount more",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),

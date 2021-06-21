@@ -34,7 +34,11 @@ class _ProgressBarState extends State<ProgressBar> {
     // print("this is todoBox value ${todoBoxLength.value}");
 
     return MultiValueListenableBuider(
-        valueListenables: [todoBox.listenable(), completedBox.listenable()],
+        valueListenables: [
+          todoBox.listenable(),
+          completedBox.listenable(),
+          streakBox.listenable()
+        ],
         builder: (context, value, child) => Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +105,7 @@ class _ProgressBarState extends State<ProgressBar> {
                                     ),
                                     TextSpan(
                                         text:
-                                            '${completedBox.length + completedStreakBox.length}/${todoBox.length + completedBox.length + streakBox.length}',
+                                            '${completedBox.length + streakBox.values.where((streak) => streak.isCompleted).toList().length}/${todoBox.length + streakBox.length + completedBox.length}',
                                         style: TextStyle(
                                           fontSize: MediaQuery.of(context)
                                                   .size
@@ -138,8 +142,8 @@ progressBar(context) {
   double completedTodoCount = completedBox.length.toDouble();
 
   final List<ChartData> chartData = [
-    ChartData('Completed Todo', completedTodoCount),
-    ChartData('Incompleted Todo', runningTodoCount),
+    ChartData('Completed', completedTodoCount),
+    ChartData('Incompleted', runningTodoCount),
   ];
 
   return Container(

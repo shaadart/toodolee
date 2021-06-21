@@ -10,11 +10,10 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:toodo/Notification/notificationsAddSubtract.dart';
+import 'package:toodo/Notification/NotificationsCancelAndRestart.dart';
 import 'package:toodo/main.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/Streak%20Model/streak_model.dart';
-import 'package:toodo/uis/Streak/streakCompletedUi.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
@@ -22,6 +21,13 @@ import 'package:toodo/models/Streak%20Model/completed_streak_model.dart';
 import 'package:toodo/uis/quotes.dart';
 
 import '../whiteScreen.dart';
+
+String completedStreakName;
+String completedStreakEmoji;
+String completedStreakRemainder;
+int completedStreakDays;
+int completedStreakCount;
+bool completedStreakCompleted;
 
 void incrementCount() {
   totalTodoCount.value++;
@@ -44,7 +50,6 @@ class _StreakCardState extends State<StreakCard> {
   ConfettiController controllerbottomCenter;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       initController();
@@ -112,163 +117,282 @@ class _StreakCardState extends State<StreakCard> {
                         itemBuilder: (_, index) {
                           final int key = keys[index];
                           StreakModel streako = sbox.get(key);
-                          String completedStreakName = streako.streakName;
-                          String completedStreakEmoji = streako.streakEmoji;
-                          String completedStreakRemainder =
-                              streako.streakRemainder;
-                          int completedStreakDays = streako.streakDays;
-                          int completedStreakCount = streako.streakCount;
-                          bool completedStreakCompleted = false;
-                          rewardingAlertDialogs() {
-                            return Container(
-                              height:
-                                  MediaQuery.of(context).size.longestSide / 2,
-                              child: CarouselSlider(
-                                carouselController: buttonCarouselController,
-                                items: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      ListTile(
-                                          title: Text(
-                                            "Challenge Completed",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                            textAlign: TextAlign.center,
+                          completedStreakName = streako.streakName;
+                          completedStreakEmoji = streako.streakEmoji;
+                          completedStreakRemainder = streako.streakRemainder;
+                          completedStreakDays = streako.streakDays;
+                          completedStreakCount = streako.streakCount;
+                          completedStreakCompleted = streako.isCompleted;
+
+                          if (completedStreakCompleted == false) {
+                            return Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.shortestSide /
+                                        35,
+                                    0,
+                                    MediaQuery.of(context).size.shortestSide /
+                                        35,
+                                    0),
+                                child: Davinci(builder: (imgkey) {
+                                  ///3. set the widget key to the globalkey
+                                  this.imageKey = imgkey;
+                                  return Container(
+                                      color: Colors.transparent,
+                                      child: GradientCard(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(0),
                                           ),
-                                          subtitle: Text(
-                                            '${(completedStreakName).toString()}',
-                                            textAlign: TextAlign.center,
-                                          )),
-                                      Container(
-                                        width: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            3,
-                                        child: MaterialButton(
-                                            color:
-                                                Theme.of(context).accentColor,
-                                            onPressed: () {
-                                              buttonCarouselController.nextPage(
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  curve: Curves.linear);
-                                            },
-                                            child: Text("Next")),
-                                      ),
-                                    ],
-                                  ),
+                                          margin: EdgeInsets.all(0),
+                                          gradient: Gradients.buildGradient(
+                                              Alignment.topRight,
+                                              Alignment.topLeft, [
+                                            Theme.of(context)
+                                                .scaffoldBackgroundColor,
 
-                                  //New Item
+                                            // Theme.of(context).cardColor.withOpacity(0.2),
+                                            Theme.of(context)
+                                                .scaffoldBackgroundColor,
 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                              title: Text(
-                                                "Rewarded Day",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      20,
-                                                  0,
-                                                  MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      20,
-                                                  0),
-                                              child: TextField(
-                                                autofocus: true,
-                                                onChanged: (value) {
-                                                  settingsBox.put(
-                                                      "userThoughts", value);
-
-                                                  if (settingsBox.get(
-                                                          "userThoughts") ==
-                                                      null) {
-                                                    settingsBox.put(
-                                                        "userThoughts",
-                                                        "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
-                                                  }
-                                                  //Do something with the user input.
-                                                },
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      'My Thoughts on Challenge.',
-                                                  // contentPadding:
-                                                  //     EdgeInsets.symmetric(
-                                                  //         vertical: 10.0,
-                                                  //         horizontal: 20.0),
+                                            // Colors.black54,
+                                            //  Colors.black87,
+                                            //  Colors.black87,
+                                          ]),
+                                          child: Column(children: [
+                                            Card(
+                                              elevation: 0.4,
+                                              child: Wrap(children: [
+                                                Center(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .shortestSide /
+                                                            20),
+                                                    child:
+                                                        CircularStepProgressIndicator(
+                                                      totalSteps:
+                                                          completedStreakDays,
+                                                      currentStep:
+                                                          completedStreakCount,
+                                                      stepSize: 6,
+                                                      selectedColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary,
+                                                      // Color(0xff4785FF),
+                                                      unselectedColor: Theme.of(
+                                                              context)
+                                                          .scaffoldBackgroundColor,
+                                                      padding: 0,
+                                                      unselectedStepSize: 8,
+                                                      width: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .shortestSide /
+                                                          2.5,
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .shortestSide /
+                                                          2.5,
+                                                      selectedStepSize: 10,
+                                                      roundedCap: (_, __) =>
+                                                          true,
+                                                      child: Center(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                                "$completedStreakCount Days",
+                                                                style: TextStyle(
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .shortestSide /
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700)),
+                                                            Opacity(
+                                                              opacity: 0.5,
+                                                              child: Text(
+                                                                  "${completedStreakDays - completedStreakCount} left",
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subtitle2),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      20,
-                                                  0,
-                                                  MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      20,
-                                                  0),
-                                              child: TextField(
-                                                onChanged: (value) {
-                                                  settingsBox.put(
-                                                      "userRecommend", value);
-
-                                                  if (settingsBox.get(
-                                                          "userRecommend") ==
-                                                      null) {
-                                                    settingsBox.put(
-                                                        "userRecommend",
-                                                        "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
-                                                  }
-                                                  //Do something with the user input.
-                                                },
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      'How to Improve Toodolee.',
-                                                  // contentPadding:
-                                                  //     EdgeInsets.symmetric(
-                                                  //         vertical: 10.0,
-                                                  //         horizontal: 20.0),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          15,
+                                                      0,
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          15,
+                                                      0),
+                                                  child: Divider(
+                                                    thickness: 1.2,
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .shortestSide /
-                                                  3,
-                                              child: MaterialButton(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  onPressed: () async {
-                                                    print(
-                                                        "${settingsBox.get("userThoughts")} is the user's mail");
-                                                    final MailOptions
-                                                        mailOptions =
-                                                        MailOptions(
-                                                      body: '''
+                                                ListTile(
+                                                  leading: IconButton(
+                                                    onPressed: () {
+                                                      rewardingAlertDialogs() {
+                                                        return Container(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .longestSide /
+                                                              2,
+                                                          child: CarouselSlider(
+                                                            carouselController:
+                                                                buttonCarouselController,
+                                                            items: [
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                        "Challenge Completed",
+                                                                        style: Theme.of(context)
+                                                                            .textTheme
+                                                                            .headline6,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      ),
+                                                                      subtitle:
+                                                                          Text(
+                                                                        '${(completedStreakName).toString()}',
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      )),
+                                                                  Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .shortestSide /
+                                                                        3,
+                                                                    child: MaterialButton(
+                                                                        color: Theme.of(context).accentColor,
+                                                                        onPressed: () {
+                                                                          buttonCarouselController.nextPage(
+                                                                              duration: Duration(milliseconds: 300),
+                                                                              curve: Curves.linear);
+                                                                        },
+                                                                        child: Text("Next")),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              //New Item
+
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  SingleChildScrollView(
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        ListTile(
+                                                                          title:
+                                                                              Text(
+                                                                            "Rewarded Day",
+                                                                            style:
+                                                                                Theme.of(context).textTheme.headline6,
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                          ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsets.fromLTRB(
+                                                                              MediaQuery.of(context).size.width / 20,
+                                                                              0,
+                                                                              MediaQuery.of(context).size.width / 20,
+                                                                              0),
+                                                                          child:
+                                                                              TextField(
+                                                                            autofocus:
+                                                                                true,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              settingsBox.put("userThoughts", value);
+
+                                                                              if (settingsBox.get("userThoughts") == null) {
+                                                                                settingsBox.put("userThoughts", "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                                              }
+                                                                              //Do something with the user input.
+                                                                            },
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              hintText: 'My Thoughts on Challenge.',
+                                                                              // contentPadding:
+                                                                              //     EdgeInsets.symmetric(
+                                                                              //         vertical: 10.0,
+                                                                              //         horizontal: 20.0),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsets.fromLTRB(
+                                                                              MediaQuery.of(context).size.width / 20,
+                                                                              0,
+                                                                              MediaQuery.of(context).size.width / 20,
+                                                                              0),
+                                                                          child:
+                                                                              TextField(
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              settingsBox.put("userRecommend", value);
+
+                                                                              if (settingsBox.get("userRecommend") == null) {
+                                                                                settingsBox.put("userRecommend", "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                                              }
+                                                                              //Do something with the user input.
+                                                                            },
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              hintText: 'How to Improve Toodolee.',
+                                                                              // contentPadding:
+                                                                              //     EdgeInsets.symmetric(
+                                                                              //         vertical: 10.0,
+                                                                              //         horizontal: 20.0),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          width:
+                                                                              MediaQuery.of(context).size.shortestSide / 3,
+                                                                          child: MaterialButton(
+                                                                              color: Theme.of(context).accentColor,
+                                                                              onPressed: () async {
+                                                                                print("${settingsBox.get("userThoughts")} is the user's mail");
+                                                                                final MailOptions mailOptions = MailOptions(
+                                                                                  body: '''
                                                           𝗛𝗲𝘆𝗽𝗽𝗶𝗲,
                                                           <br>
                                                           Declare that I have won,<br>
@@ -296,428 +420,468 @@ class _StreakCardState extends State<StreakCard> {
                                                                     
                                                           
                                                           ''',
-                                                      subject:
-                                                          'Challenge, $completedStreakName',
-                                                      recipients: [
-                                                        'toodolee@gmail.com'
-                                                      ],
-                                                      isHTML: true,
-                                                    );
+                                                                                  subject: 'Challenge, $completedStreakName',
+                                                                                  recipients: [
+                                                                                    'toodolee@gmail.com'
+                                                                                  ],
+                                                                                  isHTML: true,
+                                                                                );
 
-                                                    await FlutterMailer.send(
-                                                        mailOptions);
+                                                                                await FlutterMailer.send(mailOptions);
 
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Complete")),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                                options: CarouselOptions(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.5,
-                                  autoPlay: false,
-                                  enlargeCenterPage: false,
-                                  viewportFraction: 1,
-                                  initialPage: 0,
-                                  enableInfiniteScroll: false,
-                                  aspectRatio:
-                                      MediaQuery.of(context).size.aspectRatio,
-                                ),
-                              ),
-                            );
-                          }
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text("Complete")),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                            options:
+                                                                CarouselOptions(
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height /
+                                                                  1.5,
+                                                              autoPlay: false,
+                                                              enlargeCenterPage:
+                                                                  false,
+                                                              viewportFraction:
+                                                                  1,
+                                                              initialPage: 0,
+                                                              enableInfiniteScroll:
+                                                                  false,
+                                                              aspectRatio:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .aspectRatio,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
 
-                          return Padding(
+                                                      if (completedStreakDays -
+                                                              completedStreakCount ==
+                                                          1) {
+                                                        controllerbottomCenter
+                                                            .play();
+                                                        showDialog(
+                                                            useRootNavigator:
+                                                                false,
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Dialog(
+                                                                  child:
+                                                                      rewardingAlertDialogs());
+                                                            });
+                                                      }
+                                                      // deleteQuotes();
+                                                      player.play(
+                                                        'sounds/hero_decorative-celebration-03.wav',
+                                                        stayAwake: false,
+                                                        // mode: PlayerMode.LOW_LATENCY,
+                                                      );
+
+                                                      streako.isCompleted =
+                                                          true;
+                                                      streako.streakCount++;
+                                                      streako.save();
+
+                                                      cancelNotifications(
+                                                          completedStreakRemainder,
+                                                          context);
+                                                      // completedStreakCompleted =
+                                                      //     true;
+
+                                                      // streako.save();
+                                                      // CompletedStreakModel
+                                                      //     completedStreak =
+                                                      //     CompletedStreakModel(
+                                                      //   streakName:
+                                                      //       completedStreakName,
+                                                      //   streakEmoji:
+                                                      //       completedStreakEmoji,
+                                                      //   streakRemainder:
+                                                      //       completedStreakRemainder,
+                                                      //   streakDays:
+                                                      //       completedStreakDays,
+                                                      //   streakCount:
+                                                      //       completedStreakCount +
+                                                      //           1,
+                                                      //   isCompleted:
+                                                      //       completedStreakCompleted,
+                                                      // );
+                                                      // streakBox.deleteAt(index);
+                                                      // completedStreakBox
+                                                      //     .add(completedStreak);
+                                                      // setState(() {
+                                                      //   completedStreakCompleted =
+                                                      //       true;
+                                                      // });
+                                                    },
+                                                    icon: Icon(
+                                                        CarbonIcons
+                                                            .radio_button,
+                                                        color: Colors.blue),
+                                                  ),
+                                                  title: Opacity(
+                                                    opacity: 0.8,
+                                                    child: Text(
+                                                      '${(completedStreakName).toString()}',
+                                                      style: TextStyle(
+                                                        fontFamily: "WorkSans",
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            19,
+                                                        //  color: Colors.black54,
+                                                        //decoration: TextDecoration.lineThrough,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                ButtonBar(
+                                                  children: [
+                                                    Opacity(
+                                                      opacity: 0.7,
+                                                      child: Text(
+                                                          '${completedStreakRemainder.toString()}'),
+                                                    ),
+                                                    completedStreakEmoji ==
+                                                            "null"
+                                                        ? Container()
+                                                        : Text(
+                                                            '$completedStreakEmoji',
+                                                            style: TextStyle(
+                                                              fontSize: 20,
+                                                            )),
+                                                    Container(
+                                                        height:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                8,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            8,
+                                                        child: IconButton(
+                                                            icon: Icon(CarbonIcons
+                                                                .overflow_menu_horizontal),
+                                                            color: Colors.blue,
+                                                            onPressed: () {
+                                                              player.play(
+                                                                'sounds/ui_tap-variant-01.wav',
+                                                                stayAwake:
+                                                                    false,
+                                                                // mode: PlayerMode.LOW_LATENCY,
+                                                              );
+                                                              showModalBottomSheet(
+                                                                  context:
+                                                                      context,
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    // <-- for border radius
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              10.0),
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              10.0),
+                                                                    ),
+                                                                  ),
+                                                                  builder:
+                                                                      (context) {
+                                                                    return Wrap(
+                                                                        children: [
+                                                                          MaterialButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              player.play(
+                                                                                'sounds/ui_tap-variant-01.wav',
+                                                                                stayAwake: false,
+                                                                                // mode: PlayerMode.LOW_LATENCY,
+                                                                              );
+                                                                              Navigator.pop(context);
+                                                                              if (completedStreakEmoji == "null" && completedStreakRemainder == null) {
+                                                                                Share.share("$completedStreakName \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              } else if (todo.todoRemainder == null) {
+                                                                                Share.share("$completedStreakName \n $completedStreakEmoji  \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              } else if (completedStreakEmoji == "null") {
+                                                                                Share.share("$completedStreakRemainder⏰ \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              } else {
+                                                                                Share.share("$completedStreakName $completedStreakEmoji \n at $completedStreakRemainder \n \n @toodoleeApp", subject: "Today's Toodo");
+                                                                              }
+                                                                            },
+                                                                            child:
+                                                                                ListTile(
+                                                                              leading: Icon(CarbonIcons.share),
+                                                                              title: Text("Share"),
+                                                                            ),
+                                                                          ),
+                                                                          MaterialButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await DavinciCapture.click(
+                                                                                imgkey,
+                                                                                saveToDevice: true,
+                                                                                fileName: "${DateTime.now().microsecondsSinceEpoch}",
+                                                                                openFilePreview: true,
+                                                                                albumName: "Toodolees",
+                                                                                pixelRatio: 2,
+                                                                                // returnImageUint8List:
+                                                                                //     true,
+                                                                              );
+
+                                                                              // setState(() {
+                                                                              //   initialCanvasColor = null;
+                                                                              //   initialmargin =
+                                                                              //       EdgeInsets.all(4.0);
+                                                                              // });
+
+                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.blue[200],
+                                                                                  content: Row(
+                                                                                    children: [
+                                                                                      Expanded(flex: 1, child: Text("👍", style: TextStyle(color: Colors.white))),
+                                                                                      Expanded(
+                                                                                          flex: 5,
+                                                                                          child: Text(
+                                                                                            "Share this Will, (Captured)",
+                                                                                          )),
+                                                                                      // MaterialButton(
+                                                                                      //   child: Text("Undo"),
+                                                                                      //   color: Colors.white,
+                                                                                      //   onPressed: () async{
+                                                                                      //     await box.deleteAt(index);
+                                                                                      //     Navigator.pop(context);
+                                                                                      //   },
+                                                                                      // ),
+                                                                                    ],
+                                                                                  )));
+                                                                            },
+                                                                            // await DavinciCapture.offStage(
+                                                                            //     PreviewWidget());
+
+                                                                            child:
+                                                                                ListTile(
+                                                                              leading: Icon(CarbonIcons.download),
+                                                                              title: Text("Download"),
+                                                                            ),
+                                                                          ),
+                                                                          Divider(),
+                                                                          MaterialButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await sbox.deleteAt(index);
+
+                                                                              incrementCount();
+                                                                              deleteQuotes();
+                                                                              cancelNotifications(completedStreakRemainder, context);
+                                                                              player.play(
+                                                                                'sounds/navigation_transition-left.wav',
+                                                                                stayAwake: false,
+                                                                                // mode: PlayerMode.LOW_LATENCY,
+                                                                              );
+
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                ListTile(
+                                                                              leading: Icon(CarbonIcons.delete, color: Colors.redAccent),
+                                                                              title: Text(
+                                                                                "Delete",
+                                                                                style: TextStyle(color: Colors.redAccent),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ]);
+                                                                  });
+                                                            })),
+                                                  ],
+                                                ),
+                                                // CompletedStreak()
+                                              ]),
+                                            )
+                                          ])));
+                                }));
+                          } else {
+                            return Padding(
                               padding: EdgeInsets.fromLTRB(
                                   MediaQuery.of(context).size.shortestSide / 35,
                                   0,
                                   MediaQuery.of(context).size.shortestSide / 35,
                                   0),
-                              child: Davinci(builder: (imgkey) {
-                                ///3. set the widget key to the globalkey
-                                this.imageKey = imgkey;
-                                return Container(
-                                    color: Colors.transparent,
-                                    child: GradientCard(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(0),
+                              child: Card(
+                                // color: Colors.white,
+
+                                elevation: 0.4,
+                                child: Wrap(
+                                  children: [
+                                    ListTile(
+                                      title: Opacity(
+                                        opacity: 0.8,
+                                        child: Text(
+                                          '${(completedStreakName).toString()}',
+                                          style: TextStyle(
+                                            fontFamily: "WorkSans",
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                            //  color: Colors.black54,
+                                            //decoration: TextDecoration.lineThrough,
+                                          ),
                                         ),
-                                        margin: EdgeInsets.all(0),
-                                        gradient: Gradients.buildGradient(
-                                            Alignment.topRight,
-                                            Alignment.topLeft, [
-                                          Theme.of(context)
-                                              .scaffoldBackgroundColor,
+                                      ),
+                                      onLongPress: () {
+                                        print("object");
+                                      },
+                                      leading: IconButton(
+                                        onPressed: () {
+                                          // compStreak.isCompleted = false;
+                                          // compStreak.save();
+                                          deleteQuotes();
+                                          player.play(
+                                            'sounds/notification_simple-01.wav',
+                                            stayAwake: false,
+                                            // mode: PlayerMode.LOW_LATENCY,
+                                          );
 
-                                          // Theme.of(context).cardColor.withOpacity(0.2),
-                                          Theme.of(context)
-                                              .scaffoldBackgroundColor,
+                                          // completedStreakCompleted = false;
+                                          setState(() {
+                                            streako.isCompleted = false;
+                                            streako.streakCount--;
+                                            streako.save();
+                                          });
+                                          // StreakModel incompleteStreak =
+                                          //     StreakModel(
+                                          //   streakName: completedStreakName,
+                                          //   streakEmoji: incompletedStreakEmoji,
+                                          //   streakRemainder:
+                                          //       incompletedStreakRemainder,
+                                          //   streakDays: incompletedStreakDays,
+                                          //   streakCount:
+                                          //       incompletedStreakCount - 1,
+                                          //   isCompleted:
+                                          //       incompletedStreakCompleted,
+                                          // );
+                                          // streakBox.add(incompleteStreak);
+                                          // completedStreakBox.deleteAt(index);
+                                        },
+                                        icon: Icon(CarbonIcons.checkmark_filled,
+                                            color: Colors.blue),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.fromLTRB(66.0, 0, 30, 0),
+                                      //   // child: Text(
+                                      //   //   'Greyhound d ',
+                                      //   //   style:
+                                      //   //       TextStyle(color: Colors.black.withOpacity(0.6)),
+                                      //   // ),
+                                      // ),
 
-                                          // Colors.black54,
-                                          //  Colors.black87,
-                                          //  Colors.black87,
-                                        ]),
-                                        child: Column(children: [
-                                          Card(
-                                            elevation: 0.4,
-                                            child: Wrap(children: [
-                                              Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .shortestSide /
-                                                          20),
-                                                  child:
-                                                      CircularStepProgressIndicator(
-                                                    totalSteps:
-                                                        completedStreakDays,
-                                                    currentStep:
-                                                        completedStreakCount,
-                                                    stepSize: 6,
-                                                    selectedColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    // Color(0xff4785FF),
-                                                    unselectedColor: Theme.of(
-                                                            context)
-                                                        .scaffoldBackgroundColor,
-                                                    padding: 0,
-                                                    unselectedStepSize: 8,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .shortestSide /
-                                                            2.5,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .shortestSide /
-                                                            2.5,
-                                                    selectedStepSize: 10,
-                                                    roundedCap: (_, __) => true,
-                                                    child: Center(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                              "$completedStreakCount Days",
-                                                              style: TextStyle(
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .shortestSide /
-                                                                      20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700)),
-                                                          Opacity(
-                                                            opacity: 0.5,
-                                                            child: Text(
-                                                                "${completedStreakDays - completedStreakCount} left",
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .subtitle2),
-                                                          )
-                                                        ],
+                                      trailing: IconButton(
+                                        color: Colors.blue,
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: false,
+                                            shape: RoundedRectangleBorder(
+                                              // <-- for border radius
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0),
+                                                topRight: Radius.circular(10.0),
+                                              ),
+                                            ),
+                                            builder: (context) {
+                                              // Using Wrap makes the bottom sheet height the height of the content.
+                                              // Otherwise, the height will be half the height of the screen.
+                                              return Wrap(
+                                                children: [
+                                                  // MaterialButton(
+                                                  //   onPressed: () {},
+                                                  //   child: ListTile(
+                                                  //     leading: Icon(CarbonIcons.edit),
+                                                  //     title: Text("Edit"),
+                                                  //   ),
+                                                  // ),
+                                                  MaterialButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+
+                                                      Share.share(
+                                                          "Hey 👋, Todays Todo is Completed, \n \n ${completedStreakName} \n \n 🎉🎉🎉",
+                                                          subject:
+                                                              "Today's Toodo");
+                                                    },
+                                                    child: ListTile(
+                                                      leading: Icon(
+                                                          CarbonIcons.share),
+                                                      title: Text("Share"),
+                                                    ),
+                                                  ),
+
+                                                  Divider(),
+                                                  MaterialButton(
+                                                    onPressed: () async {
+                                                      await sbox
+                                                          .deleteAt(index);
+                                                      incrementCount();
+                                                      deleteQuotes();
+
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: ListTile(
+                                                      leading: Icon(
+                                                          CarbonIcons.delete,
+                                                          color:
+                                                              Colors.redAccent),
+                                                      title: Text(
+                                                        "Delete",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .redAccent),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        15,
-                                                    0,
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        15,
-                                                    0),
-                                                child: Divider(
-                                                  thickness: 1.2,
-                                                ),
-                                              ),
-                                              ListTile(
-                                                leading: IconButton(
-                                                  onPressed: () {
-                                                    // completedStreakCount++;
-                                                    // // streako.isCompleted =
-                                                    // //     true;
-                                                    // streako.save();
-
-                                                    if (completedStreakDays -
-                                                            completedStreakCount ==
-                                                        1) {
-                                                      controllerbottomCenter
-                                                          .play();
-                                                      showDialog(
-                                                          useRootNavigator:
-                                                              false,
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Dialog(
-                                                                child:
-                                                                    rewardingAlertDialogs());
-                                                          });
-                                                    }
-                                                    // deleteQuotes();
-                                                    player.play(
-                                                      'sounds/hero_decorative-celebration-03.wav',
-                                                      stayAwake: false,
-                                                      // mode: PlayerMode.LOW_LATENCY,
-                                                    );
-
-                                                    // compStreak.isCompleted =
-                                                    //     false;
-                                                    // compStreak.save();
-                                                    cancelNotifications(
-                                                        completedStreakRemainder,
-                                                        context);
-                                                    // completedStreakCompleted =
-                                                    //     true;
-                                                    // completedStreakCount++;
-                                                    // streako.save();
-                                                    CompletedStreakModel
-                                                        completedStreak =
-                                                        CompletedStreakModel(
-                                                      streakName:
-                                                          completedStreakName,
-                                                      streakEmoji:
-                                                          completedStreakEmoji,
-                                                      streakRemainder:
-                                                          completedStreakRemainder,
-                                                      streakDays:
-                                                          completedStreakDays,
-                                                      streakCount:
-                                                          completedStreakCount +
-                                                              1,
-                                                      isCompleted: false,
-                                                    );
-                                                    streakBox.deleteAt(index);
-                                                    completedStreakBox
-                                                        .add(completedStreak);
-                                                  },
-                                                  icon: Icon(
-                                                      CarbonIcons.radio_button,
-                                                      color: Colors.blue),
-                                                ),
-                                                title: Opacity(
-                                                  opacity: 0.8,
-                                                  child: Text(
-                                                    '${(completedStreakName).toString()}',
-                                                    style: TextStyle(
-                                                      fontFamily: "WorkSans",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              19,
-                                                      //  color: Colors.black54,
-                                                      //decoration: TextDecoration.lineThrough,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              ButtonBar(
-                                                children: [
-                                                  Opacity(
-                                                    opacity: 0.7,
-                                                    child: Text(
-                                                        '${completedStreakRemainder.toString()}'),
-                                                  ),
-                                                  completedStreakEmoji == "null"
-                                                      ? Container()
-                                                      : Text(
-                                                          '$completedStreakEmoji',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                          )),
-                                                  Container(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              8,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              8,
-                                                      child: IconButton(
-                                                          icon: Icon(CarbonIcons
-                                                              .overflow_menu_horizontal),
-                                                          color: Colors.blue,
-                                                          onPressed: () {
-                                                            player.play(
-                                                              'sounds/ui_tap-variant-01.wav',
-                                                              stayAwake: false,
-                                                              // mode: PlayerMode.LOW_LATENCY,
-                                                            );
-                                                            showModalBottomSheet(
-                                                                context:
-                                                                    context,
-                                                                isScrollControlled:
-                                                                    true,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  // <-- for border radius
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            10.0),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            10.0),
-                                                                  ),
-                                                                ),
-                                                                builder:
-                                                                    (context) {
-                                                                  return Wrap(
-                                                                      children: [
-                                                                        MaterialButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            player.play(
-                                                                              'sounds/ui_tap-variant-01.wav',
-                                                                              stayAwake: false,
-                                                                              // mode: PlayerMode.LOW_LATENCY,
-                                                                            );
-                                                                            Navigator.pop(context);
-                                                                            if (completedStreakEmoji == "null" &&
-                                                                                completedStreakRemainder == null) {
-                                                                              Share.share("$completedStreakName \n \n @toodoleeApp", subject: "Today's Toodo");
-                                                                            } else if (todo.todoRemainder ==
-                                                                                null) {
-                                                                              Share.share("$completedStreakName \n $completedStreakEmoji  \n \n @toodoleeApp", subject: "Today's Toodo");
-                                                                            } else if (completedStreakEmoji ==
-                                                                                "null") {
-                                                                              Share.share("$completedStreakRemainder⏰ \n \n @toodoleeApp", subject: "Today's Toodo");
-                                                                            } else {
-                                                                              Share.share("$completedStreakName $completedStreakEmoji \n at $completedStreakRemainder \n \n @toodoleeApp", subject: "Today's Toodo");
-                                                                            }
-                                                                          },
-                                                                          child:
-                                                                              ListTile(
-                                                                            leading:
-                                                                                Icon(CarbonIcons.share),
-                                                                            title:
-                                                                                Text("Share"),
-                                                                          ),
-                                                                        ),
-                                                                        MaterialButton(
-                                                                          onPressed:
-                                                                              () async {
-                                                                            await DavinciCapture.click(
-                                                                              imgkey,
-                                                                              saveToDevice: true,
-                                                                              fileName: "${DateTime.now().microsecondsSinceEpoch}",
-                                                                              openFilePreview: true,
-                                                                              albumName: "Toodolees",
-                                                                              pixelRatio: 2,
-                                                                              // returnImageUint8List:
-                                                                              //     true,
-                                                                            );
-
-                                                                            // setState(() {
-                                                                            //   initialCanvasColor = null;
-                                                                            //   initialmargin =
-                                                                            //       EdgeInsets.all(4.0);
-                                                                            // });
-
-                                                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.blue[200],
-                                                                                content: Row(
-                                                                                  children: [
-                                                                                    Expanded(flex: 1, child: Text("👍", style: TextStyle(color: Colors.white))),
-                                                                                    Expanded(
-                                                                                        flex: 5,
-                                                                                        child: Text(
-                                                                                          "Share this Will, (Captured)",
-                                                                                        )),
-                                                                                    // MaterialButton(
-                                                                                    //   child: Text("Undo"),
-                                                                                    //   color: Colors.white,
-                                                                                    //   onPressed: () async{
-                                                                                    //     await box.deleteAt(index);
-                                                                                    //     Navigator.pop(context);
-                                                                                    //   },
-                                                                                    // ),
-                                                                                  ],
-                                                                                )));
-                                                                          },
-                                                                          // await DavinciCapture.offStage(
-                                                                          //     PreviewWidget());
-
-                                                                          child:
-                                                                              ListTile(
-                                                                            leading:
-                                                                                Icon(CarbonIcons.download),
-                                                                            title:
-                                                                                Text("Download"),
-                                                                          ),
-                                                                        ),
-                                                                        Divider(),
-                                                                        MaterialButton(
-                                                                          onPressed:
-                                                                              () async {
-                                                                            await sbox.deleteAt(index);
-
-                                                                            incrementCount();
-                                                                            deleteQuotes();
-                                                                            cancelNotifications(completedStreakRemainder,
-                                                                                context);
-                                                                            player.play(
-                                                                              'sounds/navigation_transition-left.wav',
-                                                                              stayAwake: false,
-                                                                              // mode: PlayerMode.LOW_LATENCY,
-                                                                            );
-
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child:
-                                                                              ListTile(
-                                                                            leading:
-                                                                                Icon(CarbonIcons.delete, color: Colors.redAccent),
-                                                                            title:
-                                                                                Text(
-                                                                              "Delete",
-                                                                              style: TextStyle(color: Colors.redAccent),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ]);
-                                                                });
-                                                          })),
                                                 ],
-                                              ),
-                                              // CompletedStreak()
-                                            ]),
-                                          )
-                                        ])));
-                              }));
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(CarbonIcons
+                                            .overflow_menu_horizontal),
+                                      ),
+                                      subtitle: Text(
+                                          "$completedStreakCount of $completedStreakDays days"),
+                                    ),
+                                    LinearProgressIndicator(
+                                        backgroundColor:
+                                            Theme.of(context).cardColor,
+                                        value: (completedStreakCount /
+                                                completedStreakDays)
+                                            .toDouble())
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
                         }),
                     Center(child: buildConfettiWidget()),
                   ],

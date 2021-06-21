@@ -7,10 +7,10 @@ import 'package:carbon_icons/carbon_icons.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:share/share.dart';
 import 'package:toodo/models/todo_model.dart';
-import 'package:toodo/uis/Streak/streakListUi.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/whiteScreen.dart';
+import 'listui.dart';
 
 Box<CompletedTodoModel> cbox;
 bool fabScrollingVisibility = true;
@@ -95,6 +95,7 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                   child: Text(
                                     '${(comptodo.completedTodoName).toString()}',
                                     style: TextStyle(
+                                     
                                       fontFamily: "WorkSans",
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600,
