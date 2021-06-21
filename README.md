@@ -51,7 +51,7 @@ Toodolee focuses for you maximally limited things, because, when the days are li
 Toodoleee is a revolt Against All Tooodo apps, Because they worsen your creatvity and productivitiness.
 
 
-# Pub Packages 📦 and Fonts
+# Pub Packages📦, People🏆 and Fonts🖋️
 
 Well, there are bit so much packages we are using in this App, 
 
@@ -139,6 +139,33 @@ https://pub.dev/packages/date_format
 #### 🔘 chips_choice
 https://pub.dev/packages/chips_choice
 
+#### 👂 multi_value_listenable_builder 
+https://pub.dev/packages/multi_value_listenable_builder
+
+#### ✉️ flutter_mailer 
+https://pub.dev/packages/flutter_mailer
+
+#### 📅 jiffy 
+https://pub.dev/packages/jiffy
+
+#### 👽 move_to_background 
+https://pub.dev/packages/move_to_background
+
+#### 🐙 yudiz_modal_sheet 
+https://pub.dev/packages/yudiz_modal_sheet
+
+#### 🎚️ better_cupertino_slider 
+https://pub.dev/packages/better_cupertino_slider
+
+#### 📊 step_progress_indicator 
+https://pub.dev/packages/step_progress_indicator
+
+#### 🎊 confetti 
+https://pub.dev/packages/confetti
+
+#### ⚙️ app_settings 
+https://pub.dev/packages/app_settings
+
 #### 🧑‍🎨 hive_generator
 https://pub.dev/packages/hive_generator
 #### 💪 build_runner
@@ -149,8 +176,36 @@ https://giphy.com
 ###### @Ames-staytrue on Giphy  
 
 
+####  This Repo is Owned by Following all, Not me, I was just a bridge who connected the thoughts of all these great under-rated minds. Huge Salutes, I am Commited to this Repo, and this App will serve the Humanity, untill the Last Day.
 
-### Get an Island and Use The Toodolee, Then See yourself as a great man of success.
+#### @mbaumgartenbr
+Helped Added, Daily Recurring Streaks,
+He donated his Sleep for the Project, Gave Suggestions and Came Forward to give us the feature of Daily Commin-up Streaks.
+
+#### @divyanshushukla 
+He is the One who Reproduced the Idea of Streaks
+countlessly helped in the UI, Unseen Aspects of the App, 
+produced potential Errors, and saved Toodolee's Most Time.🥇
+
+#### @TheMisir
+HandHolded in, The Saving of Streak, and Unlimited Small Things.
+Love and Respect++ _(GTA THUG SOUNDS IN BACKGROUND)_
+
+#### @rafaelsetragni
+Counlessly Supported for Notifications and Solved all the related issues.
+Created the `awesome_notification`
+Thank you. This is your victory.
+
+
+#### @nanaqwami
+Improved the UI, He is the Who in front of which the Different Idea, Of creating something great like Toodolee was Produced, 
+Always there for me, from a long Time, We had most of the Fun and thinking together. Same.Team. Same Team.
+
+#### Who can Forget The Flutter, This App is Created in Flutter.
+
+<hr class="dashed">
+
+# Get an Island and Use The Toodolee, Then See yourself as a great man of success.
 
 ![giphy](https://user-images.githubusercontent.com/64954854/121500190-b5436800-c9fb-11eb-93f2-62cb84556381.gif)
 
