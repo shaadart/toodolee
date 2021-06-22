@@ -1628,7 +1628,7 @@ class _BoredState extends State<Bored> {
                                             color: Colors.blue,
                                             onPressed: () async {
                                               player.play(
-                                                'sounds/hero_simple-celebration-03.wav',
+                                                'sounds/hero_decorative-celebration-03.wav',
                                                 stayAwake: false,
                                                 // mode: PlayerMode.LOW_LATENCY,
                                               );

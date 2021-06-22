@@ -146,7 +146,7 @@ class _QuotesState extends State<Quotes> {
                                                                         context)
                                                                     .size
                                                                     .width /
-                                                                18))),
+                                                                20))),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.all(

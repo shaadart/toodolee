@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:toodo/uis/Completed%20Lists/completedListUi.dart';
-import 'package:toodo/uis/Streak/streakListUi.dart';
-import 'package:toodo/uis/bored.dart';
-import 'package:toodo/uis/quotes.dart';
-
+import '../../main.dart';
+import '../addTodoBottomSheet.dart';
 import '../progressbar.dart';
 import 'listui.dart';
 
@@ -16,7 +13,12 @@ class _WorkingOnPageState extends State<WorkingOnPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [ProgressBar(), TodoCard()],
+      children: [
+        streakBox.length <= 0 && completedBox.length <= 0 && todoBox.length <= 0
+            ? Container()
+            : ProgressBar(),
+        TodoCard()
+      ],
     );
   }
 }

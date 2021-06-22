@@ -17,10 +17,7 @@ import 'package:toodo/models/Streak%20Model/streak_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
-import 'package:toodo/models/Streak%20Model/completed_streak_model.dart';
 import 'package:toodo/uis/quotes.dart';
-
-import '../whiteScreen.dart';
 
 String completedStreakName;
 String completedStreakEmoji;
@@ -47,7 +44,7 @@ class _StreakCardState extends State<StreakCard> {
   String platformResponse;
   CarouselController buttonCarouselController = CarouselController();
 
-  ConfettiController controllerbottomCenter;
+  ConfettiController confettiController;
   @override
   void initState() {
     super.initState();
@@ -57,7 +54,7 @@ class _StreakCardState extends State<StreakCard> {
   }
 
   void initController() {
-    controllerbottomCenter =
+    confettiController =
         ConfettiController(duration: const Duration(seconds: 1));
   }
 
@@ -77,7 +74,7 @@ class _StreakCardState extends State<StreakCard> {
           emissionFrequency: 0.1, // how often it should emit
           numberOfParticles: 20, // number of particles to emit
           gravity: 0.1, // gravity
-          confettiController: controllerbottomCenter,
+          confettiController: confettiController,
           blastDirectionality: BlastDirectionality
               .explosive, // don't specify a direction, blast randomly
           shouldLoop: false, // start again as soon as the animation is finished
@@ -467,7 +464,12 @@ class _StreakCardState extends State<StreakCard> {
                                                       if (completedStreakDays -
                                                               completedStreakCount ==
                                                           1) {
-                                                        controllerbottomCenter
+                                                        player.play(
+                                                          'sounds/hero_decorative-celebration-03.wav',
+                                                          stayAwake: false,
+                                                          // mode: PlayerMode.LOW_LATENCY,
+                                                        );
+                                                        confettiController
                                                             .play();
                                                         showDialog(
                                                             useRootNavigator:
@@ -479,11 +481,10 @@ class _StreakCardState extends State<StreakCard> {
                                                                       rewardingAlertDialogs());
                                                             });
                                                       }
-                                                      // deleteQuotes();
+
                                                       player.play(
-                                                        'sounds/hero_decorative-celebration-03.wav',
+                                                        'sounds/notification_simple-02.wav',
                                                         stayAwake: false,
-                                                        // mode: PlayerMode.LOW_LATENCY,
                                                       );
 
                                                       streako.isCompleted =
@@ -494,34 +495,6 @@ class _StreakCardState extends State<StreakCard> {
                                                       cancelNotifications(
                                                           completedStreakRemainder,
                                                           context);
-                                                      // completedStreakCompleted =
-                                                      //     true;
-
-                                                      // streako.save();
-                                                      // CompletedStreakModel
-                                                      //     completedStreak =
-                                                      //     CompletedStreakModel(
-                                                      //   streakName:
-                                                      //       completedStreakName,
-                                                      //   streakEmoji:
-                                                      //       completedStreakEmoji,
-                                                      //   streakRemainder:
-                                                      //       completedStreakRemainder,
-                                                      //   streakDays:
-                                                      //       completedStreakDays,
-                                                      //   streakCount:
-                                                      //       completedStreakCount +
-                                                      //           1,
-                                                      //   isCompleted:
-                                                      //       completedStreakCompleted,
-                                                      // );
-                                                      // streakBox.deleteAt(index);
-                                                      // completedStreakBox
-                                                      //     .add(completedStreak);
-                                                      // setState(() {
-                                                      //   completedStreakCompleted =
-                                                      //       true;
-                                                      // });
                                                     },
                                                     icon: Icon(
                                                         CarbonIcons

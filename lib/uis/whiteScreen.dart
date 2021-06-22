@@ -387,7 +387,7 @@ whiteScreen(context) {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
                   0,
-                  MediaQuery.of(context).size.height / 35,
+                  MediaQuery.of(context).size.longestSide / 35,
                   0,
                   0,
                 ),
@@ -400,15 +400,16 @@ whiteScreen(context) {
                         child: Text(
                           "$randomImage",
                           style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 22,
+                            fontSize:
+                                MediaQuery.of(context).size.longestSide / 22,
                           ),
                         ),
                       ),
                     ),
                     ListTile(
                       title: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            8, 0, 8, MediaQuery.of(context).size.height / 40),
+                        padding: EdgeInsets.fromLTRB(8, 0, 8,
+                            MediaQuery.of(context).size.longestSide / 40),
                         child: Opacity(
                           opacity: 0.7,
                           child: Text(

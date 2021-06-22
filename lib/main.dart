@@ -4,9 +4,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flappy/flappy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:toodo/processes.dart';
 import 'dart:async';
@@ -20,17 +18,17 @@ import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/Streak Model/streak_model.dart';
 import 'package:toodo/models/Streak Model/completed_streak_model.dart';
 import 'package:toodo/pages/onboardingScreen.dart';
-import 'package:toodo/uis/Toodolee%20Lists/WorkingOnPage.dart';
+import 'package:toodo/uis/Toodolee Lists/WorkingOnPage.dart';
+import 'package:toodo/uis/Toodolee Lists/completedListUi.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/pages/morePage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:toodo/uis/quotes.dart';
 import 'package:toodo/uis/whiteScreen.dart';
 import 'models/todo_model.dart';
-import 'uis/Completed Lists/completedListUi.dart';
+import 'pages/settingspagedefault.dart';
 import 'uis/Streak/streakPage.dart';
 import 'uis/Toodolee Lists/CompletedPage.dart';
 
@@ -124,6 +122,7 @@ void main() async {
         ledColor: Color(0xffFFCC00),
         importance: NotificationImportance.Max,
         defaultPrivacy: NotificationPrivacy.Public,
+        playSound: true,
         soundSource: "resource://raw/res_alert_simple",
       ),
       NotificationChannel(
@@ -137,6 +136,7 @@ void main() async {
         ledColor: Colors.blue,
         importance: NotificationImportance.Max,
         defaultPrivacy: NotificationPrivacy.Public,
+        playSound: true,
         soundSource: "resource://raw/res_alert_simple",
       ),
       NotificationChannel(
@@ -150,6 +150,7 @@ void main() async {
         ledColor: Color(0xff867AE9),
         importance: NotificationImportance.Max,
         defaultPrivacy: NotificationPrivacy.Public,
+        playSound: true,
         soundSource: "resource://raw/res_alert_simple",
       ),
     ],
@@ -184,63 +185,57 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Configure Splash Screeeen.
-    return FlappyFeedback(
-      appName: 'Toodolee',
-      receiverEmails: ['projectcodedorg@gmail.com'],
-      child: FutureBuilder(
-          future: Future.delayed(Duration(seconds: 0)),
-          builder: (context, AsyncSnapshot snapshot) {
-            // Show splash screen while waiting for app resources to load:
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              player.play(
-                'sounds/notification_ambient.wav',
-                mode: PlayerMode.MEDIA_PLAYER,
-                // stayAwake: false,
-                // mode: PlayerMode.LOW_LATENCY,
-              );
+    return FutureBuilder(
+        future: Future.delayed(Duration(seconds: 0)),
+        builder: (context, AsyncSnapshot snapshot) {
+          // Show splash screen while waiting for app resources to load:
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            player.play(
+              'sounds/notification_ambient.wav',
+              mode: PlayerMode.MEDIA_PLAYER,
+            );
 
-              return WillPopScope(
-                  onWillPop: () async {
-                    MoveToBackground.moveTaskToBack();
-                    return false;
-                  },
-                  child: MaterialApp(home: Splash(), title: 'Toodolee'));
-            } else {
+            return WillPopScope(
+                onWillPop: () async {
+                  MoveToBackground.moveTaskToBack();
+                  return false;
+                },
+                child: MaterialApp(home: Splash(), title: 'Toodolee'));
+          } else {
 //Ghost White: 0xffF6F8FF
 //Lemon Glacier :0xffFBFB0E
 //Rich Black: 0xff010C13
 // Azure: 0xff4785FF
 
-              return AdaptiveTheme(
-                light: ThemeData(
-                  // platform: TargetPlatform.iOS,
-                  fontFamily: "WorkSans",
-                  brightness: Brightness.light,
-                  primaryColor: Color(0xffFBFB0E),
-                  accentColor: Color(0xff0177fb),
-                  scaffoldBackgroundColor: Color(0xffffffff),
-                  cardColor: Color(0xfff3f8fb), //f3f8fb
-                ),
-                dark: ThemeData(
-                  // platform: TargetPlatform.iOS,
-                  fontFamily: "WorkSans",
-                  brightness: Brightness.dark,
-                  primaryColor: Color(0xff0177fb),
-                  accentColor: Color(0xffFBFB0E),
-                  scaffoldBackgroundColor: Color(0xff151515), //000000
-                  cardColor: Color(0xff252525),
-                ),
-                initial: AdaptiveThemeMode.light,
-                builder: (theme, darkTheme) => MaterialApp(
-                  title: 'Toodolee',
-                  theme: theme,
-                  darkTheme: darkTheme,
-                  home: MainScreen(),
-                ),
-              );
-            }
-          }),
-    );
+            return AdaptiveTheme(
+              light: ThemeData(
+                // platform: TargetPlatform.iOS,
+                fontFamily: "WorkSans",
+                brightness: Brightness.light,
+                primaryColor: Color(0xffFBFB0E),
+                accentColor: Color(0xff0177fb),
+                scaffoldBackgroundColor: Color(0xffffffff),
+                cardColor: Color(0xfff3f8fb), //f3f8fb
+              ),
+              dark: ThemeData(
+                // platform: TargetPlatform.iOS,
+                fontFamily: "WorkSans",
+                brightness: Brightness.dark,
+                primaryColor: Color(0xff0177fb),
+                accentColor: Color(0xffFBFB0E),
+                scaffoldBackgroundColor: Color(0xff151515), //000000
+                cardColor: Color(0xff252525),
+              ),
+              initial: AdaptiveThemeMode.light,
+              builder: (theme, darkTheme) => MaterialApp(
+                title: 'Toodolee',
+                theme: theme,
+                darkTheme: darkTheme,
+                home: MainScreen(),
+              ),
+            );
+          }
+        });
   }
 }
 
@@ -264,6 +259,12 @@ class _SplashState extends State<Splash> {
     streakBox = Hive.box<StreakModel>(streakBoxName);
     completedStreakBox = Hive.box<CompletedStreakModel>(completedStreakBoxName);
     resetToodoleeMidNight(context);
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
   }
 
   @override
@@ -379,9 +380,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
                     addTodoBottomSheet(context);
 
                     print("Add it");
-                   
-
-                   
                   },
                   child: Icon(CarbonIcons.add),
                 ),
@@ -746,21 +744,6 @@ class _TodoAppState extends State<TodoApp> {
                     //delay: Duration(milliseconds: 200),
                   ),
 
-                  // ),
-                  // SlideInUp(
-                  //   child: CompletedTodoCard(),
-                  //   duration: Duration(milliseconds: 2000),
-                  //   //delay: Duration(milliseconds: 2000),
-                  // ),
-
-                  // FadeInUp(
-                  //   //delay: Duration(milliseconds: 800),
-                  //   duration: Duration(milliseconds: 2000),
-                  //   child: (todoBox.length <= 0 || completedBox.length > 0)
-                  //       ? Container(
-                  //           height: MediaQuery.of(context).size.shortestSide / 4)
-                  //       : Center(),
-                  // ),
                   todoBox.length > 0
                       ? Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -799,14 +782,6 @@ setRemainderMethod(time, String name, id, context) {
     int minute = time.last;
     print(minute);
 
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        // Insert here your friendly dialog box before call the request method
-        // This is very important to not harm the user experience
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
-
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -837,14 +812,6 @@ setDailyRemainderMethod(time, context) {
   int minute = int.parse(time.last);
   print(minute);
   if (settingsBox.get("dailyNotifications") == true) {
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        // Insert here your friendly dialog box before call the request method
-        // This is very important to not harm the user experience
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
-
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 50,
@@ -856,7 +823,7 @@ setDailyRemainderMethod(time, context) {
           minute: minute,
           allowWhileIdle: true,
           repeats: true,
-          timeZone: AwesomeNotifications.rootNativePath,
+          timeZone: AwesomeNotifications.localTimeZoneIdentifier,
         ));
   }
 }
@@ -867,14 +834,6 @@ setStreakRemainderMethod(time, name, emoji, id, context) {
 
   int minute = time.last;
   print(minute);
-
-  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    if (!isAllowed) {
-      // Insert here your friendly dialog box before call the request method
-      // This is very important to not harm the user experience
-      AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-  });
 
   AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -887,88 +846,6 @@ setStreakRemainderMethod(time, name, emoji, id, context) {
         minute: minute,
         allowWhileIdle: true,
         repeats: true,
-        timeZone: AwesomeNotifications.rootNativePath,
+        timeZone: AwesomeNotifications.localTimeZoneIdentifier,
       ));
-}
-
-resetToodoleeMidNight(context) {
-  if (settingsBox.get("todayDate") == null ||
-      settingsBox.get("monthFirstDay") == null) {
-    DateTime now = DateTime.now();
-
-    var year = now.year;
-    var month = now.month;
-    var day = now.day;
-
-    settingsBox.put("todayDate", [year, month, day]);
-
-    var endOfMonthDaysRemaining =
-        Jiffy().endOf(Units.MONTH).fromNow().split(" ");
-    var checkWhentheMonthwillEnd = Jiffy().add(
-        duration: Duration(
-            days: endOfMonthDaysRemaining[1] == "a"
-                ? 30
-                : int.parse(endOfMonthDaysRemaining[1])));
-    print(endOfMonthDaysRemaining[1]);
-    print(checkWhentheMonthwillEnd.yMMMMd);
-    var nextMonthYear = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").year;
-    var nextMonthMonth = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").month;
-    var nextMonthDay = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").date;
-
-    print(nextMonthMonth);
-    print(nextMonthDay);
-    print(nextMonthYear);
-    // var monthFirstDay = formatDate(
-    //     DateTime(nextMonthYear, nextMonthMonth, nextMonthDay),
-    //     [yy, ' ', M, ' ', d]).split(" ");
-    settingsBox
-        .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
-
-    todoBox.clear();
-    completedBox.clear();
-    deleteQuotes();
-    boredBox.clear();
-    totalTodoCount.value = 10;
-    resetStreakMidNight(context);
-    // streako.isCompleted = false;
-    print("everything is reset-ed");
-  } else {
-    DateTime now = DateTime.now();
-
-    var year = now.year;
-    var month = now.month;
-    var day = now.day;
-    var endOfMonthDaysRemaining =
-        Jiffy().endOf(Units.MONTH).fromNow().split(" ");
-    var checkWhentheMonthwillEnd = Jiffy().add(
-        duration: Duration(
-            days: endOfMonthDaysRemaining[1] == "a"
-                ? 30
-                : int.parse(endOfMonthDaysRemaining[1])));
-    print(endOfMonthDaysRemaining[1]);
-    print(checkWhentheMonthwillEnd.yMMMMd);
-    var nextMonthYear = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").year;
-    var nextMonthMonth = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").month;
-    var nextMonthDay = Jiffy(checkWhentheMonthwillEnd, "MMM dd yy").date;
-    if ((year == settingsBox.get("todayDate")[0] &&
-            month == settingsBox.get("todayDate")[1] &&
-            day == settingsBox.get("todayDate")[2]) ||
-        (nextMonthYear == settingsBox.get("monthFirstDay")[0] &&
-            nextMonthMonth == settingsBox.get("monthFirstDay")[0] &&
-            nextMonthDay == settingsBox.get("monthFirstDay")[2])) {
-      print("nothing to do");
-    } else {
-      todoBox.clear();
-      completedBox.clear();
-      deleteQuotes();
-      boredBox.clear();
-      totalTodoCount.value = 10;
-      resetStreakMidNight(context);
-      // streako.isCompleted = false;
-      print("everything is reset-ed");
-      settingsBox.put("todayDate", [year, month, day]);
-      settingsBox
-          .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
-    }
-  }
 }

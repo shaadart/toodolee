@@ -259,7 +259,7 @@ void addTodoBottomSheet(context) {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Wrap(
-                        //height: MediaQuery.of(context).size.height / 4.8,
+                        //height: MediaQuery.of(context).size.longestSide / 4.8,
                         children: [
                           Column(
                             //mainAxisAlignment: MainAxisAlignment.start,
@@ -361,21 +361,22 @@ void addTodoBottomSheet(context) {
                                           //color: Colors.black54,
                                         ),
                                       ),
-                                      todoRemainder != null &&
-                                              todoEmoji.toString() != null
-                                          ? FadeInUp(
-                                              child: IconButton(
-                                                icon: Icon(CarbonIcons.edt_loop,
-                                                    color: loopIconColor),
+                                      if (todoRemainder != null &&
+                                          todoEmoji.toString() != null)
+                                        FadeInUp(
+                                          child: IconButton(
+                                            icon: Icon(CarbonIcons.edt_loop,
+                                                color: loopIconColor),
 
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  setChallenge(context);
-                                                },
-                                                //color: Colors.black54,
-                                              ),
-                                            )
-                                          : Container(),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              setChallenge(context);
+                                            },
+                                            //color: Colors.black54,
+                                          ),
+                                        )
+                                      else
+                                        Container(),
                                     ],
                                   ),
                                   Expanded(
@@ -452,33 +453,6 @@ void addTodoBottomSheet(context) {
   );
 }
 
-// class SetChallenge extends StatefulWidget {
-//   const SetChallenge({Key key}) : super(key: key);
-
-//   @override
-//   _SetChallengeState createState() => _SetChallengeState();
-// }
-
-// class _SetChallengeState extends State<SetChallenge> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return CarouselSlider(
-//       options: CarouselOptions(
-//         autoPlay: false,
-//         aspectRatio: MediaQuery.of(context).size.aspectRatio,
-//         enlargeCenterPage: false,
-//         viewportFraction: 1,
-//         reverse: false,
-//       ),
-//       items: [
-//         SetChallenge(),
-//       ],
-
-//       /* Here add your custom widget  */
-//     );
-//   }
-// }
-
 class SetChallenge extends StatefulWidget {
   const SetChallenge({Key key}) : super(key: key);
 
@@ -506,7 +480,7 @@ class _SetChallengeState extends State<SetChallenge> {
       ListTile(
         title: BetterCupertinoSlider(
           min: 3,
-          max: 30,
+          max: 45,
           value: sliderValue,
           configure: BetterCupertinoSliderConfigure(
             trackHorizontalPadding: 8.0,
