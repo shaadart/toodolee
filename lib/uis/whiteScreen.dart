@@ -5,6 +5,15 @@ import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'dart:core';
 
+/* 
+White Screen, 
+When Nothing is there, Something is there.
+When Toodo, Streaks, Completed are 0, then White Screen Shows up to Entertain the Users, 
+It shows different things every entire time, and really a greeat number of combination is possible.
+(Talking about which Combinations)?
+*/
+
+// List of, How we can Greet People;
 List<String> heyss = [
   "Hoi",
   "hi",
@@ -112,8 +121,8 @@ List<String> heyss = [
   "sun-shine",
   "toolodee",
   "toooodooooooo",
-  "oo yeah"
-      "vandanalu",
+  "oo yeah",
+  "vandanalu",
   "namaskār",
   "vanakkam",
   "hallo",
@@ -157,7 +166,12 @@ List<String> heyss = [
   "hoooooyah",
 ];
 
-String randomHeyss = randomChoice(heyss);
+String randomHeyss = randomChoice(
+    heyss); // getting a random hey from the list of heyss, ex it can be, hi, hoooyah etc. but It is goig to be only one.
+
+// How many work is there?
+// This list contains all the work that was comming inside my head.
+
 List<String> workList = [
   "write that thing",
   "write them all",
@@ -256,7 +270,12 @@ List<String> workList = [
   "do work",
 ];
 
+// Also randomizing the list above and getting the one of the work from the list.
 String work = randomChoice(workList);
+
+// This is a Dictionary or Map, {emoji, Text} this is potentially what shows up in the  this Screen/Page (WhiteScreen) Most.
+// Where-Ever the "work" keyword is written down like this, "$work" this is random Work(one) comming from the work-list.
+
 Map<String, String> imageLists = {
   '🔋': "Energy, aaaaaaaa.. \n Me = Bolt",
   '🐝': "Get Things done, Nowww...",
@@ -267,7 +286,7 @@ Map<String, String> imageLists = {
   '👍': "good.. now lift goods..",
   '🎸⚡': "Energy-ised! Now to break all the odds..",
   '👋😃':
-      "Hey, How's all going.. I am Sure in the presence of you, nothing go wrong",
+      "$randomHeyss, How's all going.. I am Sure in the presence of you, nothing go wrong",
   '😎🌴': "Hey Beauty, do You know? your work of - '$work' is more beautiful?",
   '🐣': "Welcome to the realest world... #WorldofWork",
   '🎉🎉🎉': "Toooooodooooo, hiiiiiiiiiiiis",
@@ -365,76 +384,82 @@ Map<String, String> imageLists = {
          */
 
 var listEmojiKeys = imageLists.keys;
-var randomImage = randomChoice(listEmojiKeys);
+// keys are the first value, it means, Emoji is the key, and String is value,
+// here we are getting every key of the Map. #Emojis
 
-var listEmojisValues = imageLists["$randomImage"];
+var randomEmoji = randomChoice(listEmojiKeys);
+// Then as we got a long iterable keys,
+// we are minimalising them and getting one of the key, ex, we could get, ⚡⚡⚡ or 🌻 or 🌵 or anything which is in the keys,
+// (but it will come out as one)
+
+var listEmojisValues = imageLists["$randomEmoji"];
+// Then if we are getting  '✨' then we will get the text respect to this emoji, in this case it is "Hi.. (Swwwwwing....)"
 
 whiteScreen(context) {
-  if (todoBox.isEmpty == true && completedBox.isEmpty == true) {
-    return Padding(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.shortestSide / 35),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Card(
-            child: MaterialButton(
-              splashColor: Colors.white60,
-              onPressed: () {
-                addTodoBottomSheet(context);
-              },
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  0,
-                  MediaQuery.of(context).size.longestSide / 35,
-                  0,
-                  0,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ListTile(
-                      title: Center(
+  return Padding(
+    padding: EdgeInsets.all(MediaQuery.of(context).size.shortestSide / 35),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Card(
+          child: MaterialButton(
+            splashColor: Colors.white60,
+            onPressed: () {
+              addTodoBottomSheet(context);
+              // when whiteScreen is Pressed, it will open the bottom sheet where the Toodo is written.
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                0,
+                MediaQuery.of(context).size.longestSide / 35,
+                0,
+                0,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ListTile(
+                    title: Center(
+                      child: Text(
+                        "$randomEmoji", //Random Emoji will be shown In here.
+                        style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.longestSide / 22,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Padding(
+                      padding: EdgeInsets.fromLTRB(8, 0, 8,
+                          MediaQuery.of(context).size.longestSide / 40),
+                      child: Opacity(
+                        opacity: 0.7,
                         child: Text(
-                          "$randomImage",
-                          style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.longestSide / 22,
-                          ),
+                          '$listEmojisValues', // And it's Value with respect to it will be this.
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 8,
-                            MediaQuery.of(context).size.longestSide / 40),
-                        child: Opacity(
-                          opacity: 0.7,
-                          child: Text(
-                            '$listEmojisValues',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-          Center(
-            child: ListTile(
-              subtitle: Text(
-                "$randomHeyss, To Start press +",
-                textAlign: TextAlign.center,
-              ),
+        ),
+        Center(
+          child: ListTile(
+            subtitle: Text(
+              "$randomHeyss, To Start press +", // And a Random Heyss, 
+              textAlign: TextAlign.center,
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }

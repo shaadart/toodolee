@@ -1,6 +1,3 @@
-//import 'dart:ui';
-//import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -53,12 +50,9 @@ const String currentBoxName = "currentDateBox";
 const String onboardingScreenBoxName = "onboardingScreenBox";
 const String streakBoxName = "streakBox";
 const String completedStreakBoxName = "completeStreakBox";
-//var  = ValueNotifier<int>(2);
 
 ValueNotifier<int> totalTodoCount = ValueNotifier(
     10 - (todoBox.length + completedBox.length + streakBox.length));
-
-//limiting the toodolee count to 10.
 
 final player = AudioCache(); //Plays Sounds
 Box<CompletedTodoModel> completedBox; //For Box
@@ -157,9 +151,13 @@ void main() async {
   );
 
   runApp(MyApp());
-
-  //dekhke he laglaa hai // Running the App
 }
+
+/* -------------------------------------- 
+This is the Main Screen, This Just Checks,
+And shows you the Default Screen. That Means, If the user is First to open the App, The App will show them theOnBoarding Screen. 
+If the user is not using the App for the First, It will go with the Default App Running, 
+*/
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key key}) : super(key: key);
@@ -175,11 +173,18 @@ class _MainScreenState extends State<MainScreen> {
       valueListenable: onboardingScreenBox.listenable(),
       builder: (context, onboard, child) =>
           onboard.get('shownOnBoard', defaultValue: false)
-              ? DefaultedApp()
-              : MyHomePage(),
+              ? DefaultedApp() // This is the Default App.
+              : MyHomePage(), //This is the Onboarding Screen Page.
     );
   }
 }
+
+/* ---------------------------------------- 
+This is the Splash Screen, This Just Shows the Toodolee Logo at the Starting of the App...
+It Animates the Logo,
+Plays the Sound,
+And stays on the Screen for Bit Seconds.
+*/
 
 class MyApp extends StatelessWidget {
   @override
@@ -291,16 +296,28 @@ class _SplashState extends State<Splash> {
   }
 }
 
+/* ----------------------------------------------------------------------------- 
+This is the (kind of) Default Screen, Why Kind of ?
+Do you noticed?
+Here in Toodolee, the Bottom Navigation Bar is constant, In Toodolee, the Floating Action Button is also constant, It means they are presented in every Screen, 
+and they all are rendered throughout the screen from this.
+
+Defaulted App, Talks about the Creation of,
+Bottom Navigation Bar and the Floating Action Button.
+*/
+
 class DefaultedApp extends StatefulWidget {
   @override
   _DefaultedAppState createState() => _DefaultedAppState();
 }
 
 class _DefaultedAppState extends State<DefaultedApp> {
-  int _selectedItemPosition = 0;
+  int _selectedItemPosition = 0; //Index of Item (selected)
 
-  bool showSelectedLabels = false;
-  bool showUnselectedLabels = false;
+  bool showSelectedLabels =
+      false; // To show Labels with the Item Selected, in the Botttom Nav. bar.
+  bool showUnselectedLabels =
+      false; // To show Labels with the Item Un-Selected, in the Botttom Nav. bar.
 
   Color containerColor;
   List<Color> containerColors = [
@@ -313,7 +330,8 @@ class _DefaultedAppState extends State<DefaultedApp> {
     TodoApp(),
     MorePage(),
     SettingPage(),
-  ];
+  ]; // This is the List of Pages, that will be opened, if each of the Bottom Navi's Element is pressed.
+// That is, First Element of the Bottom Navigation Bar will open TodoApp, That is the Home Page,
 
   @override
   void initState() {
@@ -329,22 +347,13 @@ class _DefaultedAppState extends State<DefaultedApp> {
         builder: (context, remainingTodoCount, _) {
           return Scaffold(
             appBar: AppBar(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                elevation: 0.7,
-                // actions: [
-                //   Opacity(
-                //     opacity: 1,
-                //     child: CircleAvatar(
-                //       backgroundColor: Theme.of(context).colorScheme.background,
-                //       child: IconButton(
-                //           onPressed: () {
-                //             addTodoBottomSheet(context);
-                //           },
-                //           icon: Icon(CarbonIcons.add)),
-                //     ),
-                //   )
-                // ],
-                title: _selectedItemPosition == 2
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Creating Background color of the App to be same as the major color present in the App's Body. 
+                elevation: 0.7, // The App Bar has Elevation or Lift, So To Distinguish the elements more, that this is other bodily Element and this is App-Bar
+       
+
+       // Here, We are Checking, the case, if the Item Selected in the App-Bar is 2 or if it is SettingsPage then change the Title of the App bar to be the "Settings",
+       // And else it is not the settingsPage, Let the Title of the Toodolee's App Bar be "Toodolee"
+                title: _selectedItemPosition == 2 
                     ? Text(
                         "Settings",
                         style: TextStyle(
@@ -357,9 +366,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).accentColor),
                       )),
-            // extendBodyBehindAppBar: true,
-            // resizeToAvoidBottomInset: true,
-            // extendBody: true,
+         
             floatingActionButton: Visibility(
               visible:
                   (remainingTodoCount <= 0 || fabScrollingVisibility == false)
@@ -368,31 +375,25 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
-                    setState(() {
-                      showEmojiKeyboard = false;
-                      // todoEmoji = null;
-                    });
-                    player.play(
+                 player.play(
                       'sounds/navigation_forward-selection-minimal.wav',
                       stayAwake: false,
                       // mode: PlayerMode.LOW_LATENCY,
                     );
-                    addTodoBottomSheet(context);
-
-                    print("Add it");
-                  },
+                    addTodoBottomSheet(context); //Opening the BottomSheet, So that user could add their best things for the day. :love.
+         },
                   child: Icon(CarbonIcons.add),
                 ),
               ),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             //body: AdTest(),
-            body: pages[_selectedItemPosition],
-            bottomNavigationBar: SnakeNavigationBar.color(
-              //Ghost White: 0xffF6F8FF
-//Lemon Glacier :0xffFBFB0E
-//Rich Black: 0xff010C13
-// Azure: 0xff4785FF
+            body: pages[_selectedItemPosition],  // Whatever Element is selected in the BottomNavBar, 
+            // As we see in the pages, variable which is a list, there is Three Pages, SettingsPage, TodoApp and MorePage, 
+            // Which ever Element is clicked, it's index will be the index, and the body will show whatever the element is selcted.
+            //Really Simple it is.
+                      bottomNavigationBar: SnakeNavigationBar.color(
+      
 
               backgroundColor: Theme.of(context).bottomAppBarColor,
               behaviour: SnakeBarBehaviour.floating,
@@ -408,6 +409,8 @@ class _DefaultedAppState extends State<DefaultedApp> {
               showUnselectedLabels: showUnselectedLabels,
               showSelectedLabels: showSelectedLabels,
 
+
+// Items and Configuration of those Items, which are Present in the Bottom Navigation Bar.
               items: [
                 BottomNavigationBarItem(
                     icon: Opacity(opacity: 0.6, child: Icon(CarbonIcons.home)),
@@ -428,8 +431,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
                   player.play(
                     'sounds/navigation_forward-selection-minimal.wav',
                     mode: PlayerMode.MEDIA_PLAYER,
-                    // stayAwake: false,
-                    // mode: PlayerMode.LOW_LATENCY,
+                   //Whenver Item is Selected, The Music will be sounded.
                   );
                 });
               },
@@ -521,6 +523,15 @@ class _DefaultedAppState extends State<DefaultedApp> {
   //     );
 }
 
+
+/* ----------------------------------------------------------------------------- 
+This is the Home Screen.
+This has Functionality Includes,
+# Chips that are present at the Top, ex. WorkingOn, Completed and Streaks
+# What to show if there is nothing in the screen, i.e whiteScreen
+# How much more Toodolees can be Added (limits)
+*/
+
 class TodoApp extends StatefulWidget {
   @override
   _TodoAppState createState() => _TodoAppState();
@@ -529,20 +540,21 @@ class TodoApp extends StatefulWidget {
 class _TodoAppState extends State<TodoApp> {
   // multiple choice value
 
-  // list of string options
+  // list of pages option available for opening, which will open when we click up one of the chips.
 
   List pages = [WorkingOnPage(), StreakPage(), CompletedPage()];
 
   @override
   Widget build(BuildContext context) {
-    // Create a global key that uniquely identifies the Form widget
-    // and allows validation of the form.
-    //
-    // Note: This is a GlobalKey<FormState>,
-    // not a GlobalKey<MyCustomFormState>.
 
-    settingsBox.put("selectedChipPage", 0);
+    settingsBox.put("selectedChipPage", 0); //Inititally when the page reloads, the App's Selected Chip will be the First One of the List Pages, i.e WorkingOn() Page.
 
+//This is Value Listenable Builder
+// What it does is, It will rebuild the app every entire time when the variable of something like it will be changed,
+// or if there will be changes in it,  The will be changed too, (accordingly)
+// Here the Variable is totalTodoCount, which refers to the value, how much is the total todo count.
+// when something is added to the toodolee or removed etc, totalTodoCund will be affected.
+ // Take a look at totalTodoCount by clicking on it with control or command Pressed.  
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
@@ -550,14 +562,20 @@ class _TodoAppState extends State<TodoApp> {
             child: Scaffold(
               body: ListView(
                 children: [
-                  todoBox.length > 0 ||
+                  // Showing the chips,
+                  // if all something is there in the Application i.e. Toodo or Completed One or Streak then Chips will be shown
+                  if (todoBox.length > 0 ||
                           completedBox.length > 0 ||
-                          streakBox.length > 0
-                      ? ValueListenableBuilder(
-                          valueListenable: Hive.box(settingsName).listenable(),
+                          streakBox.length > 0) 
+                           //Here we are also using the ValueListenableBuilder, But here we are using the settingsBox as valueListenable.
+                          // In settingsBox we will store the value of chip the user has selected, which means if inside the app, there will be naviagation the app does not loose the grip in the chip that user selected lastly,
+                          // Which means, If I Navigated to Settings Page, before Navigating I was seeing my Streaks Page, so after the Navigation when I will return, My Streaks Page or streak chip will be stayed activated.
+
+                          ValueListenableBuilder(
+                          valueListenable: settingsBox.listenable(),
                           builder: (context, selectedChip, child) {
                             var workingSwitchValue = selectedChip
-                                .get("workingSelectedChip", defaultValue: true);
+                                .get("workingSelectedChip", defaultValue: true); // at first the workingOn chip will be activated, not streaks, not completed chip.
 
                             var streakSwitchValue = selectedChip
                                 .get("streakSelectedChip", defaultValue: false);
@@ -565,9 +583,18 @@ class _TodoAppState extends State<TodoApp> {
                                 "completedSelectedChip",
                                 defaultValue: false);
                             return Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              child: ListView(
+                                  scrollDirection: Axis.horizontal, // for smalled screen users, they could navigate or scroll thughout the List.
                                   children: [
+/* This is the Design and Mechanism of How Chip Works,
+
+So when The Chip is Selected, It will change every other Chip to false value and make them superior by making themselves to true.
+The inititalPage will be set to how they needs.
+also, the Background, Items, Body, Elements will be of their Choices.
+
+There are exactly Three Chips, as you can see in the Front App.
+ */
+
                                     ChoiceChip(
                                       selectedColor:
                                           Theme.of(context).accentColor,
@@ -627,11 +654,7 @@ class _TodoAppState extends State<TodoApp> {
                                       label: Text("Streak"),
                                       selected: streakSwitchValue,
                                       onSelected: (val) {
-                                        print("${streakBox.length} are length");
-                                        print("${streakBox.values} are values");
-                                        print(
-                                            "${streakBox.isEmpty} are emptiness");
-                                        print("${streakBox.keys} are keys");
+                             
                                         setState(() {
                                           player.play(
                                             'sounds/ui_tap-variant-01.wav',
@@ -722,19 +745,16 @@ class _TodoAppState extends State<TodoApp> {
                                     ),
                                   ]),
                             );
-                          })
-                      : Container(),
+                          }) else Container(),
 
-                  // todoBox.length <= 0 && completedBox.length <= 0
-                  //     ? initialselectedPage == 1
-                  //         ? Container()
-                  //         : whiteScreen(context)
-                  //     : Container(),
-                  todoBox.length <= 0 &&
+          // If count of toodo, count of completed Toodo, and cound of streaks is combinely 0 (zero)
+          // White screen Page will be shown, 
+          // It is that Fancy page, at the start that encorouges you to add Toodolee for the Today, 
+          // Yes that one, ("Press + to Start") :hehe
+
+                  if (todoBox.length <= 0 &&
                           completedBox.length <= 0 &&
-                          streakBox.length <= 0
-                      ? whiteScreen(context)
-                      : Container(),
+                          streakBox.length <= 0) whiteScreen(context) else Container(),
 
                   SlideInUp(
                     child: settingsBox.get("selectedPage") == null
@@ -744,8 +764,9 @@ class _TodoAppState extends State<TodoApp> {
                     //delay: Duration(milliseconds: 200),
                   ),
 
-                  todoBox.length > 0
-                      ? Padding(
+
+// I also don't know What They have written. :laugh
+                  if (todoBox.length > 0) Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Opacity(
                             opacity: 0.5,
@@ -762,8 +783,9 @@ class _TodoAppState extends State<TodoApp> {
                               ),
                             ),
                           ),
-                        )
-                      : Container(),
+                        ) else Container(),
+                  
+                  // This is extra space, from the bottom, so if You need to remove the last Toodo which can be hidden behind the floating action button, so the user will get room so that he could scroll and remove the last Tooodo.
                   Container(
                       height: MediaQuery.of(context).size.shortestSide / 3),
                 ],
@@ -772,80 +794,4 @@ class _TodoAppState extends State<TodoApp> {
           );
         });
   }
-}
-
-setRemainderMethod(time, String name, id, context) {
-  if (settingsBox.get("remainderNotifications") == true) {
-    int hour = time.first;
-    print(hour);
-
-    int minute = time.last;
-    print(minute);
-
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: id,
-            channelKey: 'remainderNotific',
-            title: "$name",
-            body: "Today, $hour:$minute"),
-        actionButtons: [
-          NotificationActionButton(
-            key: 'COMPLETED',
-            label: 'Do it',
-            autoCancel: true,
-            buttonType: ActionButtonType.KeepOnTop,
-          ),
-        ],
-        schedule: NotificationCalendar(
-          hour: hour,
-          minute: minute,
-          allowWhileIdle: true,
-          timeZone: AwesomeNotifications.localTimeZoneIdentifier,
-        ));
-  }
-}
-
-setDailyRemainderMethod(time, context) {
-  int hour = int.parse(time.first);
-  print(hour);
-
-  int minute = int.parse(time.last);
-  print(minute);
-  if (settingsBox.get("dailyNotifications") == true) {
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 50,
-            channelKey: 'dailyNotific',
-            title: "Champion this Day 🏆",
-            body: "Tap to and write toodo"),
-        schedule: NotificationCalendar(
-          hour: hour,
-          minute: minute,
-          allowWhileIdle: true,
-          repeats: true,
-          timeZone: AwesomeNotifications.localTimeZoneIdentifier,
-        ));
-  }
-}
-
-setStreakRemainderMethod(time, name, emoji, id, context) {
-  int hour = time.first;
-  print(hour);
-
-  int minute = time.last;
-  print(minute);
-
-  AwesomeNotifications().createNotification(
-      content: NotificationContent(
-          id: id,
-          channelKey: 'streakNotific',
-          title: emoji == "null" ? "$name" : "$name $emoji",
-          body: "Save the Streak, its $hour:$minute"),
-      schedule: NotificationCalendar(
-        hour: hour,
-        minute: minute,
-        allowWhileIdle: true,
-        repeats: true,
-        timeZone: AwesomeNotifications.localTimeZoneIdentifier,
-      ));
 }

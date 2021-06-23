@@ -3,7 +3,31 @@ import 'package:toodo/main.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'uis/quotes.dart';
 
+/*
+# Clears Toodos Next Day
+# Clears Completed Ones Next day
+# Resets Quotes
+# Reset Boring Card.
+
+This will Reset the Toodolee.
+This is kind of better version of background Tasks.
+
+I was litterelly Tired of Seeing WORKMANAGER or any other background service not working.
+So, Thanks to the Nature and Lord, this Came to the Head,
+
+This is the Method/Function checks wheather the today's date, month's first day and it predicts weather to reset-up the Toodolee or not 
+*/
 resetToodoleeMidNight(context) {
+  /* if today's Date is null or month's first day is null, then,
+  put the today's date inside the memory or today's date Box, and do same with the month's first day (Hive)
+
+  in the month's first day case, using jiffy package from pub.dev, It shows when the next month's first day will going to be.
+  We are checking next month's first day because the calender works from 1 - 30 or 31 sometimes or 28 we have to predict it already,
+  and because the toodolee checks the dates sequence wise, if today is 15 the next should be 16 and if it is 16 then the next day must be  17, 
+  if it is then Toodolee will be resetted, and suppose it's 30th of April today and next day is 1st of May.  
+
+  and Clear up the Toodos, Boring Card, Quotes etc.
+*/
   if (settingsBox.get("todayDate") == null ||
       settingsBox.get("monthFirstDay") == null) {
     DateTime now = DateTime.now();
@@ -85,6 +109,15 @@ resetToodoleeMidNight(context) {
   }
 }
 
+/*
+# Clears The Streaks Next Day
+# If One Streak is Completed, then it will be moved to Incompleted with the count of +1.
+# If the Streak is not Completed by use it will be Deleted.
+
+Works similar to the resetToodoleeMidnight() Method also the Template is also identical.
+
+*/
+
 resetStreakMidNight(context) {
   if (settingsBox.get("todayDate") == null ||
       settingsBox.get("monthFirstDay") == null ||
@@ -124,6 +157,10 @@ resetStreakMidNight(context) {
     settingsBox
         .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
 
+    /*
+      checks if the streak is completed it will be updated to incompleted next day.
+      if it is not, it will be deleted
+*/
     print(streakBox.keys.toList());
     for (final key in streakBox.keys.toList()) {
       var streak = streakBox.get(key);
@@ -163,6 +200,10 @@ resetStreakMidNight(context) {
         .split(" ");
     print(nextDayDate);
     if (day == settingsBox.get("nextDayDate")) {
+      /*
+      checks if the streak is completed it will be updated to incompleted next day.
+      if it is not, it will be deleted
+*/
       print(streakBox.keys.toList());
       for (final key in streakBox.keys.toList()) {
         var streak = streakBox.get(key);

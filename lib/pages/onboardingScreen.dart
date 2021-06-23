@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toodo/Notification/setNotification.dart';
 import 'package:toodo/main.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
 
@@ -26,8 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Image.asset('assets/play football.jpg',
-              //     width: MediaQuery.of(context).size.shortestSide / 1.5),
+      
               Padding(
                 padding: EdgeInsets.all(
                     MediaQuery.of(context).size.shortestSide / 20),

@@ -5,12 +5,15 @@ import 'package:toodo/main.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 
-TooltipBehavior _tooltipBehavior;
+/*
+This is the place where ProgressBar Abides, 
+So, It has features like,
+# Shows Your RealTime Progress.
+# Shows Your Completed Counts
+# Real-Animations
 
-ValueNotifier<int> todoBoxLength = ValueNotifier(todoBox.length);
-
-ValueNotifier<int> completedtodoBoxLength =
-    ValueNotifier((completedBox.length));
+*/
+  TooltipBehavior _tooltipBehavior; //SF_flutter_charts needs this to activate Tooltip for the charts, (circular or any)
 
 class ProgressBar extends StatefulWidget {
   const ProgressBar({
@@ -22,6 +25,7 @@ class ProgressBar extends StatefulWidget {
 }
 
 class _ProgressBarState extends State<ProgressBar> {
+
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
@@ -30,9 +34,9 @@ class _ProgressBarState extends State<ProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    // print("this is completed todoBox value ${completedtodoBoxLength.value}");
-    // print("this is todoBox value ${todoBoxLength.value}");
-
+// Listening to multiple property at once, so# example listening to toodo count, completed toodo count, streak count,
+// This is necessary for building the page in real time as these things will receive some numbers.
+// when there will be changes in these components the screen will build again and show real time results.
     return MultiValueListenableBuider(
         valueListenables: [
           todoBox.listenable(),
@@ -63,14 +67,16 @@ class _ProgressBarState extends State<ProgressBar> {
                       0),
                   child: Card(
                     elevation: 0.3,
-                    //  color: Theme.of(context).colorScheme.onBackground,
+                   
                     child: Row(
-                      //crossAxisAlignment: CrossAxisAlignment.stretch,
+                
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           flex: 1,
-                          child: progressBar(context),
+                          child: progressBar(context), 
+                          // the circular chart, that is rotates to show the profgress in a charti-cal way, 
+                          //ctrl + tap the progressbar(context)
                         ),
                         Container(
                             height: 60,
@@ -104,6 +110,7 @@ class _ProgressBarState extends State<ProgressBar> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     TextSpan(
+                                      // Text which is necessary to see, how is your progress going in, in real time.
                                         text:
                                             '${completedBox.length + streakBox.values.where((streak) => streak.isCompleted).toList().length}/${todoBox.length + streakBox.length + completedBox.length}',
                                         style: TextStyle(
@@ -136,6 +143,8 @@ class _ProgressBarState extends State<ProgressBar> {
   }
 }
 
+
+// This is the Chart, (circular one) it's design and mechannics is provided in here.
 progressBar(context) {
   double runningTodoCount =
       todoBox.length.toDouble() + streakBox.length.toDouble();
@@ -150,25 +159,15 @@ progressBar(context) {
     margin: EdgeInsets.all(0),
     height: MediaQuery.of(context).size.shortestSide / 2.5,
     child: SfCircularChart(
-        legend: Legend(
-          isVisible: false,
-          // Legend title
-          title: LegendTitle(
-              text: "...",
-              alignment: ChartAlignment.near,
-              textStyle: TextStyle(
-                color: Colors.blue,
-                fontSize: 1,
-              )),
-        ),
-        palette: [Colors.blueAccent[100], Colors.blue[100]],
-        tooltipBehavior: _tooltipBehavior,
+       
+        palette: [Colors.blueAccent[100], Colors.blue[100]], // Whatever color is added here, shows the colors that are important in the charts?
+        tooltipBehavior: _tooltipBehavior, // tooooooltip
         series: <CircularSeries>[
           DoughnutSeries<ChartData, String>(
               enableTooltip: true,
               dataSource: chartData,
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data, _) => data.y,
+              xValueMapper: (ChartData data, _) => data.x, // Don't know :hehe
+              yValueMapper: (ChartData data, _) => data.y, // Don't know :hehe
               // Explode the segments on tap
               explode: true,
               explodeIndex: 2)
@@ -176,7 +175,7 @@ progressBar(context) {
   );
 }
 
-class ChartData {
+class ChartData { // class of chartData.
   ChartData(this.x, this.y, [this.color]);
   final String x;
   final double y;

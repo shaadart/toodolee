@@ -1,21 +1,15 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:app_settings/app_settings.dart';
-
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:app_settings/app_settings.dart';
-
 import 'package:flutter_radio_group/flutter_radio_group.dart';
-
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share/share.dart';
-
+import 'package:toodo/Notification/setNotification.dart';
 import 'package:toodo/main.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../main.dart';
 
 // bool dailyNotifications = true;
@@ -378,7 +372,11 @@ class _SettingPageState extends State<SettingPage> {
                   AppSettings.openNotificationSettings();
                 },
                 child: ListTile(
-                  trailing: IconButton(icon: Icon(CarbonIcons.launch), onPressed: (){AppSettings.openNotificationSettings();}),
+                  trailing: IconButton(
+                      icon: Icon(CarbonIcons.launch),
+                      onPressed: () {
+                        AppSettings.openNotificationSettings();
+                      }),
                   title: Text("Check Notifications Settings"),
                 ),
               )
