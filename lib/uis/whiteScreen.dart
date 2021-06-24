@@ -13,6 +13,7 @@ It shows different things every entire time, and really a greeat number of combi
 (Talking about which Combinations)?
 */
 
+
 // List of, How we can Greet People;
 List<String> heyss = [
   "Hoi",
@@ -454,7 +455,7 @@ whiteScreen(context) {
         Center(
           child: ListTile(
             subtitle: Text(
-              "$randomHeyss, To Start press +", // And a Random Heyss, 
+              "$randomHeyss, To Start press +", // And a Random Heyss,
               textAlign: TextAlign.center,
             ),
           ),

@@ -186,22 +186,23 @@ class _QuotesState extends State<Quotes> {
                                                             FontStyle.italic))),
                                           ),
                                           //If ToolTip is activiated, so to fit it beautifully the Tooltip changing some padding according to if the tool tip is on and off...
-                                          if (showToolTip == true) Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              20),
-                                                  child: toolTip(context),
-                                                ) else Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              8),
-                                                ),
+                                          if (showToolTip == true)
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      20),
+                                              child: toolTip(context),
+                                            )
+                                          else
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      8),
+                                            ),
                                         ],
                                       ),
                                     ),
@@ -236,7 +237,6 @@ class _QuotesState extends State<Quotes> {
                     player.play(
                       'sounds/ui_tap-variant-01.wav',
                       stayAwake: false,
-                      // mode: PlayerMode.LOW_LATENCY,
                     );
                     Share.share(
                       "${Hive.box(quotesCardname).get("quote")[0]} \n \n @${Hive.box(quotesCardname).get("quote")[1]} \n @toodolee",

@@ -25,7 +25,7 @@ import 'package:hive/hive.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:toodo/uis/whiteScreen.dart';
 import 'models/todo_model.dart';
-import 'pages/settingspagedefault.dart';
+import 'pages/settingspage.dart';
 import 'uis/Streak/streakPage.dart';
 import 'uis/Toodolee Lists/CompletedPage.dart';
 
@@ -212,6 +212,9 @@ class MyApp extends StatelessWidget {
 //Rich Black: 0xff010C13
 // Azure: 0xff4785FF
 
+// Adaptive Theme helps to navigate to two modes,
+//light or dark with their own custom theme Data set,
+//just same like how we use in MaterialApp
             return AdaptiveTheme(
               light: ThemeData(
                 // platform: TargetPlatform.iOS,
@@ -347,13 +350,14 @@ class _DefaultedAppState extends State<DefaultedApp> {
         builder: (context, remainingTodoCount, _) {
           return Scaffold(
             appBar: AppBar(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Creating Background color of the App to be same as the major color present in the App's Body. 
-                elevation: 0.7, // The App Bar has Elevation or Lift, So To Distinguish the elements more, that this is other bodily Element and this is App-Bar
-       
+                backgroundColor: Theme.of(context)
+                    .scaffoldBackgroundColor, // Creating Background color of the App to be same as the major color present in the App's Body.
+                elevation:
+                    0.7, // The App Bar has Elevation or Lift, So To Distinguish the elements more, that this is other bodily Element and this is App-Bar
 
-       // Here, We are Checking, the case, if the Item Selected in the App-Bar is 2 or if it is SettingsPage then change the Title of the App bar to be the "Settings",
-       // And else it is not the settingsPage, Let the Title of the Toodolee's App Bar be "Toodolee"
-                title: _selectedItemPosition == 2 
+                // Here, We are Checking, the case, if the Item Selected in the App-Bar is 2 or if it is SettingsPage then change the Title of the App bar to be the "Settings",
+                // And else it is not the settingsPage, Let the Title of the Toodolee's App Bar be "Toodolee"
+                title: _selectedItemPosition == 2
                     ? Text(
                         "Settings",
                         style: TextStyle(
@@ -366,7 +370,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).accentColor),
                       )),
-         
+
             floatingActionButton: Visibility(
               visible:
                   (remainingTodoCount <= 0 || fabScrollingVisibility == false)
@@ -375,26 +379,25 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
-                 player.play(
+                    player.play(
                       'sounds/navigation_forward-selection-minimal.wav',
                       stayAwake: false,
-                      // mode: PlayerMode.LOW_LATENCY,
                     );
-                    addTodoBottomSheet(context); //Opening the BottomSheet, So that user could add their best things for the day. :love.
-         },
+                    addTodoBottomSheet(
+                        context); //Opening the BottomSheet, So that user could add their best things for the day. :love.
+                  },
                   child: Icon(CarbonIcons.add),
                 ),
               ),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             //body: AdTest(),
-            body: pages[_selectedItemPosition],  // Whatever Element is selected in the BottomNavBar, 
-            // As we see in the pages, variable which is a list, there is Three Pages, SettingsPage, TodoApp and MorePage, 
+            body: pages[
+                _selectedItemPosition], // Whatever Element is selected in the BottomNavBar,
+            // As we see in the pages, variable which is a list, there is Three Pages, SettingsPage, TodoApp and MorePage,
             // Which ever Element is clicked, it's index will be the index, and the body will show whatever the element is selcted.
             //Really Simple it is.
-                      bottomNavigationBar: SnakeNavigationBar.color(
-      
-
+            bottomNavigationBar: SnakeNavigationBar.color(
               backgroundColor: Theme.of(context).bottomAppBarColor,
               behaviour: SnakeBarBehaviour.floating,
               snakeShape: SnakeShape.circle,
@@ -408,7 +411,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
               showUnselectedLabels: showUnselectedLabels,
               showSelectedLabels: showSelectedLabels,
-
 
 // Items and Configuration of those Items, which are Present in the Bottom Navigation Bar.
               items: [
@@ -431,7 +433,7 @@ class _DefaultedAppState extends State<DefaultedApp> {
                   player.play(
                     'sounds/navigation_forward-selection-minimal.wav',
                     mode: PlayerMode.MEDIA_PLAYER,
-                   //Whenver Item is Selected, The Music will be sounded.
+                    //Whenver Item is Selected, The Music will be sounded.
                   );
                 });
               },
@@ -473,13 +475,13 @@ class _DefaultedAppState extends State<DefaultedApp> {
   //                       player.play(
   //                         'sounds/navigation_forward-selection.wav',
   //                         stayAwake: false,
-  //                         // mode: PlayerMode.LOW_LATENCY,
+  //
   //                       );
   //                       Navigator.pop(context);
   //                       player.play(
   //                         'sounds/navigation_forward-selection.wav',
   //                         stayAwake: false,
-  //                         // mode: PlayerMode.LOW_LATENCY,
+  //
   //                       );
   //                       addTodoBottomSheet(context);
   //                     },
@@ -498,15 +500,15 @@ class _DefaultedAppState extends State<DefaultedApp> {
   //             player.play(
   //               'sounds/navigation_forward-selection.wav',
   //               stayAwake: false,
-  //               // mode: PlayerMode.LOW_LATENCY,
+  //
   //             );
   //             await Navigator.pop(context);
   //             player.play(
   //               'sounds/navigation_forward-selection.wav',
   //               stayAwake: false,
-  //               // mode: PlayerMode.LOW_LATENCY,
+  //
   //             );
-  //             // mode: PlayerMode.LOW_LATENCY,
+  //
   //           },
   //           child: ListTile(
   //             title: Text(todoBox.todoName),
@@ -522,7 +524,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
   //       ),
   //     );
 }
-
 
 /* ----------------------------------------------------------------------------- 
 This is the Home Screen.
@@ -546,15 +547,15 @@ class _TodoAppState extends State<TodoApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    settingsBox.put("selectedChipPage", 0); //Inititally when the page reloads, the App's Selected Chip will be the First One of the List Pages, i.e WorkingOn() Page.
+    settingsBox.put("selectedChipPage",
+        0); //Inititally when the page reloads, the App's Selected Chip will be the First One of the List Pages, i.e WorkingOn() Page.
 
 //This is Value Listenable Builder
 // What it does is, It will rebuild the app every entire time when the variable of something like it will be changed,
 // or if there will be changes in it,  The will be changed too, (accordingly)
 // Here the Variable is totalTodoCount, which refers to the value, how much is the total todo count.
 // when something is added to the toodolee or removed etc, totalTodoCund will be affected.
- // Take a look at totalTodoCount by clicking on it with control or command Pressed.  
+    // Take a look at totalTodoCount by clicking on it with control or command Pressed.
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
@@ -565,27 +566,31 @@ class _TodoAppState extends State<TodoApp> {
                   // Showing the chips,
                   // if all something is there in the Application i.e. Toodo or Completed One or Streak then Chips will be shown
                   if (todoBox.length > 0 ||
-                          completedBox.length > 0 ||
-                          streakBox.length > 0) 
-                           //Here we are also using the ValueListenableBuilder, But here we are using the settingsBox as valueListenable.
-                          // In settingsBox we will store the value of chip the user has selected, which means if inside the app, there will be naviagation the app does not loose the grip in the chip that user selected lastly,
-                          // Which means, If I Navigated to Settings Page, before Navigating I was seeing my Streaks Page, so after the Navigation when I will return, My Streaks Page or streak chip will be stayed activated.
+                      completedBox.length > 0 ||
+                      streakBox.length > 0)
+                    //Here we are also using the ValueListenableBuilder, But here we are using the settingsBox as valueListenable.
+                    // In settingsBox we will store the value of chip the user has selected, which means if inside the app, there will be naviagation the app does not loose the grip in the chip that user selected lastly,
+                    // Which means, If I Navigated to Settings Page, before Navigating I was seeing my Streaks Page, so after the Navigation when I will return, My Streaks Page or streak chip will be stayed activated.
 
-                          ValueListenableBuilder(
-                          valueListenable: settingsBox.listenable(),
-                          builder: (context, selectedChip, child) {
-                            var workingSwitchValue = selectedChip
-                                .get("workingSelectedChip", defaultValue: true); // at first the workingOn chip will be activated, not streaks, not completed chip.
+                    ValueListenableBuilder(
+                        valueListenable: settingsBox.listenable(),
+                        builder: (context, selectedChip, child) {
+                          var workingSwitchValue = selectedChip.get(
+                              "workingSelectedChip",
+                              defaultValue:
+                                  true); // at first the workingOn chip will be activated, not streaks, not completed chip.
 
-                            var streakSwitchValue = selectedChip
-                                .get("streakSelectedChip", defaultValue: false);
-                            var completedSwitchValue = selectedChip.get(
-                                "completedSelectedChip",
-                                defaultValue: false);
-                            return Center(
-                              child: ListView(
-                                  scrollDirection: Axis.horizontal, // for smalled screen users, they could navigate or scroll thughout the List.
-                                  children: [
+                          var streakSwitchValue = selectedChip
+                              .get("streakSelectedChip", defaultValue: false);
+                          var completedSwitchValue = selectedChip.get(
+                              "completedSelectedChip",
+                              defaultValue: false);
+                          return Center(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // scrollDirection: Axis
+                                //     .horizontal, // for smalled screen users, they could navigate or scroll thughout the List.
+                                children: [
 /* This is the Design and Mechanism of How Chip Works,
 
 So when The Chip is Selected, It will change every other Chip to false value and make them superior by making themselves to true.
@@ -595,166 +600,165 @@ also, the Background, Items, Body, Elements will be of their Choices.
 There are exactly Three Chips, as you can see in the Front App.
  */
 
-                                    ChoiceChip(
-                                      selectedColor:
-                                          Theme.of(context).accentColor,
-                                      label: Text("Working on"),
-                                      labelStyle: TextStyle(
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor),
-                                      selected: workingSwitchValue,
-                                      onSelected: (val) {
-                                        setState(() {
-                                          player.play(
-                                            'sounds/ui_tap-variant-01.wav',
-                                            stayAwake: false,
-                                            // mode: PlayerMode.LOW_LATENCY,
-                                          );
-                                          initialselectedPage = 0;
+                                  ChoiceChip(
+                                    selectedColor:
+                                        Theme.of(context).accentColor,
+                                    label: Text("Working on"),
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor),
+                                    selected: workingSwitchValue,
+                                    onSelected: (val) {
+                                      setState(() {
+                                        player.play(
+                                          'sounds/ui_tap-variant-01.wav',
+                                          stayAwake: false,
+                                        );
+                                        initialselectedPage = 0;
 
-                                          selectedChip.put("selectedPage", 0);
-                                        });
-                                        if (val == true) {
-                                          player.play(
-                                            'sounds/navigation_forward-selection.wav',
-                                            stayAwake: false,
-                                            // mode: PlayerMode.LOW_LATENCY,
-                                          );
-                                          selectedChip.put(
-                                              "workingSelectedChip", true);
-                                        }
+                                        selectedChip.put("selectedPage", 0);
+                                      });
+                                      if (val == true) {
+                                        player.play(
+                                          'sounds/navigation_forward-selection.wav',
+                                          stayAwake: false,
+                                        );
                                         selectedChip.put(
                                             "workingSelectedChip", true);
-                                        selectedChip.put(
-                                            "completedSelectedChip", false);
+                                      }
+                                      selectedChip.put(
+                                          "workingSelectedChip", true);
+                                      selectedChip.put(
+                                          "completedSelectedChip", false);
 
-                                        selectedChip.put(
-                                            "streakSelectedChip", false);
-                                        print(val);
-                                      },
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                60,
-                                            0,
-                                            MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                60,
-                                            0)),
-                                    ChoiceChip(
-                                      labelStyle: TextStyle(
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor),
-                                      selectedColor:
-                                          Theme.of(context).accentColor,
-                                      label: Text("Streak"),
-                                      selected: streakSwitchValue,
-                                      onSelected: (val) {
-                             
-                                        setState(() {
-                                          player.play(
-                                            'sounds/ui_tap-variant-01.wav',
-                                            stayAwake: false,
-                                          );
-                                          initialselectedPage = 1;
+                                      selectedChip.put(
+                                          "streakSelectedChip", false);
+                                      print(val);
+                                    },
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide /
+                                              60,
+                                          0,
+                                          MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide /
+                                              60,
+                                          0)),
+                                  ChoiceChip(
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor),
+                                    selectedColor:
+                                        Theme.of(context).accentColor,
+                                    label: Text("Streak"),
+                                    selected: streakSwitchValue,
+                                    onSelected: (val) {
+                                      setState(() {
+                                        player.play(
+                                          'sounds/ui_tap-variant-01.wav',
+                                          stayAwake: false,
+                                        );
+                                        initialselectedPage = 1;
 
-                                          selectedChip.put("selectedPage", 1);
-                                        });
+                                        selectedChip.put("selectedPage", 1);
+                                      });
 
-                                        if (val == true) {
-                                          player.play(
-                                            'sounds/navigation_forward-selection.wav',
-                                            stayAwake: false,
-                                            // mode: PlayerMode.LOW_LATENCY,
-                                          );
-                                          selectedChip.put(
-                                              "streakSelectedChip", true);
-                                        }
+                                      if (val == true) {
+                                        player.play(
+                                          'sounds/navigation_forward-selection.wav',
+                                          stayAwake: false,
+                                        );
                                         selectedChip.put(
                                             "streakSelectedChip", true);
+                                      }
+                                      selectedChip.put(
+                                          "streakSelectedChip", true);
 
-                                        selectedChip.put(
-                                            "workingSelectedChip", false);
+                                      selectedChip.put(
+                                          "workingSelectedChip", false);
 
-                                        selectedChip.put(
-                                            "completedSelectedChip", false);
+                                      selectedChip.put(
+                                          "completedSelectedChip", false);
 
-                                        print(val);
-                                      },
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                60,
-                                            0,
-                                            MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                60,
-                                            0)),
-                                    ChoiceChip(
-                                      labelStyle: TextStyle(
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor),
-                                      selectedColor:
-                                          Theme.of(context).accentColor,
-                                      label: Text("Completed"),
-                                      selected: completedSwitchValue,
-                                      onSelected: (val) {
-                                        print("${streakBox.length} are length");
-                                        print("${streakBox.values} are values");
-                                        print(
-                                            "${streakBox.isEmpty} are emptiness");
-                                        print("${streakBox.keys} are keys");
-                                        setState(() {
-                                          player.play(
-                                            'sounds/ui_tap-variant-01.wav',
-                                            stayAwake: false,
-                                            // mode: PlayerMode.LOW_LATENCY,
-                                          );
-                                          initialselectedPage = 2;
+                                      print(val);
+                                    },
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide /
+                                              60,
+                                          0,
+                                          MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide /
+                                              60,
+                                          0)),
+                                  ChoiceChip(
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor),
+                                    selectedColor:
+                                        Theme.of(context).accentColor,
+                                    label: Text("Completed"),
+                                    selected: completedSwitchValue,
+                                    onSelected: (val) {
+                                      print("${streakBox.length} are length");
+                                      print("${streakBox.values} are values");
+                                      print(
+                                          "${streakBox.isEmpty} are emptiness");
+                                      print("${streakBox.keys} are keys");
+                                      setState(() {
+                                        player.play(
+                                          'sounds/ui_tap-variant-01.wav',
+                                          stayAwake: false,
+                                        );
+                                        initialselectedPage = 2;
 
-                                          selectedChip.put("selectedPage", 2);
-                                        });
+                                        selectedChip.put("selectedPage", 2);
+                                      });
 
-                                        if (val == true) {
-                                          player.play(
-                                            'sounds/navigation_forward-selection.wav',
-                                            stayAwake: false,
-                                            // mode: PlayerMode.LOW_LATENCY,
-                                          );
-                                          selectedChip.put(
-                                              "completedSelectedChip", true);
-                                        }
+                                      if (val == true) {
+                                        player.play(
+                                          'sounds/navigation_forward-selection.wav',
+                                          stayAwake: false,
+                                        );
                                         selectedChip.put(
                                             "completedSelectedChip", true);
+                                      }
+                                      selectedChip.put(
+                                          "completedSelectedChip", true);
 
-                                        selectedChip.put(
-                                            "workingSelectedChip", false);
-                                        selectedChip.put(
-                                            "streakSelectedChip", false);
+                                      selectedChip.put(
+                                          "workingSelectedChip", false);
+                                      selectedChip.put(
+                                          "streakSelectedChip", false);
 
-                                        print(val);
-                                      },
-                                    ),
-                                  ]),
-                            );
-                          }) else Container(),
+                                      print(val);
+                                    },
+                                  ),
+                                ]),
+                          );
+                        })
+                  else
+                    Container(),
 
-          // If count of toodo, count of completed Toodo, and cound of streaks is combinely 0 (zero)
-          // White screen Page will be shown, 
-          // It is that Fancy page, at the start that encorouges you to add Toodolee for the Today, 
-          // Yes that one, ("Press + to Start") :hehe
+                  // If count of toodo, count of completed Toodo, and cound of streaks is combinely 0 (zero)
+                  // White screen Page will be shown,
+                  // It is that Fancy page, at the start that encorouges you to add Toodolee for the Today,
+                  // Yes that one, ("Press + to Start") :hehe
 
                   if (todoBox.length <= 0 &&
-                          completedBox.length <= 0 &&
-                          streakBox.length <= 0) whiteScreen(context) else Container(),
+                      completedBox.length <= 0 &&
+                      streakBox.length <= 0)
+                    whiteScreen(context)
+                  else
+                    Container(),
 
                   SlideInUp(
                     child: settingsBox.get("selectedPage") == null
@@ -764,27 +768,29 @@ There are exactly Three Chips, as you can see in the Front App.
                     //delay: Duration(milliseconds: 200),
                   ),
 
-
 // I also don't know What They have written. :laugh
-                  if (todoBox.length > 0) Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: FadeInUp(
-                              duration: Duration(milliseconds: 2000),
-                              child: Text(
-                                todoBox.length == 10 ||
-                                        streakBox.length == 10 ||
-                                        completedBox.length == 10
-                                    ? ""
-                                    : "You can add : $remainingTodoCount more",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.subtitle2,
-                              ),
-                            ),
+                  if (todoBox.length > 0)
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Opacity(
+                        opacity: 0.5,
+                        child: FadeInUp(
+                          duration: Duration(milliseconds: 2000),
+                          child: Text(
+                            todoBox.length == 10 ||
+                                    streakBox.length == 10 ||
+                                    completedBox.length == 10
+                                ? ""
+                                : "You can add : $remainingTodoCount more",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
-                        ) else Container(),
-                  
+                        ),
+                      ),
+                    )
+                  else
+                    Container(),
+
                   // This is extra space, from the bottom, so if You need to remove the last Toodo which can be hidden behind the floating action button, so the user will get room so that he could scroll and remove the last Tooodo.
                   Container(
                       height: MediaQuery.of(context).size.shortestSide / 3),

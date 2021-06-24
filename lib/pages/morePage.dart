@@ -26,6 +26,10 @@ class WithLoveMoreComming extends StatelessWidget {
   }
 }
 
+/* 
+This is the More page, where the Quotes and boring Card rests,
+*/
+
 class MorePage extends StatefulWidget {
   @override
   _MorePageState createState() => _MorePageState();
@@ -36,7 +40,6 @@ class _MorePageState extends State<MorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          // Staggered Grid View starts here
           child: ListView(
         children: [
           Padding(
@@ -45,16 +48,13 @@ class _MorePageState extends State<MorePage> {
                   MediaQuery.of(context).size.shortestSide / 40,
                   0,
                   MediaQuery.of(context).size.shortestSide / 10),
-              child: Quotes()),
+              child: Quotes()), // This is Quotes Card
           Padding(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).size.shortestSide / 10),
-              child: Bored()),
-          // Padding(
-          //     padding: EdgeInsets.only(
-          //         bottom: MediaQuery.of(context).size.shortestSide / 10),
-          //     child: Weathercard()),
-          WithLoveMoreComming()
+              child: Bored()), // it's Boring Card
+
+          WithLoveMoreComming() // it is the text, just text.
         ],
       )),
     );

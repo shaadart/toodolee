@@ -339,7 +339,7 @@ class _BoredState extends State<Bored> {
             //                                   player.play(
             //                                     'sounds/ui_tap-variant-01.wav',
             //                                     stayAwake: false,
-            //                                     // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                   );
             //                                 })
             //                             : IconButton(
@@ -357,7 +357,7 @@ class _BoredState extends State<Bored> {
             //                                   player.play(
             //                                     'sounds/ui_tap-variant-01.wav',
             //                                     stayAwake: false,
-            //                                     // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                   );
             //                                 }),
             //                         title: todoBox.length >= 1
@@ -379,7 +379,7 @@ class _BoredState extends State<Bored> {
             //                                   player.play(
             //                                     'sounds/ui_tap-variant-01.wav',
             //                                     stayAwake: false,
-            //                                     // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                   );
             //                                   await Navigator.push(
             //                                     context,
@@ -396,7 +396,7 @@ class _BoredState extends State<Bored> {
             //                                   player.play(
             //                                     'sounds/ui_tap-variant-01.wav',
             //                                     stayAwake: false,
-            //                                     // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                   );
             //                                   await Navigator.push(
             //                                     context,
@@ -413,7 +413,7 @@ class _BoredState extends State<Bored> {
             //                               player.play(
             //                                 'sounds/ui_tap-variant-01.wav',
             //                                 stayAwake: false,
-            //                                 // mode: PlayerMode.LOW_LATENCY,
+            //
             //                               );
             //                               await Navigator.push(
             //                                 context,
@@ -561,7 +561,7 @@ class _BoredState extends State<Bored> {
             //                                     player.play(
             //                                       'sounds/hero_decorative-celebration-03.wav',
             //                                       stayAwake: false,
-            //                                       // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                     );
             //                                     var welcomeBoringCardBox =
             //                                         Hive.box(
@@ -584,7 +584,7 @@ class _BoredState extends State<Bored> {
             //                                     player.play(
             //                                       'sounds/ui_tap-variant-01.wav',
             //                                       stayAwake: false,
-            //                                       // mode: PlayerMode.LOW_LATENCY,
+            //
             //                                     );
             //                                     Share.share(
             //                                         "Hi, 👋 I am Using Toodooleee, It's Just about Limiting your things to achieve limitless,\n \nYou had always been with me at all walks,\n \nI believe in you,\nYou would never waste your whole energy of your life in random un-productive things, \n \nSo if you need to be productive in the state of boredom, (which I want you to be) and pass on the boredom, I am with you, Toodolee it to End Boredom from Your Pocket. \n \n (I know that was some big message, indeed this is a sign that I care for you) (play store Link)");
@@ -756,7 +756,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                         player.play(
                           'sounds/ui_tap-variant-01.wav',
                           stayAwake: false,
-                          // mode: PlayerMode.LOW_LATENCY,
                         );
                       })
                   : IconButton(
@@ -767,8 +766,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                         player.play(
                           'sounds/ui_tap-variant-01.wav',
                           stayAwake: false,
-
-                          // mode: PlayerMode.LOW_LATENCY,
                         );
                         Navigator.push(
                           context,
@@ -798,7 +795,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                         player.play(
                           'sounds/ui_tap-variant-01.wav',
                           stayAwake: false,
-                          // mode: PlayerMode.LOW_LATENCY,
                         );
                         await Navigator.push(
                           context,
@@ -814,7 +810,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                         player.play(
                           'sounds/ui_tap-variant-01.wav',
                           stayAwake: false,
-                          // mode: PlayerMode.LOW_LATENCY,
                         );
                         await Navigator.push(
                           context,
@@ -830,7 +825,6 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                     player.play(
                       'sounds/ui_tap-variant-01.wav',
                       stayAwake: false,
-                      // mode: PlayerMode.LOW_LATENCY,
                     );
                     await Navigator.push(
                       context,
@@ -888,7 +882,6 @@ boringCard(boringTask, boringType, boringLink, context) {
                       player.play(
                         'sounds/navigation_forward-selection-minimal.wav',
                         stayAwake: false,
-                        // mode: PlayerMode.LOW_LATENCY,
                       );
                       String texturl = (boringLink)
                           .toString(); // The URL must be converted to String

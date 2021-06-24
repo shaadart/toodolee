@@ -185,7 +185,7 @@
 //                                       player.play(
 //                                         'sounds/navigation_forward-selection-minimal.wav',
 //                                         stayAwake: false,
-//                                         // mode: PlayerMode.LOW_LATENCY,
+//                                        
 //                                       );
 
 //                                       String user_city;
@@ -236,7 +236,7 @@
 //                                         player.play(
 //                                           'sounds/navigation_forward-selection-minimal.wav',
 //                                           stayAwake: false,
-//                                           // mode: PlayerMode.LOW_LATENCY,
+//                                          
 //                                         );
 //                                         setState(() {
 //                                           user_units = "metric";
@@ -258,7 +258,7 @@
 //                                         player.play(
 //                                           'sounds/navigation_forward-selection-minimal.wav',
 //                                           stayAwake: false,
-//                                           // mode: PlayerMode.LOW_LATENCY,
+//                                          
 //                                         );
 //                                         setState(() {
 //                                           user_units = "imperial";
@@ -289,7 +289,7 @@
 //                     player.play(
 //                       'sounds/ui_loading.wav',
 //                       stayAwake: false,
-//                       // mode: PlayerMode.LOW_LATENCY,
+//                      
 //                     );
 //                     return Center(
 //                       child: Column(
@@ -312,7 +312,7 @@
 //                                 player.play(
 //                                   'sounds/navigation_forward-selection-minimal.wav',
 //                                   stayAwake: false,
-//                                   // mode: PlayerMode.LOW_LATENCY,
+//                                  
 //                                 );
 //                                 weatherBox.delete("location");
 //                               })
@@ -563,7 +563,7 @@
 //                                           player.play(
 //                                             'sounds/navigation_forward-selection-minimal.wav',
 //                                             stayAwake: false,
-//                                             // mode: PlayerMode.LOW_LATENCY,
+//                                            
 //                                           );
 //                                           String user_city;
 
@@ -602,7 +602,7 @@
 //                                                 player.play(
 //                                                   'sounds/navigation_forward-selection-minimal.wav',
 //                                                   stayAwake: false,
-//                                                   // mode: PlayerMode.LOW_LATENCY,
+//                                                  
 //                                                 );
 
 //                                                 setState(() {
@@ -625,7 +625,7 @@
 //                                                 player.play(
 //                                                   'sounds/navigation_forward-selection-minimal.wav',
 //                                                   stayAwake: false,
-//                                                   // mode: PlayerMode.LOW_LATENCY,
+//                                                  
 //                                                 );
 //                                                 setState(() {
 //                                                   user_units = "imperial";

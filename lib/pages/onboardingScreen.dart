@@ -18,16 +18,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      //Ghost White: 0xffF6F8FF
-//Lemon Glacier :0xffFBFB0E
-//Rich Black: 0xff010C13
-// Azure: 0xff4785FF
       PageModel.withChild(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-      
               Padding(
                 padding: EdgeInsets.all(
                     MediaQuery.of(context).size.shortestSide / 20),
@@ -49,15 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headline4)),
           color: Colors.blue,
           doAnimateChild: true),
-      // PageModel.withChild(
-      //     child:   Padding(
-      //       padding:   EdgeInsets.only(bottom: 25.0),
-      //       child:   Image.asset('assets/quotes.jpg',
-      //           width: MediaQuery.of(context).size.shortestSide / 0.9,
-      //           height: MediaQuery.of(context).size.shortestSide / 0.9),
-      //     ),
-      //     color: Colors.blue,
-      //     doAnimateChild: true),
       PageModel.withChild(
           child: Center(
               child: Text("Open it Daily,",
@@ -72,30 +58,42 @@ class _MyHomePageState extends State<MyHomePage> {
         pages: pages,
         showBullets: false,
         skipCallback: () {
-          Text("Skip clicked");
+          // set remainderNotifications be true,
+          //it will let the app set Remainders, You can check the pages/settingspage.dart there in it the remainderNotification must have true as the value to let the user set the remainder notifications, otherwise the remiander will not ring.
           settingsBox.put("remainderNotifications", true);
-          settingsBox.put("dailyNotifications", true);
-          setDailyRemainderMethod([6.toString(), 30.toString()], context);
+          settingsBox.put("dailyNotifications",
+              true); //set the daily notifications be true, with this you can get daily notifications for writing the Toodolee, so to create a Habit,
+          setDailyRemainderMethod([
+            //daily Remainder Notification takes the hour and minute in inside the list.
+            6,
+            30
+          ], context); // as in the start the Daily Notifications will have null as the value, so default is 6:30 when the daily alarm will ring (you can change time from settings Page inside the app)
           player.play(
             'sounds/hero_decorative-celebration-03.wav',
             stayAwake: false,
-            // mode: PlayerMode.LOW_LATENCY,
           );
+          // onboardingBox is what store True or False as the value, if it is true the the on Boarding or most first welcomming screen is shown if it is false then it is not shown and the user will see the normal screeen that we all see.
           onboardingScreenBox.put('shownOnBoard', true);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),
-          );
+          ); // Navigate to the main App.
         },
         finishCallback: () {
+          // set remainderNotifications be true,
+          //it will let the app set Remainders, You can check the pages/settingspage.dart there in it the remainderNotification must have true as the value to let the user set the remainder notifications, otherwise the remiander will not ring.
           settingsBox.put("remainderNotifications", true);
-          settingsBox.put("dailyNotifications", true);
-          setDailyRemainderMethod([6.toString(), 30.toString()], context);
+          settingsBox.put("dailyNotifications",
+              true); //set the daily notifications be true, with this you can get daily notifications for writing the Toodolee, so to create a Habit,
+          setDailyRemainderMethod([
+            6,
+            30
+          ], context); // as in the start the Daily Notifications will have null as the value, so default is 6:30 when the daily alarm will ring (you can change time from settings Page inside the app)
           player.play(
             'sounds/hero_decorative-celebration-03.wav',
             stayAwake: false,
-            // mode: PlayerMode.LOW_LATENCY,
           );
+          // onboardingBox is what store True or False as the value, if it is true the the on Boarding or most first welcomming screen is shown if it is false then it is not shown and the user will see the normal screeen that we all see.
           onboardingScreenBox.put('shownOnBoard', true);
           Navigator.push(
             context,

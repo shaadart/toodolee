@@ -9,11 +9,24 @@ import 'package:share/share.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:toodo/uis/quotes.dart';
-import 'package:toodo/uis/whiteScreen.dart';
 import 'listui.dart';
 
-Box<CompletedTodoModel> cbox;
 bool fabScrollingVisibility = true;
+// floating action button just goes hide, if the count of all (combined or alone) will become 10,
+// So for that time.
+// Currently the visibility will be true, hence now is true, when the count exceeds 9 and goes to 10 then the visibility of floating action button will be false
+//because At beginning the floating action button should not disappear otherwise,
+// You will not be able to add toodolees.dart
+// This is the best part, #Really Limited.
+
+/*
+When the Toodo is Completed it jumps to the CompletedTodoCard.
+# Whole different UI
+# Helps Distinguish between completed Toodolees and Incompleted Ones
+# Share the Completed Ones
+# Delete etc.
+
+*/
 
 class CompletedTodoCard extends StatefulWidget {
   const CompletedTodoCard({
@@ -25,21 +38,24 @@ class CompletedTodoCard extends StatefulWidget {
 }
 
 class _CompletedTodoCardState extends State<CompletedTodoCard> {
-  //bool isCompleted = false;
-
   @override
   Widget build(BuildContext context) {
-    // return AnimatedList(
-    //     key: _listKey,
-    //     initialItemCount: cbox.length,
-    //     itemBuilder: (BuildContext context, int index, Animation animation) {
+/*
+completedTodoBox is the listenable, so whenever the changes will be done in this box (hive), 
+The UI will change itself, and reload itself.
+ */
     return ValueListenableBuilder(
         valueListenable:
             Hive.box<CompletedTodoModel>(completedtodoBoxname).listenable(),
         // ignore: missing_return
         builder: (context, Box<CompletedTodoModel> cbox, _) {
-          List<int> ckeys = cbox.keys.cast<int>().toList() ?? [];
+          // calling the completedTodoBox with "cbox" as a name
+
+          List<int> ckeys = cbox.keys.cast<int>().toList() ??
+              []; // casting the cbox, aligning it's keys to list.
           if (completedBox.isEmpty == true && todoBox.isEmpty == false) {
+            // when the todoBox is not empty and completed Box is empty, then.
+            // just returning "Completing is the new full" in a very big designed way
             return Column(children: [
               Align(
                 alignment: Alignment.center,
@@ -63,20 +79,22 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
               ),
             ]);
           } else if (completedBox.length == completedBox.length) {
+            // I don't know How it works, but it works,  :hehe
             return SingleChildScrollView(
+                //Scrool View (Activated)
                 physics: ScrollPhysics(),
                 child: ListView.separated(
+                    // ListView is added, the length of it is the length of completedTodoBox
                     physics: NeverScrollableScrollPhysics(),
-                    //itemCount: box.length,// editing a bit
                     itemCount: cbox.length,
                     shrinkWrap: true,
                     separatorBuilder: (_, index) => Container(),
                     itemBuilder: (_, index) {
-                      final int ckey = ckeys[index];
-                      final CompletedTodoModel comptodo = cbox.get(ckey);
-                      //comptodo.completedTodoName = todoName;
+                      final int ckey = ckeys[index]; //getting the index.
+                      final CompletedTodoModel comptodo =
+                          cbox.get(ckey); // get that key from that index.
 
-                      //todo.isCompleted = false;
+                      //Main Face/ UI that seems.
                       return Padding(
                         padding: EdgeInsets.fromLTRB(
                             MediaQuery.of(context).size.shortestSide / 35,
@@ -95,36 +113,47 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                   child: Text(
                                     '${(comptodo.completedTodoName).toString()}',
                                     style: TextStyle(
-                                     
                                       fontFamily: "WorkSans",
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 15,
-                                      //  color: Colors.black54,
-                                      //decoration: TextDecoration.lineThrough,
                                     ),
                                   ),
                                 ),
-                                onLongPress: () {
-                                  print("object");
-                                },
                                 leading: IconButton(
+                                  /*
+                                   
+                                  #Sounds will be played
+                                  # It will restart the notifications. (which was cancelled when the tooodoolee was completed)
+                                  # Uncheck the circular/radio/leading button, this will cause the following to go to the Incompleted Todo
+                                  # As it is adding in the incompletedTodo or WorkingOn then this will also remove the same element from the ship, So the todo will not build-up multiple times in one place.
+                                  
+                                   */
                                   onPressed: () {
-                                    deleteQuotes();
                                     player.play(
                                       'sounds/notification_simple-01.wav',
                                       stayAwake: false,
-                                      // mode: PlayerMode.LOW_LATENCY,
                                     );
 
                                     if (comptodo.isCompleted == true) {
                                       if (comptodo.completedTodoRemainder !=
                                           null) {
+                                        /* 
+                                            We are restarting the notification*/
                                         restartRemainderNotifications(
                                             comptodo.completedTodoName,
                                             comptodo.completedTodoRemainder,
                                             context);
                                       }
+
+                                      /*
+                                      We are adding the Following inside the TodoModel because,
+                                       this is what refers to the Working On page or Which holds something like Incompleted Todo .
+
+                                       Then the Model helps add the Tooooodo inside the todoBox.
+                                       Then we delete the particular completedTodoBox element from the ListView.separated
+                                      
+                                       */
                                       TodoModel incompletedTodo = TodoModel(
                                         todoName: comptodo.completedTodoName,
                                         todoEmoji: comptodo.completedTodoEmoji,
@@ -137,15 +166,22 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                       todoBox.add(incompletedTodo);
                                     }
                                   },
+                                  // the icon will be checkmarked so to distinguish it between the working ON lists and completed One Lists.
                                   icon: Icon(CarbonIcons.checkmark_filled,
                                       color: Colors.blue),
                                 ),
+
+                                //This is the more button, :more
+                                //This will help to unloack more options (as really expected)
+                                // .. Like deleting the CompletedTodo from it's position.
+                                // .. Like Sharing the Text with Favourite People.
                                 trailing: IconButton(
                                   color: Colors.blue,
                                   onPressed: () {
+                                    // When the Icon is Pressed, the Bottom sheet will Appear.
                                     showModalBottomSheet(
                                       context: context,
-                                      isScrollControlled: false,
+                                      isScrollControlled: true,
                                       shape: RoundedRectangleBorder(
                                         // <-- for border radius
                                         borderRadius: BorderRadius.only(
@@ -158,13 +194,8 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                         // Otherwise, the height will be half the height of the screen.
                                         return Wrap(
                                           children: [
-                                            // MaterialButton(
-                                            //   onPressed: () {},
-                                            //   child: ListTile(
-                                            //     leading: Icon(CarbonIcons.edit),
-                                            //     title: Text("Edit"),
-                                            //   ),
-                                            // ),
+                                            // Share Button,
+                                            // This will share the Small Little text to the audience or family.
                                             MaterialButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
@@ -181,6 +212,9 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                                             ),
 
                                             Divider(),
+                                            /*------------------------------------------------------------------------------------------------*/
+
+                                            // This will delete the completedTodo from it's index.
                                             MaterialButton(
                                               onPressed: () async {
                                                 await cbox.deleteAt(index);
@@ -214,9 +248,6 @@ class _CompletedTodoCardState extends State<CompletedTodoCard> {
                         ),
                       );
                     }));
-          } else if (completedBox.length <= 0 &&
-              completedStreakBox.length <= 0) {
-            whiteScreen(context);
           }
         });
   }

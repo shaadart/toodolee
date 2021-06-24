@@ -12,13 +12,21 @@ import 'package:toodo/models/Streak%20Model/streak_model.dart';
 import 'package:toodo/models/todo_model.dart';
 import 'package:yudiz_modal_sheet/yudiz_modal_sheet.dart';
 
-Box<TodoModel> todoBox;
-TodoModel todo;
-StreakModel streak;
-CompletedTodoModel completedTodo;
+Box<TodoModel> todoBox; //box that stores todo
+TodoModel todo; //model of TodoModel
+StreakModel streak; // model of StreakModel
+CompletedTodoModel completedTodo; // model of CompletedTodoModel
 
+/* When the Tooodo is added (it is a possibility though).
+so it will decrease the count of totalTodoCount, 
+because the total count is initially 10, 
+
+we will decrease the totalTodoCount as the thing will be added.
+So thats why incrementing the count is also beneficial as the decrement count count, 
+otherwise the tooodolee count or  Remaining count will only increase not decrease.) 
+*/
 void decrementCount() {
-  totalTodoCount.value--;
+  totalTodoCount.value--; // making the totalTodoCount -1
 }
 
 bool showEmojiKeyboard =
@@ -123,7 +131,6 @@ void addTodoBottomSheet(context) {
             player.play(
               'sounds/navigation_forward-selection-minimal.wav',
               stayAwake: false,
-              // mode: PlayerMode.LOW_LATENCY,
             );
             // in the model we are just fitting the objects,
             // so later we will add it,
@@ -165,9 +172,11 @@ void addTodoBottomSheet(context) {
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
                 So setting remianders in this case is easy as eatin Eat Watermelons.
                 
-                For more Info, Check getRemainderTime() method, which is in the last line of the addTodoBottomSheet.dart
+                For more Info also Check setRemainderMethod(), which is in setNotification.dart in Notification File.
+                For more Info, Check getRemainderTime() method, which is in the last line of the Notification/setNotification.dart
                 */
                 if (todo.todoRemainder.contains("PM") == true) {
+                  // if the remainder has PM in it.
                   setRemainderMethod(
                       getRemainderTime(todo.todoRemainder, context),
                       todo.todoName,
@@ -226,7 +235,6 @@ void addTodoBottomSheet(context) {
               player.play(
                 'sounds/hero_decorative-celebration-02.wav',
                 stayAwake: false,
-                // mode: PlayerMode.LOW_LATENCY,
               );
 // Finally Adding the Toooodooleee. yay
               todoBox.add(todo);
@@ -355,7 +363,6 @@ void addTodoBottomSheet(context) {
                                             player.play(
                                               'sounds/navigation_forward-selection-minimal.wav',
                                               stayAwake: true,
-                                              // mode: PlayerMode.LOW_LATENCY,
                                             );
                                           },
                                         ),
@@ -380,7 +387,6 @@ void addTodoBottomSheet(context) {
                                             player.play(
                                               'sounds/navigation_forward-selection-minimal.wav',
                                               stayAwake: false,
-                                              // mode: PlayerMode.LOW_LATENCY,
                                             );
                                             //Just focusing and unfocusing,
                                             //if emojiKeyboard is on then it will turn to off if the Emoji Button willl be tapped,
@@ -459,6 +465,7 @@ void addTodoBottomSheet(context) {
                                     ),
                                   ),
                                   Divider(),
+                                  /*------------------------------------------------------------------------------------------------*/
                                 ],
                               )
                             ],
@@ -564,6 +571,7 @@ class _SetChallengeState extends State<SetChallenge> {
         ),
       ),
       Divider(),
+      /*------------------------------------------------------------------------------------------------*/
       // after presss of the Set Challenge button
       MaterialButton(
           child: Text("Set Challenge",
@@ -616,7 +624,7 @@ class _SetChallengeState extends State<SetChallenge> {
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
                 So setting remianders in this case is easy as eatin Eat Watermelons.
                 
-                For more Info, Check getRemainderTime() method, which is in the last line of the addTodoBottomSheet.dart
+                For more Info, Check getRemainderTime() method, which is in the last line of the Notification/setNotification.dart
                 */
             if (streak.streakRemainder.contains("PM") == true) {
               // Check the getRemainderTime(), this is really impressive to see these two. they are well commented
@@ -627,8 +635,8 @@ class _SetChallengeState extends State<SetChallenge> {
                   streak.streakName,
                   streak.streakEmoji,
                   (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last *
-                          100),
+                      getRemainderTime(streak.streakRemainder, context).last +
+                      100),
                   context);
             } else if (streak.streakRemainder.contains("AM") == true) {
               // Check the getRemainderTime(), this is really impressive to see these two. they are well commented
@@ -639,8 +647,8 @@ class _SetChallengeState extends State<SetChallenge> {
                   streak.streakName,
                   streak.streakEmoji,
                   (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last *
-                          100),
+                      getRemainderTime(streak.streakRemainder, context).last +
+                      100),
                   context);
             } else if (streak.streakRemainder.contains("AM") == false &&
                 streak.streakRemainder.contains("PM") == false) {
@@ -652,15 +660,14 @@ class _SetChallengeState extends State<SetChallenge> {
                   streak.streakName,
                   streak.streakEmoji,
                   (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last *
-                          100),
+                      getRemainderTime(streak.streakRemainder, context).last +
+                      100),
                   context);
             }
             //play fancy sounds
             player.play(
               'sounds/hero_decorative-celebration-02.wav',
               stayAwake: false,
-              // mode: PlayerMode.LOW_LATENCY,
             );
             // decrement the count, of toodolees as the toodolee is limited to ten.
             decrementCount();
@@ -691,69 +698,3 @@ If the Remainder is 24 hours. then no need to make good changes.
 
 
  */
-getRemainderTime(time, context) {
-  if (time.contains("PM") == true) {
-    // if the time has PM, ex 4:00 pm
-    var splittingSpace = time.split(" "); //Splitting it, ["4:00", "pm"]
-    var removePM = splittingSpace.removeAt(0); // Remove the PM, ex, ["4:00"]
-
-    var removeUnwantedSymbol =
-        removePM.split(":"); // Remove : Symbol, ex, ["4" ,"00"]
-
-    Map convertTimetotwentyFourHourClock = {
-      1: 13, // 1 pm can be written as 13
-      2: 14, // 2 pm can we written as 14
-      3: 15,
-      4: 16,
-      5: 17,
-      6: 18,
-      7: 19,
-      8: 20,
-      9: 21,
-      10: 22, //10 pm can we written as 22
-      11: 23, // 11 pm can we written as 23
-      12: 12
-    };
-    var hourToBeChanged = int.parse(removeUnwantedSymbol
-        .first); //it's no need to change the minute element, it does depended upon the hour one, ex, 4
-
-    var hour = convertTimetotwentyFourHourClock[
-        hourToBeChanged]; // Acording to the key it will change according to the value, ex, 16
-    var minute =
-        removeUnwantedSymbol.last; // the minute will be the same, ex, 00
-
-    var remainderTime = [
-      hour.toString(),
-      minute.toString()
-    ]; //Setting the hour and minute in the List. ex, ["16","00"]
-    print(remainderTime); // ex, ["16","00"]
-    print(hour); //16
-    print(minute); //00
-
-    return [
-      int.parse(remainderTime[0]),
-      int.parse(remainderTime[1])
-    ]; //Converted to Int (each Tings) so to set Remainder Notifications, ex, [16, 0]
-  } else if (time.contains("AM") == true) {
-    // if it has AM in the Remainder, ex, 10:00 AM,
-    var splittingSpace =
-        time.split(" "); // Spilt the Spaces. ex, ["10:00", "AM"]
-    var removeAM =
-        splittingSpace.removeAt(0); // Remove the AM keyword, ex, ["10:00"]
-
-    var remainderTime =
-        removeAM.split(":"); // Remove the ":" keyword, ex, ["10","00"]
-    return [
-      int.parse(remainderTime[0]),
-      int.parse(remainderTime[1])
-    ]; //Converted to Int (each Tings) so to set Remainder Notifications, ex, [10, 0]
-  } else if (time.contains("AM") == false && time.contains("PM") == false) {
-    //if it is 24 hrs clock, ex, 18:00
-    var remainderTime =
-        time.split(":"); //split the by the patters of ":". ex, ["18", "00"]
-    return [
-      int.parse(remainderTime[0]),
-      int.parse(remainderTime[1])
-    ]; //Converted to Int (each Tings) so to set Remainder Notifications. ex, [18, 0]
-  }
-}
