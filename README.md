@@ -205,12 +205,9 @@ Improved the UI, He is the Who in front of which the Different Idea, Of creating
 Always there for me, from a long Time, We had most of the Fun and thinking together. Same.Team. Same Team.
 
 #### Who can Forget The Flutter, This App is Created in Flutter.
+Get an Island and Use The Toodolee, Then See yourself as a great man of success.
 
-<hr class="dashed">
-
-# Get an Island and Use The Toodolee, Then See yourself as a great man of success.
-
-![giphy](https://user-images.githubusercontent.com/64954854/121500190-b5436800-c9fb-11eb-93f2-62cb84556381.gif)
+# Please Sponsor the Toodoolee
 
 <a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 

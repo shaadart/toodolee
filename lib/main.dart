@@ -556,6 +556,8 @@ class _TodoAppState extends State<TodoApp> {
 // Here the Variable is totalTodoCount, which refers to the value, how much is the total todo count.
 // when something is added to the toodolee or removed etc, totalTodoCund will be affected.
     // Take a look at totalTodoCount by clicking on it with control or command Pressed.
+// when something is added to the toodolee or removed etc, totalTodoCount will be affected.
+ // Take a look at totalTodoCount by clicking on it with control or command Pressed.  
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
