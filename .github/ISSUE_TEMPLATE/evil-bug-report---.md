@@ -20,7 +20,7 @@ Steps to reproduce his behaviour:
 
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If possible, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Android]
