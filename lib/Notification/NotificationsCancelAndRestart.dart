@@ -1,6 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:toodo/Notification/setNotification.dart';
-import 'package:toodo/uis/addTodoBottomSheet.dart';
 
 // Cancel the Notification of Remainder Notifications
 cancelRemainderNotifications(reference, context) {
@@ -91,7 +90,7 @@ restartRemainderNotifications(name, reference, context) {
 
                 In this way it is efficient and more reliable.
                 This process is done by the Function, getRemainderTime().
-                which is in the last line of the addTodoBottomSheet.dart
+                which is in the last line of the setNotifications.dart
 
                 BTW,
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
@@ -154,7 +153,7 @@ restartStreakNotifications(name, emoji, reference, context) {
 
                 In this way it is efficient and more reliable.
                 This process is done by the Function, getRemainderTime().
-                which is in the last line of the addTodoBottomSheet.dart
+                which is in the last line of the setNotifications.dart
 
                 BTW,
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.

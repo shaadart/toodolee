@@ -26,7 +26,7 @@ setRemainderMethod(time, String name, id, context) {
                 ? "Today, $hour:0$minute" // if it is One, we are adding Zero at the start of the minute and
                 : "Today, $hour:$minute"), //if the minute is two digited then we are doing nothing. (showing as it is.)
 
-                                /*
+        /*
                                   The problem Comes, when the Body looks like when the Notification poooops down,
                                   Tap and write toodo, 4:0, now it should be looking 4:00, It looks, 4:0 which is looking like one of the verse of the Holy Book. :hehe, 
                                   also minute part does not creates trouble-ing, when the minute is like 45, 11, etc, (two digited)
@@ -118,6 +118,15 @@ setStreakRemainderMethod(time, name, emoji, id, context) {
   }
 }
 
+/* One Most beautiful and elegant thing, that seriously reduces a good amount of code.
+
+This method senses the whatever String or more specifically time,
+and gives the outputs as according to them.
+
+Like if the Remainder has PM keyword in it. then it will change PM to 24-hour clock timings like 7:00 pm is 19:00
+If the Remainder has AM in it, let there be no change, except removing the AM keyword like how we were removing in PM.
+If the Remainder is 24 hours. then no need to make good changes.
+ */
 getRemainderTime(time, context) {
   if (time.contains("PM") == true) {
     // if the time has PM, ex 4:00 pm

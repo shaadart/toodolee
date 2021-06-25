@@ -3,8 +3,6 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:hive/hive.dart';
-import 'package:share/share.dart';
 import 'package:toodo/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
@@ -44,17 +42,6 @@ class Bored extends StatefulWidget {
 class _BoredState extends State<Bored> {
   //https://www.boredapi.com/api/activity/
 
-  Future<void> _launchBoringWorkinWeb(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: true,
-        forceWebView: true,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
 // Checks for the Internet Connection (already)
   isInNetwork() async {

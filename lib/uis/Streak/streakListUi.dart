@@ -604,7 +604,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                       // Incrementing the +1 to the count, i.e days that are done
                                                       streako.save();
                                                       // save the following data, for the following interacted streak
-                                                      // As it is pushed to the completed ones, then making it to hr e completed streak Notification
+                                                      // As it is pushed to the completed ones, then making it to the completed streak Notification
                                                       cancelStreakNotifications(
                                                           completedStreakRemainder,
                                                           context);

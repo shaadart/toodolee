@@ -1,4 +1,5 @@
 import 'package:jiffy/jiffy.dart';
+import 'package:toodo/Notification/NotificationsCancelAndRestart.dart';
 import 'package:toodo/main.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'uis/quotes.dart';
@@ -161,14 +162,17 @@ resetStreakMidNight(context) {
       checks if the streak is completed it will be updated to incompleted next day.
       if it is not, it will be deleted
 */
-    print(streakBox.keys.toList());
+  
     for (final key in streakBox.keys.toList()) {
       var streak = streakBox.get(key);
 
       if (streak.isCompleted) {
         streak.isCompleted = false;
+        restartRemainderNotifications(
+            streak.streakName, streak.streakRemainder, context);
         streakBox.put(key, streak);
       } else {
+        cancelRemainderNotifications(streak.streakRemainder, context);
         streakBox.delete(key);
       }
     }
@@ -204,14 +208,17 @@ resetStreakMidNight(context) {
       checks if the streak is completed it will be updated to incompleted next day.
       if it is not, it will be deleted
 */
-      print(streakBox.keys.toList());
+     
       for (final key in streakBox.keys.toList()) {
         var streak = streakBox.get(key);
 
         if (streak.isCompleted) {
           streak.isCompleted = false;
+          restartRemainderNotifications(
+              streak.streakName, streak.streakRemainder, context);
           streakBox.put(key, streak);
         } else {
+          cancelRemainderNotifications(streak.streakRemainder, context);
           streakBox.delete(key);
         }
       }

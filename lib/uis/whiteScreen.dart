@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:toodo/main.dart';
 import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'dart:core';
@@ -12,7 +11,6 @@ When Toodo, Streaks, Completed are 0, then White Screen Shows up to Entertain th
 It shows different things every entire time, and really a greeat number of combination is possible.
 (Talking about which Combinations)?
 */
-
 
 // List of, How we can Greet People;
 List<String> heyss = [

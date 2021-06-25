@@ -97,6 +97,7 @@ void addTodoBottomSheet(context) {
           }
 
           @override
+          // ignore: unused_element
           void initState() {
             //super.initState();
 // when the Keyboard is opened, hide the emojiKeyboard
@@ -110,6 +111,7 @@ void addTodoBottomSheet(context) {
           }
 
 // This is the Time Pciker, this method opens timepicker.
+          // ignore: missing_return
           Future<TimeOfDay> openTimePicker(BuildContext context) async {
             final TimeOfDay t = await showTimePicker(
                 context: context, initialTime: TimeOfDay.now());
@@ -166,7 +168,7 @@ void addTodoBottomSheet(context) {
 
                 In this way it is efficient and more reliable.
                 This process is done by the Function, getRemainderTime().
-                which is in the last line of the addTodoBottomSheet.dart
+                which is in the last line of the setNotifications.dart
 
                 BTW,
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
@@ -618,7 +620,7 @@ class _SetChallengeState extends State<SetChallenge> {
 
                 In this way it is efficient and more reliable.
                 This process is done by the Function, getRemainderTime().
-                which is in the last line of the addTodoBottomSheet.dart
+                which is in the last line of the setNotifications.dart
 
                 BTW,
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
@@ -687,14 +689,4 @@ class _SetChallengeState extends State<SetChallenge> {
   }
 }
 
-/* One Most beautiful and elegant thing, that seriouslt reduces a good amount of code.
 
-This Method senses the whatever String or more specifically time,
-and gives the outputs as according to them.
-
-Like if the Remainder has PM keyword in it. then it will change PM to 24 hour clock timings like 7:00 pm is 19:00
-If the Remainder has AM in it, let there be no change, except remiving rhe AM keyword like how we were remving in PM.
-If the Remainder is 24 hours. then no need to make good changes.
-
-
- */

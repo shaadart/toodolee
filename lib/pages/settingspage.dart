@@ -10,7 +10,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share/share.dart';
 import 'package:toodo/Notification/setNotification.dart';
 import 'package:toodo/main.dart';
-import 'package:toodo/uis/addTodoBottomSheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 
@@ -82,7 +81,7 @@ class _SettingPageState extends State<SettingPage> {
 
                 In this way it is efficient and more reliable.
                 This process is done by the Function, getRemainderTime().
-                which is in the last line of the addTodoBottomSheet.dart
+                which is in the last line of the setNotifications.dart
 
                 BTW,
                 and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
@@ -258,7 +257,7 @@ class _SettingPageState extends State<SettingPage> {
                                     ? "${dailyRemainderBox.get("remainderTime")[0]}:0${dailyRemainderBox.get('remainderTime')[1]}" // if it is One, we are adding Zero at the start of the minute and
                                     : "${dailyRemainderBox.get("remainderTime")[0]}:${dailyRemainderBox.get('remainderTime')[1]}", //if the minute is two digited then we are doing nothing. (showing as it is.)
                             style: TextStyle(
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.blue,
                             )),
                       ),
                     ),
