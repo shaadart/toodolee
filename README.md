@@ -13,6 +13,8 @@ It's all about Limiting to See Limitless.
 
 # Screenshots 📱
 
+Download the App Apk, [(early access) App Apk](https://drive.google.com/drive/folders/1eMVtTiHJGpsAPYpXZ-8N22tqeHPl8eYT?usp=sharing)
+
 ![2](https://user-images.githubusercontent.com/64954854/120599189-cd980d80-c464-11eb-8c32-1d67735fbebd.png)
 
 ![1](https://user-images.githubusercontent.com/64954854/122865896-ba31e100-d344-11eb-97df-f86bccf720a2.png)
