@@ -20,7 +20,7 @@ class StreakModelAdapter extends TypeAdapter<StreakModel> {
       streakName: fields[0] as String,
       streakCount: fields[1] as int,
       streakEmoji: fields[2] as String,
-      streakRemainder: fields[3] as String,
+      streakReminder: fields[3] as String,
       streakDays: fields[4] as int,
       isCompleted: fields[5] as bool,
     );
@@ -37,7 +37,7 @@ class StreakModelAdapter extends TypeAdapter<StreakModel> {
       ..writeByte(2)
       ..write(obj.streakEmoji)
       ..writeByte(3)
-      ..write(obj.streakRemainder)
+      ..write(obj.streakReminder)
       ..writeByte(4)
       ..write(obj.streakDays)
       ..writeByte(5)

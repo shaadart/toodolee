@@ -33,11 +33,12 @@ resetToodoleeMidNight(context) {
       settingsBox.get("monthFirstDay") == null) {
     DateTime now = DateTime.now();
 
-    var year = now.year;
-    var month = now.month;
-    var day = now.day;
+    var year = now.year; // now year
+    var month = now.month; // now month
+    var day = now.day; // now day
 
-    settingsBox.put("todayDate", [year, month, day]);
+    settingsBox
+        .put("todayDate", [year, month, day]); // put the date in Local Storage
 
     var endOfMonthDaysRemaining =
         Jiffy().endOf(Units.MONTH).fromNow().split(" ");
@@ -61,11 +62,22 @@ resetToodoleeMidNight(context) {
     settingsBox
         .put("monthFirstDay", [nextMonthYear, nextMonthMonth, nextMonthDay]);
 
-    todoBox.clear();
+    for (final key in todoBox.keys.toList()) {
+      var toodo = todoBox.get(key);
+
+      if (todoBox.length > 0) {
+        print(" cancelling the notifications of ${toodo.todoName}");
+
+        cancelReminderNotifications(toodo.todoReminder, context);
+
+        todoBox.delete(key);
+      }
+    }
+
     completedBox.clear();
     deleteQuotes();
     boredBox.clear();
-    totalTodoCount.value = 10;
+    totalTodoCount.value = 10 - streakBox.length;
     resetStreakMidNight(context);
     // streako.isCompleted = false;
     print("everything is reset-ed");
@@ -95,11 +107,22 @@ resetToodoleeMidNight(context) {
             nextMonthDay == settingsBox.get("monthFirstDay")[2])) {
       print("nothing to do");
     } else {
-      todoBox.clear();
+      for (final key in todoBox.keys.toList()) {
+        var toodo = todoBox.get(key);
+
+        if (todoBox.length > 0) {
+          print(" cancelling the notifications of ${toodo.todoName}");
+
+          cancelReminderNotifications(toodo.todoReminder, context);
+
+          todoBox.delete(key);
+        }
+      }
+
       completedBox.clear();
       deleteQuotes();
       boredBox.clear();
-      totalTodoCount.value = 10;
+      totalTodoCount.value = 10 - streakBox.length;
       resetStreakMidNight(context);
       // streako.isCompleted = false;
       print("everything is reset-ed");
@@ -162,17 +185,17 @@ resetStreakMidNight(context) {
       checks if the streak is completed it will be updated to incompleted next day.
       if it is not, it will be deleted
 */
-  
+
     for (final key in streakBox.keys.toList()) {
       var streak = streakBox.get(key);
 
       if (streak.isCompleted) {
         streak.isCompleted = false;
-        restartRemainderNotifications(
-            streak.streakName, streak.streakRemainder, context);
+        restartStreakNotifications(streak.streakName, streak.streakEmoji,
+            streak.streakReminder, context);
         streakBox.put(key, streak);
       } else {
-        cancelRemainderNotifications(streak.streakRemainder, context);
+        cancelStreakNotifications(streak.streakReminder, context);
         streakBox.delete(key);
       }
     }
@@ -208,17 +231,17 @@ resetStreakMidNight(context) {
       checks if the streak is completed it will be updated to incompleted next day.
       if it is not, it will be deleted
 */
-     
+
       for (final key in streakBox.keys.toList()) {
         var streak = streakBox.get(key);
 
         if (streak.isCompleted) {
           streak.isCompleted = false;
-          restartRemainderNotifications(
-              streak.streakName, streak.streakRemainder, context);
+          restartStreakNotifications(streak.streakName, streak.streakEmoji,
+              streak.streakReminder, context);
           streakBox.put(key, streak);
         } else {
-          cancelRemainderNotifications(streak.streakRemainder, context);
+          cancelStreakNotifications(streak.streakReminder, context);
           streakBox.delete(key);
         }
       }

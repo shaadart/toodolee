@@ -18,19 +18,6 @@ import 'package:carbon_icons/carbon_icons.dart';
 import 'dart:core';
 import 'package:toodo/uis/quotes.dart';
 
-String completedStreakName;
-// when the streak will be completed it's name will be stored in this var.
-String completedStreakEmoji;
-// when the streak will be completed it's emoji will be stored in this var.
-String completedStreakRemainder;
-// when the streak will be completed it's Remainder will be stored in this var.
-int completedStreakDays;
-// when the streak will be completed it's days will be stored in this var.
-int completedStreakCount;
-// when the streak will be completed it's Count will be stored in this var.
-bool completedStreakCompleted;
-// when the streak will be completed it's completedness (true / flase) will be stored in this var.
-
 /*
 When the Streak is Added it jumps to the StreakCard.
 # Whole different UI
@@ -151,15 +138,15 @@ from restarting and cancelling the notifications for the deleted and completed. 
                         itemBuilder: (_, index) {
                           final int key = keys[index];
                           StreakModel streako = sbox.get(key);
-                          completedStreakName = streako
+                          String completedStreakName = streako
                               .streakName; // Short-fying the name, this will help in shortning the thing and easily understanding it's part, also it would be easy to put the following Streak to completed Ones.
-                          completedStreakEmoji =
+                          String completedStreakEmoji =
                               streako.streakEmoji; // same as above
-                          completedStreakRemainder =
-                              streako.streakRemainder; // ..
-                          completedStreakDays = streako.streakDays;
-                          completedStreakCount = streako.streakCount;
-                          completedStreakCompleted = streako.isCompleted;
+                          String completedStreakReminder =
+                              streako.streakReminder; // ..
+                          int completedStreakDays = streako.streakDays;
+                          int completedStreakCount = streako.streakCount;
+                          bool completedStreakCompleted = streako.isCompleted;
 
                           if (completedStreakCompleted == false) {
                             // if the Streak is not Completed, The Ui will look like this,
@@ -321,7 +308,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                   The Mechanism is simple the more person will complete Tooodoolees the more quotes will emerge. 
 
                                   #Sounds will be played
-                                  # It will cancel the notifications. (because the thing is done, and why need to get addictional Remainders.)
+                                  # It will cancel the notifications. (because the thing is done, and why need to get addictional Reminders.)
                                   # Check-ing the circular/radio/leading button, this will cause the following to go to the Completed Streak or set isCompleted to True,
                                   # It increments the Day count.
                                   # save the Streaks. etc.
@@ -428,19 +415,21 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                             onChanged:
                                                                                 (value) {
                                                                               // Taking the Response of the Text Field.
-                                                                              settingsBox.put("userThoughts", value);
-                                                                              // Whatever beautiful User has written,
-                                                                              //it will be stored in settingsBox in the key of "userThoughts"
-                                                                              //So in future user can just use the template he has designed
-                                                                              // and he will never need to re-write it,
-                                                                              //but for gifts and everything user must write things,
-                                                                              //this will get him experience and Toodolee too.
 
                                                                               if (settingsBox.get("userThoughts") == null) {
                                                                                 // When User has not Written their Thoughts on the challenge,
                                                                                 //then in the Mail Interface this value will be shown, 👇
 
                                                                                 settingsBox.put("userThoughts", "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                                              } else {
+                                                                                settingsBox.put("userThoughts", value);
+                                                                                // Whatever beautiful User has written,
+                                                                                //it will be stored in settingsBox in the key of "userThoughts"
+                                                                                //So in future user can just use the template he has designed
+                                                                                // and he will never need to re-write it,
+                                                                                //but for gifts and everything user must write things,
+                                                                                //this will get him experience and Toodolee too.
+
                                                                               }
                                                                               //It is all for Doing something with the user input.
                                                                             },
@@ -462,19 +451,21 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                             onChanged:
                                                                                 (value) {
                                                                               // Taking the Response of the Text Field.
-                                                                              settingsBox.put("userRecommend", value);
-                                                                              // Whatever beautiful User has written,
-                                                                              //it will be stored in settingsBox in the key of "userThoughts"
-                                                                              //So in future user can just use the template he has designed
-                                                                              // and he will never need to re-write it,
-                                                                              //but for gifts and everything user must write things,
-                                                                              //this will get him experience and Toodolee too.
 
                                                                               if (settingsBox.get("userRecommend") == null) {
                                                                                 // When User has not Written their Thoughts on the challenge,
                                                                                 //then in the Mail Interface this value will be shown, 👇
 
                                                                                 settingsBox.put("userRecommend", "By Writing Your Thoughts,\n You can Increase your Chances to get a Reward by 100%,\n\nbecause the main AIM of Getting Thoughts is to Improve Toodolee and Serve You.");
+                                                                              } else {
+                                                                                settingsBox.put("userRecommend", value);
+                                                                                // Whatever beautiful User has written,
+                                                                                //it will be stored in settingsBox in the key of "userThoughts"
+                                                                                //So in future user can just use the template he has designed
+                                                                                // and he will never need to re-write it,
+                                                                                //but for gifts and everything user must write things,
+                                                                                //this will get him experience and Toodolee too.
+
                                                                               }
                                                                               //Do something with the user input.
                                                                             },
@@ -501,7 +492,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                           I Have Completed $completedStreakName Challenge!,
                                                           I did the Challenge for,
                                                           <br>
-                                                          $completedStreakRemainder everyday for $completedStreakDays days. 
+                                                          $completedStreakReminder everyday for $completedStreakDays days. 
                                                           <br>
                                                           <br>
                                                           <br>
@@ -572,6 +563,18 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                               completedStreakCount ==
                                                           1) {
                                                         // If the Challenge is completed then,
+
+                                                        streako.isCompleted =
+                                                            true;
+                                                        // add the streak to completed (for the Day)
+                                                        streako.streakCount++;
+                                                        // Incrementing the +1 to the count, i.e days that are done
+                                                        streako.save();
+                                                        // save the following data, for the following interacted streak
+                                                        // As it is pushed to the completed ones, then making it to the completed streak Notification
+                                                        cancelStreakNotifications(
+                                                            completedStreakReminder,
+                                                            context);
                                                         player.play(
                                                           'sounds/hero_decorative-celebration-03.wav',
                                                           stayAwake: false,
@@ -589,27 +592,29 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                   child:
                                                                       rewardingAlertDialogs());
                                                             });
+                                                        sbox.deleteAt(index);
+                                                      } else {
+                                                        // Else if the Challenge is not yet completed, then,
+
+                                                        player.play(
+                                                          'sounds/notification_simple-02.wav',
+                                                          stayAwake: false,
+                                                        ); // play completing sound
+
+                                                        streako.isCompleted =
+                                                            true;
+                                                        // add the streak to completed (for the Day)
+                                                        streako.streakCount++;
+                                                        // Incrementing the +1 to the count, i.e days that are done
+                                                        streako.save();
+                                                        // save the following data, for the following interacted streak
+                                                        // As it is pushed to the completed ones, then making it to the completed streak Notification
+                                                        cancelStreakNotifications(
+                                                            completedStreakReminder,
+                                                            context);
+                                                        // Cancelling the Notifications.
+                                                        //Check the well understanding and commented, cancelStreakNotifications() Method in the Notification/setReminder.dart
                                                       }
-                                                      // Else if the Challenge is not yet completed, then,
-
-                                                      player.play(
-                                                        'sounds/notification_simple-02.wav',
-                                                        stayAwake: false,
-                                                      ); // play completing sound
-
-                                                      streako.isCompleted =
-                                                          true;
-                                                      // add the streak to completed (for the Day)
-                                                      streako.streakCount++;
-                                                      // Incrementing the +1 to the count, i.e days that are done
-                                                      streako.save();
-                                                      // save the following data, for the following interacted streak
-                                                      // As it is pushed to the completed ones, then making it to the completed streak Notification
-                                                      cancelStreakNotifications(
-                                                          completedStreakRemainder,
-                                                          context);
-                                                      // Cancelling the Notifications.
-                                                      //Check the well understanding and commented, cancelStreakNotifications() Method in the Notification/setRemainder.dart
                                                     },
                                                     icon: Icon(
                                                         CarbonIcons
@@ -658,7 +663,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                     Opacity(
                                                       opacity: 0.7,
                                                       child: Text(
-                                                          '${completedStreakRemainder.toString()}'), // Showing the remainder
+                                                          '${completedStreakReminder.toString()}'), // Showing the reminder
                                                     ),
                                                     completedStreakEmoji ==
                                                             "null" // if the Emoji is null, show nothing, if it has Emoji, show me the Emoji
@@ -735,10 +740,10 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                               if (completedStreakEmoji == "null") {
                                                                                 // if the Emoji is not provided by user then, use this template for sharing it
 
-                                                                                Share.share("I am doing a challenge of $completedStreakDays, Daily at $completedStreakRemainder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName.\n \n@toodoleeApp", subject: "Today's Toodo");
+                                                                                Share.share("I am doing a challenge of $completedStreakDays, Daily at $completedStreakReminder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName.\n \n@toodoleeApp", subject: "Today's Toodo");
                                                                               } else {
                                                                                 // if user has provided the emoji, then this template is used.
-                                                                                Share.share("I am doing a challenge of $completedStreakDays, Daily at $completedStreakRemainder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName $completedStreakEmoji.\n \n@toodoleeApp", subject: "Today's Toodo");
+                                                                                Share.share("I am doing a challenge of $completedStreakDays, Daily at $completedStreakReminder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName $completedStreakEmoji.\n \n@toodoleeApp", subject: "Today's Toodo");
                                                                               }
                                                                             },
                                                                             child:
@@ -803,8 +808,8 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                               deleteQuotes();
 
                                                                               //how the Cancellation works?
-                                                                              //check by cliciking on cancelRemainderNotifications() with ctrl + click, there is whole documentation there.
-                                                                              cancelStreakNotifications(completedStreakRemainder, context);
+                                                                              //check by cliciking on cancelReminderNotifications() with ctrl + click, there is whole documentation there.
+                                                                              cancelStreakNotifications(completedStreakReminder, context);
                                                                               player.play(
                                                                                 'sounds/navigation_transition-left.wav',
                                                                                 stayAwake: false,
@@ -916,13 +921,13 @@ Show,
                                                         // if the Emoji is not provided by user then, use this template for sharing it
 
                                                         Share.share(
-                                                            "I am doing a challenge of $completedStreakDays, Daily at $completedStreakRemainder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName.\n \n@toodoleeApp",
+                                                            "I am doing a challenge of $completedStreakDays, Daily at $completedStreakReminder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName.\n \n@toodoleeApp",
                                                             subject:
                                                                 "Today's Toodo");
                                                       } else {
                                                         // if user has provided the emoji, then this template is used.
                                                         Share.share(
-                                                            "I am doing a challenge of $completedStreakDays, Daily at $completedStreakRemainder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName $completedStreakEmoji.\n \n@toodoleeApp",
+                                                            "I am doing a challenge of $completedStreakDays, Daily at $completedStreakReminder⏰\n\nTill now, I have Completed $completedStreakCount days of $completedStreakName $completedStreakEmoji.\n \n@toodoleeApp",
                                                             subject:
                                                                 "Today's Toodo");
                                                       }
@@ -983,9 +988,6 @@ Show,
                                           // tHis shows how much is done like 3 of 21 days is completed
                                           "$completedStreakCount of $completedStreakDays days"),
                                     ),
-                                    ListTile(subtitle: Text(
-                                        // This shows the Remainder,
-                                        "daily at $completedStreakRemainder")),
 
                                     // Shows the Progress, how much is done and how much is needed to be done.
                                     // when the streak is completed (for the day)

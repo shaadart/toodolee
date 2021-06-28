@@ -18,7 +18,7 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
     };
     return TodoModel(
       todoName: fields[0] as String,
-      todoRemainder: fields[2] as String,
+      todoReminder: fields[2] as String,
       todoEmoji: fields[1] as String,
       isCompleted: fields[3] as bool,
     );
@@ -33,7 +33,7 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       ..writeByte(1)
       ..write(obj.todoEmoji)
       ..writeByte(2)
-      ..write(obj.todoRemainder)
+      ..write(obj.todoReminder)
       ..writeByte(3)
       ..write(obj.isCompleted);
   }

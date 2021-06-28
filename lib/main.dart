@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:move_to_background/move_to_background.dart';
 import 'package:toodo/processes.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -12,8 +11,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:toodo/models/completed_todo_model.dart';
-import 'package:toodo/models/Streak Model/streak_model.dart';
-import 'package:toodo/models/Streak Model/completed_streak_model.dart';
+import 'package:toodo/models/Streak%20Model/streak_model.dart';
 import 'package:toodo/pages/onboardingScreen.dart';
 import 'package:toodo/uis/Toodolee Lists/WorkingOnPage.dart';
 import 'package:toodo/uis/Toodolee Lists/completedListUi.dart';
@@ -43,7 +41,7 @@ const String weatherBoxname = "weather";
 const String completedtodoBoxname = "completedtodo";
 const String welcomeBoringCardname = "welcomeboringcard";
 const String quotesCardname = "quotes";
-const String dailyRemainderBoxName = "dailyremainder";
+const String dailyReminderBoxName = "dailyreminder";
 const String boringcardName = "boringcard";
 const String settingsName = "settings";
 const String currentBoxName = "currentDateBox";
@@ -60,13 +58,10 @@ Box settingsBox;
 Box weatherBox;
 Box quotesBox;
 Box onboardingScreenBox;
-Box dailyRemainderBox;
+Box dailyReminderBox;
 Box boredBox;
 Box currentDateBox;
 Box<StreakModel> streakBox;
-Box<CompletedStreakModel> completedStreakBox;
-String dailyRemainder = "6:30";
-
 int initialselectedPage = 0;
 
 void main() async {
@@ -84,17 +79,15 @@ void main() async {
   Hive.registerAdapter(TodoModelAdapter());
   Hive.registerAdapter(CompletedTodoModelAdapter());
   Hive.registerAdapter(StreakModelAdapter());
-  Hive.registerAdapter(CompletedStreakModelAdapter());
 
   //Opening Boxes
   // await Hive.openBox(weatherBoxname);
   await Hive.openBox<TodoModel>(todoBoxname);
   await Hive.openBox<CompletedTodoModel>(completedtodoBoxname);
   await Hive.openBox<StreakModel>(streakBoxName);
-  await Hive.openBox<CompletedStreakModel>(completedStreakBoxName);
   await Hive.openBox(welcomeBoringCardname);
   await Hive.openBox(quotesCardname);
-  await Hive.openBox(dailyRemainderBoxName);
+  await Hive.openBox(dailyReminderBoxName);
   await Hive.openBox(boringcardName);
   await Hive.openBox(settingsName);
   await Hive.openBox(onboardingScreenBoxName);
@@ -105,7 +98,7 @@ void main() async {
     'resource://drawable/res_toodoleeicon',
     [
       NotificationChannel(
-        // groupKey: "remainderNotf",
+        // groupKey: "reminderNotf",
 
         channelKey: 'dailyNotific',
         channelName: 'Daily Notifications',
@@ -114,17 +107,17 @@ void main() async {
         onlyAlertOnce: true,
         defaultColor: Color(0xffFFCC00),
         ledColor: Color(0xffFFCC00),
-        importance: NotificationImportance.Max,
+        importance: NotificationImportance.High,
         defaultPrivacy: NotificationPrivacy.Public,
         playSound: true,
         soundSource: "resource://raw/res_alert_simple",
       ),
       NotificationChannel(
-        // groupKey: "remainderNotf",
-        channelKey: 'remainderNotific',
-        channelName: 'Remainder Notifications',
+        // groupKey: "reminderNotf",
+        channelKey: 'reminderNotific',
+        channelName: 'Reminder Notifications',
         channelDescription:
-            'Sends you notifications of the remainders you set, to win the time.',
+            'Sends you notifications of the reminders you set, to win the time.',
         onlyAlertOnce: true,
         defaultColor: Color(0xff4785FF),
         ledColor: Colors.blue,
@@ -134,7 +127,7 @@ void main() async {
         soundSource: "resource://raw/res_alert_simple",
       ),
       NotificationChannel(
-        // groupKey: "remainderNotf",
+        // groupKey: "reminderNotf",
         channelKey: 'streakNotific',
         channelName: 'Streak Notifications',
         channelDescription:
@@ -191,7 +184,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //Configure Splash Screeeen.
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 0)),
+        future: Future.delayed(Duration(
+            seconds:
+                3)), // how much time the splash screen should show, (for how much sec)
         builder: (context, AsyncSnapshot snapshot) {
           // Show splash screen while waiting for app resources to load:
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -200,12 +195,7 @@ class MyApp extends StatelessWidget {
               mode: PlayerMode.MEDIA_PLAYER,
             );
 
-            return WillPopScope(
-                onWillPop: () async {
-                  MoveToBackground.moveTaskToBack();
-                  return false;
-                },
-                child: MaterialApp(home: Splash(), title: 'Toodolee'));
+            return MaterialApp(home: Splash(), title: 'Toodolee');
           } else {
 //Ghost White: 0xffF6F8FF
 //Lemon Glacier :0xffFBFB0E
@@ -257,17 +247,36 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
 
-    completedBox = Hive.box<CompletedTodoModel>(completedtodoBoxname);
-    todoBox = Hive.box<TodoModel>(todoBoxname);
-    boredBox = Hive.box(boringcardName);
-    settingsBox = Hive.box(settingsName);
+    completedBox = Hive.box<CompletedTodoModel>(
+        completedtodoBoxname); // completed ones are stored locally
+    todoBox = Hive.box<TodoModel>(todoBoxname); // Toodos are stored locally
+    boredBox = Hive.box(boringcardName); // boring cards are stored locally
+    settingsBox = Hive.box(settingsName); // settings are stored locally
     //weatherBox = Hive.box(weatherBoxname);
-    dailyRemainderBox = Hive.box(dailyRemainderBoxName);
+    dailyReminderBox = Hive.box(dailyReminderBoxName);
+    // when to set daily reminders Time are stored in here.
     onboardingScreenBox = Hive.box(onboardingScreenBoxName);
+    // onboarding screen is shown or not is stored here
     streakBox = Hive.box<StreakModel>(streakBoxName);
-    completedStreakBox = Hive.box<CompletedStreakModel>(completedStreakBoxName);
-    resetToodoleeMidNight(context);
+    // Streaks are stored in here locally.
 
+/*
+# Clears Toodos Next Day
+# Clears Completed Ones Next day
+# Resets Quotes
+# Reset Boring Card.
+
+This will Reset the Toodolee.
+This is kind of better version of background Tasks.
+
+I was litterelly Tired of Seeing WORKMANAGER or any other background service not working.
+So, Thanks to the Nature and Lord, this Came to the Head,
+
+This is the Method/Function checks wheather the today's date, month's first day and it predicts weather to reset-up the Toodolee or not 
+*/
+    resetToodoleeMidNight(context); // this method is in processes.dart
+
+//if notification is not allowed ask for permission of notification, (but i don't know it just does not rings 😤😤😤
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         AwesomeNotifications().requestPermissionToSendNotifications();
@@ -287,7 +296,7 @@ class _SplashState extends State<Splash> {
               duration: Duration(milliseconds: 1200),
               child: Center(
                 child: Image.asset(
-                  "icon/toodoleeicon.png",
+                  "icon/toodoleeicon.png", // the image that is shown in the splash Screeeeeeen
                   height: MediaQuery.of(context).size.shortestSide / 2,
                 ),
               ),
@@ -330,24 +339,33 @@ class _DefaultedAppState extends State<DefaultedApp> {
   ];
 
   List pages = [
-    TodoApp(),
-    MorePage(),
-    SettingPage(),
+    TodoApp(), //the Most Home Page, where we can see the Streaks, Tooodooleess and Completed ones,
+    MorePage(), // the Quotes and boring card, resting zone.
+    SettingPage(), // Settings Page
   ]; // This is the List of Pages, that will be opened, if each of the Bottom Navi's Element is pressed.
 // That is, First Element of the Bottom Navigation Bar will open TodoApp, That is the Home Page,
 
-  @override
-  void initState() {
-    super.initState();
+/* 
+This is the Value listenable builder that is known for the building the app again if the total number of toooooodos is changed, like 
+in the first the Tooootal number of tooodooleees is 0,
+if something is added the total count will be 1, because something is added, 
 
-    ///whatever you want to run on page build
-  }
+If something is deleted then count will be Zero (streaks or toodolee whatever added.)
+If user have done added 10, then the appp will disable floating action Button, so User can't add more.
 
+So for all of these thing, we have to continuosly check for the totalTodoCount, which looks like this, // ValueNotifier<int> totalTodoCount = ValueNotifier(10 - (todoBox.length + completedBox.length + streakBox.length));
+when a value is changed of the totalTodoCount then we will listen to changes of the value and build the app again.
+
+These all things are done in very less time, that we can't see with our eye,
+unless you have my most influential phone, which has 1gb ram. 
+*/
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
+          // The App will rebuild/refresh if the total number of of Toodoo count will be changed,
+          // like if user will add or subtract the Toooodoolees or streaks then the app will refresh it self elegantly.
           return Scaffold(
             appBar: AppBar(
                 backgroundColor: Theme.of(context)
@@ -362,16 +380,22 @@ class _DefaultedAppState extends State<DefaultedApp> {
                         "Settings",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: Theme.of(context).accentColor),
+                            color: Theme.of(context)
+                                .accentColor), // if the Settings page is open the title of it will be "Settings"
                       )
                     : Text(
                         "Toodolee",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: Theme.of(context).accentColor),
+                            color: Theme.of(context)
+                                .accentColor), //if the more page is opened or Main Page, i.e where streka , Tooodolee or completed one rests then then the title will be, "Toodolee"
                       )),
 
             floatingActionButton: Visibility(
+              // visibity is when "true" it will show the floating action button,
+              // when it is false, it will hide the button, ths is important because,
+              // as the use can add only 10 toodooless, not more if the toodolees is 10 then for blocking more items,
+              //Hiding the Floating action button.
               visible:
                   (remainingTodoCount <= 0 || fabScrollingVisibility == false)
                       ? false
@@ -379,6 +403,9 @@ class _DefaultedAppState extends State<DefaultedApp> {
               child: SlideInDown(
                 child: FloatingActionButton(
                   onPressed: () {
+                    setState(() {
+                      showEmojiKeyboard = false;
+                    });
                     player.play(
                       'sounds/navigation_forward-selection-minimal.wav',
                       stayAwake: false,
@@ -392,8 +419,8 @@ class _DefaultedAppState extends State<DefaultedApp> {
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             //body: AdTest(),
-            body: pages[
-                _selectedItemPosition], // Whatever Element is selected in the BottomNavBar,
+            body: pages[_selectedItemPosition],
+            // Whatever Element is selected in the BottomNavBar,
             // As we see in the pages, variable which is a list, there is Three Pages, SettingsPage, TodoApp and MorePage,
             // Which ever Element is clicked, it's index will be the index, and the body will show whatever the element is selcted.
             //Really Simple it is.
@@ -426,10 +453,17 @@ class _DefaultedAppState extends State<DefaultedApp> {
                     label: 'settings')
               ],
 
-              currentIndex: _selectedItemPosition,
+              currentIndex:
+                  _selectedItemPosition, // the index of the page, weather it's 0 , 1 or 2 between the Home page, More page and Settings page
               onTap: (index) {
                 setState(() {
-                  _selectedItemPosition = index;
+                  _selectedItemPosition =
+                      index; // on tap of any bottom navigation bar,
+                  //if any thing tapped,
+                  //the function will take the index
+                  // and make the Item positiion variable to be it.
+                  // so whatever the value of te item position between the 0,1 or 2 we will open the page according to the index.
+
                   player.play(
                     'sounds/navigation_forward-selection-minimal.wav',
                     mode: PlayerMode.MEDIA_PLAYER,
@@ -441,88 +475,6 @@ class _DefaultedAppState extends State<DefaultedApp> {
           );
         });
   }
-
-  // showSearchPage(BuildContext context) async => showSearch(
-  //       context: context,
-  //       delegate: SearchPage(
-  //         items: todoBox.values.toList(),
-  //         searchLabel: 'Search Todoo',
-  //         suggestion: Center(
-  //           child: Text('Filter runnig toodos by\n name, time or emoji'),
-  //         ),
-  //         failure: Center(
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: [
-  //               Text(
-  //                 'No Running todos found',
-  //                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-  //               ),
-  //               Padding(
-  //                 padding: EdgeInsets.all(
-  //                     MediaQuery.of(context).size.shortestSide / 50),
-  //                 child: Text("it is may be not written or is completed"),
-  //               ),
-  //               Padding(
-  //                 padding: EdgeInsets.fromLTRB(
-  //                     MediaQuery.of(context).size.shortestSide / 30,
-  //                     0,
-  //                     MediaQuery.of(context).size.shortestSide / 30,
-  //                     MediaQuery.of(context).size.shortestSide / 30),
-  //                 child: ElevatedButton(
-  //                     onPressed: () {
-  //                       player.play(
-  //                         'sounds/navigation_forward-selection.wav',
-  //                         stayAwake: false,
-  //
-  //                       );
-  //                       Navigator.pop(context);
-  //                       player.play(
-  //                         'sounds/navigation_forward-selection.wav',
-  //                         stayAwake: false,
-  //
-  //                       );
-  //                       addTodoBottomSheet(context);
-  //                     },
-  //                     child: Text("Tap to Write it")),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //         filter: (todoBox) => [
-  //           todoBox.todoName,
-  //           todoBox.todoRemainder,
-  //           todoBox.todoEmoji.toString(),
-  //         ],
-  //         builder: (todoBox) => MaterialButton(
-  //           onPressed: () async {
-  //             player.play(
-  //               'sounds/navigation_forward-selection.wav',
-  //               stayAwake: false,
-  //
-  //             );
-  //             await Navigator.pop(context);
-  //             player.play(
-  //               'sounds/navigation_forward-selection.wav',
-  //               stayAwake: false,
-  //
-  //             );
-  //
-  //           },
-  //           child: ListTile(
-  //             title: Text(todoBox.todoName),
-  //             subtitle: Text("yes it's there, tap to work"),
-  //             leading: todoBox.todoEmoji == "null"
-  //                 ? Icon(CarbonIcons.thumbs_up)
-  //                 : Text('${todoBox.todoEmoji}'),
-  //             trailing: todoBox.todoRemainder == null
-  //                 ? Text("")
-  //                 : Text('${todoBox.todoRemainder}'),
-  //           ),
-  //         ),
-  //       ),
-  //     );
 }
 
 /* ----------------------------------------------------------------------------- 
@@ -540,7 +492,6 @@ class TodoApp extends StatefulWidget {
 
 class _TodoAppState extends State<TodoApp> {
   // multiple choice value
-
   // list of pages option available for opening, which will open when we click up one of the chips.
 
   List pages = [WorkingOnPage(), StreakPage(), CompletedPage()];
@@ -555,9 +506,9 @@ class _TodoAppState extends State<TodoApp> {
 // or if there will be changes in it,  The will be changed too, (accordingly)
 // Here the Variable is totalTodoCount, which refers to the value, how much is the total todo count.
 // when something is added to the toodolee or removed etc, totalTodoCund will be affected.
-    // Take a look at totalTodoCount by clicking on it with control or command Pressed.
+// Take a look at totalTodoCount by clicking on it with control or command Pressed.
 // when something is added to the toodolee or removed etc, totalTodoCount will be affected.
- // Take a look at totalTodoCount by clicking on it with control or command Pressed.  
+// Take a look at totalTodoCount by clicking on it with control or command Pressed.
     return ValueListenableBuilder<int>(
         valueListenable: totalTodoCount,
         builder: (context, remainingTodoCount, _) {
@@ -616,9 +567,11 @@ There are exactly Three Chips, as you can see in the Front App.
                                           'sounds/ui_tap-variant-01.wav',
                                           stayAwake: false,
                                         );
-                                        initialselectedPage = 0;
+                                        initialselectedPage =
+                                            0; //set the workingOn as the main Index
 
-                                        selectedChip.put("selectedPage", 0);
+                                        selectedChip.put("selectedPage",
+                                            0); // save it in local.
                                       });
                                       if (val == true) {
                                         player.play(
@@ -770,8 +723,15 @@ There are exactly Three Chips, as you can see in the Front App.
                     //delay: Duration(milliseconds: 200),
                   ),
 
-// I also don't know What They have written. :laugh
-                  if (todoBox.length > 0)
+/*
+if the remaining count is 10, then hide the counter which shows how much tooodoolee is remaining now!
+Like if the Toodolee remaining is 10 hide the counter,
+if not show the counter that shows how much tooodoleee is remaining today
+ */
+                  if (remainingTodoCount ==
+                      10) // if the tooodoolee adding count is 10,
+                    Container() // show an empty container
+                  else // show the remaining count, if it is less than 10 is there
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Opacity(
@@ -779,21 +739,17 @@ There are exactly Three Chips, as you can see in the Front App.
                         child: FadeInUp(
                           duration: Duration(milliseconds: 2000),
                           child: Text(
-                            todoBox.length == 10 ||
-                                    streakBox.length == 10 ||
-                                    completedBox.length == 10
-                                ? ""
-                                : "You can add : $remainingTodoCount more",
+                            "You can add : $remainingTodoCount more",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ),
                       ),
-                    )
-                  else
-                    Container(),
-
-                  // This is extra space, from the bottom, so if You need to remove the last Toodo which can be hidden behind the floating action button, so the user will get room so that he could scroll and remove the last Tooodo.
+                    ),
+                  // This is extra space,
+                  //from the bottom,
+                  //so if You need to remove the last Toodo which can be hidden behind the floating action button,
+                  //so the user will get room so that he could scroll and remove the last Tooodo.
                   Container(
                       height: MediaQuery.of(context).size.shortestSide / 3),
                 ],

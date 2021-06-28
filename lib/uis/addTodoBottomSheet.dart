@@ -36,15 +36,15 @@ final TextEditingController titleController =
 String todoEmoji; // Emoji Tag associated with Tooodo
 //String todoName = (titleController.text).toString();
 String todoName; //Name associated with Tooodo
-String todoRemainder; // remainder associated with Tooodo
+String todoReminder; // reminder associated with Tooodo
 bool isCompleted =
     false; // initially the toodo will be completed. what? you want it to be completed?
 
 //addTodoBooooootomSheet is is method which will show up the bottom sheet when the addTodoBooooootomSheet() will be called.
 void addTodoBottomSheet(context) {
   var enableHabitButton = false;
-  //Habit Button will be available when the Remainder should not be null,
-  //hence at first the remainder will be null so, also habit button will not be seen,
+  //Habit Button will be available when the Reminder should not be null,
+  //hence at first the reminder will be null so, also habit button will not be seen,
   // hence declaring it false, because Habit is depended upon Time.
   //And if there is not Time, No Habit,
   //And there is no good in showing Habit button that earlily,
@@ -85,9 +85,9 @@ void addTodoBottomSheet(context) {
                         "school",
                       ]
                     : todoName.split(" "),
-                columns: 7,
+                columns: 6,
                 buttonMode: ButtonMode.CUPERTINO,
-                rows: 3,
+                rows: 4,
                 onEmojiSelected: (emoji, catergory) {
                   // When the Emoji is picked the todoEmoji(string) will replaced by that emoji(string, (at least, I guess (like seriosly(many circular brackets))))
                   setState(() {
@@ -118,14 +118,14 @@ void addTodoBottomSheet(context) {
 
             if (t != null) {
               // everytime new Time is picked it replaces the previous one,
-              //and here todoRemainder is the variable who is storing this time in itself
+              //and here todoReminder is the variable who is storing this time in itself
               setState(() {
-                todoRemainder = t.format(context);
+                todoReminder = t.format(context);
               });
             }
           }
 
-          // This Method set Tooodo, As everything is added, it sets remainder,
+          // This Method set Tooodo, As everything is added, it sets reminder,
           //it then resets the bottom sheet to zero so no footprints of the older task afftect the new upcomming one.
           // Everything is so clean, UNLIKE MY COMMENTS
 
@@ -139,7 +139,7 @@ void addTodoBottomSheet(context) {
             // This is the main part, it is from where all the things get add in.
             todo = TodoModel(
                 todoName: todoName,
-                todoRemainder: todoRemainder,
+                todoReminder: todoReminder,
                 todoEmoji: todoEmoji.toString(),
                 isCompleted: false);
 
@@ -147,65 +147,65 @@ void addTodoBottomSheet(context) {
                 todo.todoName.length >= 2) {
               decrementCount(); // which means the (remember the home screen says, "You can add 4 more"), we are decresing it, so it will be like "You can add 3 more"
 
-//Here checking that if remainder is null then set no remainders, if user has asked to add remaiders for their tooooodo, then Set the Remainder.
-              if (todo.todoRemainder == null) {
-                print("No Remainders Set");
-              } else if (todo.todoRemainder != null) {
+//Here checking that if reminder is null then set no reminders, if user has asked to add remaiders for their tooooodo, then Set the Reminder.
+              if (todo.todoReminder == null) {
+                print("No Reminders Set");
+              } else if (todo.todoReminder != null) {
                 /* Many of the people use AM/PM things and many of them use 24 hour mode, 
                 so the toodolee is for everyone, 
-                so we had to set remainders for both of the every group. 
+                so we had to set reminders for both of the every group. 
                 so we are doing - 
                 
-                if remainder has PM, then Remove PM from the game, whatever left set that as the remainder. 
-                If remainder has AM in it, then Remove AM from the game, whatever left set that as the remainder. 
+                if reminder has PM, then Remove PM from the game, whatever left set that as the reminder. 
+                If reminder has AM in it, then Remove AM from the game, whatever left set that as the reminder. 
                 The errors preceds for this group,
-                Suppose one of the hero, woke up at 6:00 and set the remainder of "Create Quadcopter 🚁 at 8 pm", 
-                then the Notification can set Remainders for 8:00 am and won't ring at 8:00 night! 
+                Suppose one of the hero, woke up at 6:00 and set the reminder of "Create Quadcopter 🚁 at 8 pm", 
+                then the Notification can set Reminders for 8:00 am and won't ring at 8:00 night! 
                 (Grave errrrror Right).
                 That's they are using something, 
                 1. Remove the PM/AM
                 2. Converts whatever number they have to 24 hours clock.
 
                 In this way it is efficient and more reliable.
-                This process is done by the Function, getRemainderTime().
+                This process is done by the Function, getReminderTime().
                 which is in the last line of the setNotifications.dart
 
                 BTW,
-                and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
+                and if reminder has nothing, i.e PM/AM then, this is clear person has set reminder from 24 hours clock.
                 So setting remianders in this case is easy as eatin Eat Watermelons.
                 
-                For more Info also Check setRemainderMethod(), which is in setNotification.dart in Notification File.
-                For more Info, Check getRemainderTime() method, which is in the last line of the Notification/setNotification.dart
+                For more Info also Check setReminderMethod(), which is in setNotification.dart in Notification File.
+                For more Info, Check getReminderTime() method, which is in the last line of the Notification/setNotification.dart
                 */
-                if (todo.todoRemainder.contains("PM") == true) {
-                  // if the remainder has PM in it.
-                  setRemainderMethod(
-                      getRemainderTime(todo.todoRemainder, context),
+                if (todo.todoReminder.contains("PM") == true) {
+                  // if the reminder has PM in it.
+                  setReminderMethod(
+                      getReminderTime(todo.todoReminder, context),
                       todo.todoName,
-                      (getRemainderTime(todo.todoRemainder, context).first +
-                          getRemainderTime(todo.todoRemainder, context).last),
+                      (getReminderTime(todo.todoReminder, context).first +
+                          getReminderTime(todo.todoReminder, context).last),
                       context);
                   print(
-                      "${((getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last))} is the current value of the channel id");
-                } else if (todo.todoRemainder.contains("AM") == true) {
-                  setRemainderMethod(
-                      getRemainderTime(todo.todoRemainder, context),
+                      "${((getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last))} is the current value of the channel id");
+                } else if (todo.todoReminder.contains("AM") == true) {
+                  setReminderMethod(
+                      getReminderTime(todo.todoReminder, context),
                       todo.todoName,
-                      (getRemainderTime(todo.todoRemainder, context).first +
-                          getRemainderTime(todo.todoRemainder, context).last),
+                      (getReminderTime(todo.todoReminder, context).first +
+                          getReminderTime(todo.todoReminder, context).last),
                       context);
                   print(
-                      "${(getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last)} is the current value of the channel id");
-                } else if (todo.todoRemainder.contains("AM") == false &&
-                    todo.todoRemainder.contains("PM") == false) {
-                  setRemainderMethod(
-                      getRemainderTime(todo.todoRemainder, context),
+                      "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
+                } else if (todo.todoReminder.contains("AM") == false &&
+                    todo.todoReminder.contains("PM") == false) {
+                  setReminderMethod(
+                      getReminderTime(todo.todoReminder, context),
                       todo.todoName,
-                      (getRemainderTime(todo.todoRemainder, context).first +
-                          getRemainderTime(todo.todoRemainder, context).last),
+                      (getReminderTime(todo.todoReminder, context).first +
+                          getReminderTime(todo.todoReminder, context).last),
                       context);
                   print(
-                      "${(getRemainderTime(todo.todoRemainder, context).first + getRemainderTime(todo.todoRemainder, context).last)} is the current value of the channel id");
+                      "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
                 }
               }
               //If user is trying to add something, which has no letters, then,
@@ -216,7 +216,7 @@ void addTodoBottomSheet(context) {
 //Then we are clearing the old todo (which is added) footprints and reseting it to brand new.
             setState(() {
               titleController.clear();
-              todoRemainder = null;
+              todoReminder = null;
               todoEmoji = null;
             });
 
@@ -346,7 +346,7 @@ void addTodoBottomSheet(context) {
                                     children: [
                                       FadeInUp(
                                         child: IconButton(
-                                          icon: (todoRemainder != null)
+                                          icon: (todoReminder != null)
                                               ? Icon(
                                                   CarbonIcons
                                                       .notification_filled,
@@ -360,7 +360,7 @@ void addTodoBottomSheet(context) {
                                                           .colorScheme
                                                           .onSurface)),
                                           onPressed: () async {
-                                            //oopening the TimePicker, so to add Remainder
+                                            //oopening the TimePicker, so to add Reminder
                                             await openTimePicker(context);
                                             player.play(
                                               'sounds/navigation_forward-selection-minimal.wav',
@@ -404,9 +404,9 @@ void addTodoBottomSheet(context) {
                                       ),
 
                                       //Streaks. yay!
-                                      // So if the remainder is not null, then Habit buttom will appear, this will help build streaks,
+                                      // So if the reminder is not null, then Habit buttom will appear, this will help build streaks,
                                       // If the button is tapped the Top Sheet will be slided and we will be able to set challenge of how long. <3 & >45
-                                      if (todoRemainder != null)
+                                      if (todoReminder != null)
                                         FadeInUp(
                                           child: IconButton(
                                             icon: Icon(
@@ -594,7 +594,7 @@ class _SetChallengeState extends State<SetChallenge> {
             streak = StreakModel(
                 streakName: todoName,
                 streakCount: 0,
-                streakRemainder: todoRemainder,
+                streakReminder: todoReminder,
                 streakEmoji: todoEmoji.toString(),
                 streakDays: userDemandedDayCount,
                 isCompleted: false);
@@ -605,64 +605,64 @@ class _SetChallengeState extends State<SetChallenge> {
 
             /* Many of the people use AM/PM things and many of them use 24 hour mode, 
                 so the toodolee is for everyone, 
-                so we had to set remainders for both of the every group. 
+                so we had to set reminders for both of the every group. 
                 so we are doing - 
                 
-                if remainder has PM, then Remove PM from the game, whatever left set that as the remainder. 
-                If remainder has AM in it, then Remove AM from the game, whatever left set that as the remainder. 
+                if reminder has PM, then Remove PM from the game, whatever left set that as the reminder. 
+                If reminder has AM in it, then Remove AM from the game, whatever left set that as the reminder. 
                 The errors preceds for this group,
-                Suppose one of the hero, woke up at 6:00 and set the remainder of "Create Quadcopter 🚁 at 8 pm", 
-                then the Notification can set Remainders for 8:00 am and won't ring at 8:00 night! 
+                Suppose one of the hero, woke up at 6:00 and set the reminder of "Create Quadcopter 🚁 at 8 pm", 
+                then the Notification can set Reminders for 8:00 am and won't ring at 8:00 night! 
                 (Grave errrrror Right).
                 That's they are using something, 
                 1. Remove the PM/AM
                 2. Converts whatever number they have to 24 hours clock.
 
                 In this way it is efficient and more reliable.
-                This process is done by the Function, getRemainderTime().
+                This process is done by the Function, getReminderTime().
                 which is in the last line of the setNotifications.dart
 
                 BTW,
-                and if remainder has nothing, i.e PM/AM then, this is clear person has set remainder from 24 hours clock.
+                and if reminder has nothing, i.e PM/AM then, this is clear person has set reminder from 24 hours clock.
                 So setting remianders in this case is easy as eatin Eat Watermelons.
                 
-                For more Info, Check getRemainderTime() method, which is in the last line of the Notification/setNotification.dart
+                For more Info, Check getReminderTime() method, which is in the last line of the Notification/setNotification.dart
                 */
-            if (streak.streakRemainder.contains("PM") == true) {
-              // Check the getRemainderTime(), this is really impressive to see these two. they are well commented
-              //Check the setStreakRemainderMethod() in the Notification\setNotification.dart
-              // use ctrl + click in both setStreakRemainderMethod and getRemainderTime
-              setStreakRemainderMethod(
-                  getRemainderTime(streak.streakRemainder, context),
+            if (streak.streakReminder.contains("PM") == true) {
+              // Check the getReminderTime(), this is really impressive to see these two. they are well commented
+              //Check the setStreakReminderMethod() in the Notification\setNotification.dart
+              // use ctrl + click in both setStreakReminderMethod and getReminderTime
+              setStreakReminderMethod(
+                  getReminderTime(streak.streakReminder, context),
                   streak.streakName,
                   streak.streakEmoji,
-                  (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last +
+                  (getReminderTime(streak.streakReminder, context).first +
+                      getReminderTime(streak.streakReminder, context).last +
                       100),
                   context);
-            } else if (streak.streakRemainder.contains("AM") == true) {
-              // Check the getRemainderTime(), this is really impressive to see these two. they are well commented
-              //Check the setStreakRemainderMethod() in the Notification\setNotification.dart
-              // use ctrl + click in both setStreakRemainderMethod and getRemainderTime
-              setStreakRemainderMethod(
-                  getRemainderTime(streak.streakRemainder, context),
+            } else if (streak.streakReminder.contains("AM") == true) {
+              // Check the getReminderTime(), this is really impressive to see these two. they are well commented
+              //Check the setStreakReminderMethod() in the Notification\setNotification.dart
+              // use ctrl + click in both setStreakReminderMethod and getReminderTime
+              setStreakReminderMethod(
+                  getReminderTime(streak.streakReminder, context),
                   streak.streakName,
                   streak.streakEmoji,
-                  (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last +
+                  (getReminderTime(streak.streakReminder, context).first +
+                      getReminderTime(streak.streakReminder, context).last +
                       100),
                   context);
-            } else if (streak.streakRemainder.contains("AM") == false &&
-                streak.streakRemainder.contains("PM") == false) {
-              // Check the getRemainderTime(), this is really impressive to see these two. they are well commented
-              //Check the setStreakRemainderMethod() in the Notification\setNotification.dart
-              // use ctrl + click in both setStreakRemainderMethod and getRemainderTime
-              setStreakRemainderMethod(
-                  getRemainderTime(streak.streakRemainder, context),
+            } else if (streak.streakReminder.contains("AM") == false &&
+                streak.streakReminder.contains("PM") == false) {
+              // Check the getReminderTime(), this is really impressive to see these two. they are well commented
+              //Check the setStreakReminderMethod() in the Notification\setNotification.dart
+              // use ctrl + click in both setStreakReminderMethod and getReminderTime
+              setStreakReminderMethod(
+                  getReminderTime(streak.streakReminder, context),
                   streak.streakName,
                   streak.streakEmoji,
-                  (getRemainderTime(streak.streakRemainder, context).first +
-                      getRemainderTime(streak.streakRemainder, context).last +
+                  (getReminderTime(streak.streakReminder, context).first +
+                      getReminderTime(streak.streakReminder, context).last +
                       100),
                   context);
             }
@@ -677,7 +677,7 @@ class _SetChallengeState extends State<SetChallenge> {
               // Reset the Bottomsheet so for adding the future Tooodooleees at ease.
               todoName = null;
               titleController.clear();
-              todoRemainder = null;
+              todoReminder = null;
               todoEmoji = null;
               initialselectedPage = 1;
             });
@@ -688,5 +688,3 @@ class _SetChallengeState extends State<SetChallenge> {
     ]);
   }
 }
-
-

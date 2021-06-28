@@ -95,7 +95,7 @@ The UI will change itself, and reload itself.
                           .todoName; //shorty-fying the name of the toodo, beside writig the todo.todoName making it simple and understanding to write, but most of the main reason is the for moving this to completed space will help.
                       String completedTodoEmoji =
                           todo.todoEmoji; // same as above
-                      String completedTodoRemainder = todo.todoRemainder; // ..
+                      String completedTodoReminder = todo.todoReminder; // ..
 
                       return Padding(
                         padding: EdgeInsets.fromLTRB(
@@ -137,7 +137,7 @@ The UI will change itself, and reload itself.
                                   The Mechanism is simple the more person will complete Tooodoolees the more quotes will emerge.
 
                                   #Sounds will be played
-                                  # It will cancel the notifications. (because the thing is done, and why need to get addictional Remainders.)
+                                  # It will cancel the notifications. (because the thing is done, and why need to get addictional Reminders.)
                                   # Check-ing the circular/radio/leading button, this will cause the following to go to the Completed Todo
                                   # As it is adding in the completed Todo or Completed Page then this will also remove the same element from the ship, So the todo will not build-up multiple times in one place.
                                   
@@ -155,8 +155,8 @@ The UI will change itself, and reload itself.
                                                       completedTodoName,
                                                   completedTodoEmoji:
                                                       completedTodoEmoji,
-                                                  completedTodoRemainder:
-                                                      completedTodoRemainder,
+                                                  completedTodoReminder:
+                                                      completedTodoReminder,
                                                   isCompleted:
                                                       todo.isCompleted = true,
                                                 );
@@ -165,14 +165,14 @@ The UI will change itself, and reload itself.
                                                     completedTodo); // adding the details to CompletedTodoBox
                                                 todoBox.deleteAt(
                                                     index); // delete from Index
-                                                if (completedTodoRemainder !=
+                                                if (completedTodoReminder !=
                                                     null) {
-                                                  cancelRemainderNotifications(
-                                                      completedTodoRemainder,
+                                                  cancelReminderNotifications(
+                                                      completedTodoReminder,
                                                       context);
                                                 }
                                                 // Cancelling the Notifications.
-                                                //Check the well understanding and commented, cancelStreakNotifications() Method in the Notification/setRemainder.dart
+                                                //Check the well understanding and commented, cancelStreakNotifications() Method in the Notification/setReminder.dart
 
                                               }
 
@@ -204,13 +204,13 @@ The UI will change itself, and reload itself.
                                       ),
                                       /* Meet ButtonBar,
                                       Dependent upon how much data is passed for this, if
-                                      Its on user, user want to set Remainders or not, 
+                                      Its on user, user want to set Reminders or not, 
                                       Its on you, if you want to set Emojis or not,
 
                                       So to Make Toooodooleee for everyone then this Button Bar is configured
                                       
-                                      if Remainder is null, except being empty show, "Today" reffering to the whole day,
-                                      If Remainder is not null, show the remainder time,
+                                      if Reminder is null, except being empty show, "Today" reffering to the whole day,
+                                      If Reminder is not null, show the reminder time,
 
                                       If Emoji is null, Show Nothing, 
                                       If not Null, Show the Emoji.
@@ -225,8 +225,8 @@ The UI will change itself, and reload itself.
                                       ButtonBar(
                                         alignment: MainAxisAlignment.end,
                                         children: [
-                                          (todo.todoRemainder) ==
-                                                  null // if the remainder is null, show nothing, if it has remainder, show the timings of it, i.e the remainder
+                                          (todo.todoReminder) ==
+                                                  null // if the reminder is null, show nothing, if it has reminder, show the timings of it, i.e the reminder
                                               ? Container(
                                                   margin: EdgeInsets.all(0),
                                                   padding:
@@ -238,7 +238,7 @@ The UI will change itself, and reload itself.
                                               : Opacity(
                                                   opacity: 0.7,
                                                   child: Text(
-                                                      '${todo.todoRemainder.toString()}'),
+                                                      '${todo.todoReminder.toString()}'),
                                                 ),
                                           (todo.todoEmoji) == "null"
                                               ? Container()
@@ -289,17 +289,17 @@ The UI will change itself, and reload itself.
                                                                 context);
                                                             if (todo.todoEmoji ==
                                                                     "null" &&
-                                                                todo.todoRemainder ==
+                                                                todo.todoReminder ==
                                                                     null) {
-                                                              //if Emoji and remainder is not set by the use then we use this template for sharing.
+                                                              //if Emoji and reminder is not set by the use then we use this template for sharing.
                                                               Share.share(
                                                                   "${todo.todoName} \n \n @toodoleeApp",
                                                                   subject:
                                                                       "Today's Toodo");
                                                             } else if (todo
-                                                                    .todoRemainder ==
+                                                                    .todoReminder ==
                                                                 null) {
-                                                              // if the Remainder is not provided by user then, use this template for sharing it
+                                                              // if the Reminder is not provided by user then, use this template for sharing it
 
                                                               Share.share(
                                                                   "${todo.todoName} \n ${todo.todoEmoji}  \n \n @toodoleeApp",
@@ -311,13 +311,13 @@ The UI will change itself, and reload itself.
                                                               // if the Emoji is not provided by user then, use this template for sharing it
 
                                                               Share.share(
-                                                                  "${todo.todoRemainder}⏰ \n \n @toodoleeApp",
+                                                                  "${todo.todoReminder}⏰ \n \n @toodoleeApp",
                                                                   subject:
                                                                       "Today's Toodo");
                                                             } else {
                                                               // Everything is provided then, we use this as the template
                                                               Share.share(
-                                                                  "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoRemainder} \n \n @toodoleeApp",
+                                                                  "${todo.todoName} ${todo.todoEmoji} \n at ${todo.todoReminder} \n \n @toodoleeApp",
                                                                   subject:
                                                                       "Today's Toodo");
                                                             }
@@ -383,13 +383,13 @@ The UI will change itself, and reload itself.
                                                         MaterialButton(
                                                           // Delete the Toodo Card
                                                           onPressed: () async {
-                                                            // if the remainder is not null then cancel the notification
+                                                            // if the reminder is not null then cancel the notification
                                                             //how the Cancellation works?
-                                                            //check by cliciking on cancelRemainderNotifications() with ctrl + click, there is whole documentation there.
-                                                            if (completedTodoRemainder !=
+                                                            //check by cliciking on cancelReminderNotifications() with ctrl + click, there is whole documentation there.
+                                                            if (completedTodoReminder !=
                                                                 null) {
-                                                              cancelRemainderNotifications(
-                                                                  completedTodoRemainder,
+                                                              cancelReminderNotifications(
+                                                                  completedTodoReminder,
                                                                   context);
                                                             }
                                                             //delete it from Index

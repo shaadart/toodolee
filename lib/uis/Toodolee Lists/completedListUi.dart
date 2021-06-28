@@ -136,13 +136,13 @@ The UI will change itself, and reload itself.
                                     );
 
                                     if (comptodo.isCompleted == true) {
-                                      if (comptodo.completedTodoRemainder !=
+                                      if (comptodo.completedTodoReminder !=
                                           null) {
                                         /* 
                                             We are restarting the notification*/
-                                        restartRemainderNotifications(
+                                        restartReminderNotifications(
                                             comptodo.completedTodoName,
-                                            comptodo.completedTodoRemainder,
+                                            comptodo.completedTodoReminder,
                                             context);
                                       }
 
@@ -157,8 +157,8 @@ The UI will change itself, and reload itself.
                                       TodoModel incompletedTodo = TodoModel(
                                         todoName: comptodo.completedTodoName,
                                         todoEmoji: comptodo.completedTodoEmoji,
-                                        todoRemainder:
-                                            comptodo.completedTodoRemainder,
+                                        todoReminder:
+                                            comptodo.completedTodoReminder,
                                         isCompleted: comptodo.isCompleted =
                                             false,
                                       );

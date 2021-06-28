@@ -12,19 +12,17 @@ class StreakModel extends HiveObject {
   @HiveField(2)
   String streakEmoji;
   @HiveField(3)
-  String streakRemainder;
+  String streakReminder;
   @HiveField(4)
   int streakDays;
   @HiveField(5)
   bool isCompleted;
-
+  @HiveField(6)
   StreakModel(
       {this.streakName,
       this.streakCount,
       this.streakEmoji,
-      this.streakRemainder,
+      this.streakReminder,
       this.streakDays,
       this.isCompleted});
-
-  //added false, value, if getting errors, remove "false" from here
 }

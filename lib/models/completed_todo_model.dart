@@ -10,13 +10,13 @@ class CompletedTodoModel {
   @HiveField(1)
   String completedTodoEmoji;
   @HiveField(2)
-  String completedTodoRemainder;
+  String completedTodoReminder;
   @HiveField(3)
   bool isCompleted;
 
   CompletedTodoModel(
       {this.completedTodoName,
-      this.completedTodoRemainder,
+      this.completedTodoReminder,
       this.completedTodoEmoji,
-      this.isCompleted}); //added false, value, if getting errors, remove "false" from here
+      this.isCompleted});
 }

@@ -58,13 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
         pages: pages,
         showBullets: false,
         skipCallback: () {
-          // set remainderNotifications be true,
-          //it will let the app set Remainders, You can check the pages/settingspage.dart there in it the remainderNotification must have true as the value to let the user set the remainder notifications, otherwise the remiander will not ring.
-          settingsBox.put("remainderNotifications", true);
+          // set reminderNotifications be true,
+          //it will let the app set Reminders, You can check the pages/settingspage.dart there in it the reminderNotification must have true as the value to let the user set the reminder notifications, otherwise the remiander will not ring.
+          settingsBox.put("reminderNotifications", true);
           settingsBox.put("dailyNotifications",
               true); //set the daily notifications be true, with this you can get daily notifications for writing the Toodolee, so to create a Habit,
-          setDailyRemainderMethod([
-            //daily Remainder Notification takes the hour and minute in inside the list.
+          setDailyReminderMethod([
+            //daily Reminder Notification takes the hour and minute in inside the list.
             6,
             30
           ], context); // as in the start the Daily Notifications will have null as the value, so default is 6:30 when the daily alarm will ring (you can change time from settings Page inside the app)
@@ -77,15 +77,15 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DefaultedApp()),
-          ); // Navigate to the main App.
+          ); // Navigate to the main App. when the skip button is pressed.
         },
         finishCallback: () {
-          // set remainderNotifications be true,
-          //it will let the app set Remainders, You can check the pages/settingspage.dart there in it the remainderNotification must have true as the value to let the user set the remainder notifications, otherwise the remiander will not ring.
-          settingsBox.put("remainderNotifications", true);
-          settingsBox.put("dailyNotifications",
-              true); //set the daily notifications be true, with this you can get daily notifications for writing the Toodolee, so to create a Habit,
-          setDailyRemainderMethod([
+          // set reminderNotifications be true,
+          //it will let the app set Reminders, You can check the pages/settingspage.dart there in it the reminderNotification must have true as the value to let the user set the reminder notifications, otherwise the remiander will not ring.
+          settingsBox.put("reminderNotifications", true);
+          settingsBox.put("dailyNotifications", true);
+          //set the daily notifications be true, with this you can get daily notifications for writing the Toodolee, so to create a Habit,
+          setDailyReminderMethod([
             6,
             30
           ], context); // as in the start the Daily Notifications will have null as the value, so default is 6:30 when the daily alarm will ring (you can change time from settings Page inside the app)

@@ -18,7 +18,7 @@ class CompletedTodoModelAdapter extends TypeAdapter<CompletedTodoModel> {
     };
     return CompletedTodoModel(
       completedTodoName: fields[0] as String,
-      completedTodoRemainder: fields[2] as String,
+      completedTodoReminder: fields[2] as String,
       completedTodoEmoji: fields[1] as String,
       isCompleted: fields[3] as bool,
     );
@@ -33,7 +33,7 @@ class CompletedTodoModelAdapter extends TypeAdapter<CompletedTodoModel> {
       ..writeByte(1)
       ..write(obj.completedTodoEmoji)
       ..writeByte(2)
-      ..write(obj.completedTodoRemainder)
+      ..write(obj.completedTodoReminder)
       ..writeByte(3)
       ..write(obj.isCompleted);
   }
