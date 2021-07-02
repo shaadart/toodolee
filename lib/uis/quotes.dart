@@ -235,7 +235,7 @@ class _QuotesState extends State<Quotes> {
                 IconButton(
                   onPressed: () {
                     player.play(
-                      'sounds/ui_tap-variant-01.wav',
+                      'sounds/navigation_forward-selection-minimal.wav',
                       stayAwake: false,
                     );
                     Share.share(

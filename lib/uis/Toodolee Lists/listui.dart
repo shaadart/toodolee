@@ -259,9 +259,9 @@ The UI will change itself, and reload itself.
                                               color: Colors.blue,
                                               onPressed: () {
                                                 player.play(
-                                                  'sounds/ui_tap-variant-01.wav',
+                                                  'sounds/navigation_forward-selection-minimal.wav',
                                                   stayAwake: false,
-                                                );
+                                                ); // plays the tap sound
                                                 showModalBottomSheet(
                                                   context: context,
                                                   isScrollControlled: true,
@@ -282,7 +282,7 @@ The UI will change itself, and reload itself.
                                                         MaterialButton(
                                                           onPressed: () {
                                                             player.play(
-                                                              'sounds/ui_tap-variant-01.wav',
+                                                              'sounds/navigation_forward-selection-minimal.wav',
                                                               stayAwake: false,
                                                             );
                                                             Navigator.pop(
@@ -411,7 +411,7 @@ The UI will change itself, and reload itself.
                                                             player.play(
                                                               'sounds/navigation_transition-left.wav',
                                                               stayAwake: false,
-                                                            );
+                                                            ); // deleting sound effect, plays swooooosh (deleting) sound
 
                                                             setState(() {});
                                                             Navigator.pop(

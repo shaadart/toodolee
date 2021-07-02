@@ -42,7 +42,6 @@ class Bored extends StatefulWidget {
 class _BoredState extends State<Bored> {
   //https://www.boredapi.com/api/activity/
 
-
 // Checks for the Internet Connection (already)
   isInNetwork() async {
     if (await ConnectionVerify.connectionStatus() == true) {
@@ -324,7 +323,7 @@ class _BoredState extends State<Bored> {
             //                                     color: Colors.blue),
             //                                 onPressed: () {
             //                                   player.play(
-            //                                     'sounds/ui_tap-variant-01.wav',
+            //               'sounds/navigation_forward-selection-minimal.wav',
             //                                     stayAwake: false,
             //
             //                                   );
@@ -342,7 +341,7 @@ class _BoredState extends State<Bored> {
             //                                   );
             //                                   // addTodoBottomSheet(context);
             //                                   player.play(
-            //                                     'sounds/ui_tap-variant-01.wav',
+            //               'sounds/navigation_forward-selection-minimal.wav',
             //                                     stayAwake: false,
             //
             //                                   );
@@ -364,7 +363,7 @@ class _BoredState extends State<Bored> {
             //                                     color: Colors.blue),
             //                                 onPressed: () async {
             //                                   player.play(
-            //                                     'sounds/ui_tap-variant-01.wav',
+            //               'sounds/navigation_forward-selection-minimal.wav',
             //                                     stayAwake: false,
             //
             //                                   );
@@ -381,7 +380,7 @@ class _BoredState extends State<Bored> {
             //                                 ),
             //                                 onPressed: () async {
             //                                   player.play(
-            //                                     'sounds/ui_tap-variant-01.wav',
+            //               'sounds/navigation_forward-selection-minimal.wav',
             //                                     stayAwake: false,
             //
             //                                   );
@@ -398,7 +397,7 @@ class _BoredState extends State<Bored> {
             //                         leading: IconButton(
             //                             onPressed: () async {
             //                               player.play(
-            //                                 'sounds/ui_tap-variant-01.wav',
+            //           'sounds/navigation_forward-selection-minimal.wav',
             //                                 stayAwake: false,
             //
             //                               );
@@ -569,7 +568,7 @@ class _BoredState extends State<Bored> {
             //                                   ),
             //                                   onPressed: () {
             //                                     player.play(
-            //                                       'sounds/ui_tap-variant-01.wav',
+            //                 'sounds/navigation_forward-selection-minimal.wav',
             //                                       stayAwake: false,
             //
             //                                     );
@@ -741,7 +740,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                           color: Colors.blue),
                       onPressed: () {
                         player.play(
-                          'sounds/ui_tap-variant-01.wav',
+                          'sounds/navigation_forward-selection-minimal.wav',
                           stayAwake: false,
                         );
                       })
@@ -751,7 +750,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                       ),
                       onPressed: () {
                         player.play(
-                          'sounds/ui_tap-variant-01.wav',
+                          'sounds/navigation_forward-selection-minimal.wav',
                           stayAwake: false,
                         );
                         Navigator.push(
@@ -780,7 +779,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                           color: Colors.blue),
                       onPressed: () async {
                         player.play(
-                          'sounds/ui_tap-variant-01.wav',
+                          'sounds/navigation_forward-selection-minimal.wav',
                           stayAwake: false,
                         );
                         await Navigator.push(
@@ -795,7 +794,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
                       ),
                       onPressed: () async {
                         player.play(
-                          'sounds/ui_tap-variant-01.wav',
+                          'sounds/navigation_forward-selection-minimal.wav',
                           stayAwake: false,
                         );
                         await Navigator.push(
@@ -810,7 +809,7 @@ class _DefaultnullboredlistState extends State<Defaultnullboredlist> {
               leading: IconButton(
                   onPressed: () async {
                     player.play(
-                      'sounds/ui_tap-variant-01.wav',
+                      'sounds/navigation_forward-selection-minimal.wav',
                       stayAwake: false,
                     );
                     await Navigator.push(

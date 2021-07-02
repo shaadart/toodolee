@@ -178,6 +178,10 @@ The UI will change itself, and reload itself.
                                 trailing: IconButton(
                                   color: Colors.blue,
                                   onPressed: () {
+                                    player.play(
+                                      'sounds/navigation_forward-selection-minimal.wav',
+                                      stayAwake: false,
+                                    ); // plays the tap sound
                                     // When the Icon is Pressed, the Bottom sheet will Appear.
                                     showModalBottomSheet(
                                       context: context,
@@ -222,6 +226,11 @@ The UI will change itself, and reload itself.
                                                 deleteQuotes();
 
                                                 Navigator.pop(context);
+
+                                                player.play(
+                                                  'sounds/navigation_transition-left.wav',
+                                                  stayAwake: false,
+                                                ); // deleting sound effect, plays swooooosh (deleting) sound
                                               },
                                               child: ListTile(
                                                 leading: Icon(

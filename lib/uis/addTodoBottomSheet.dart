@@ -10,6 +10,7 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:toodo/models/completed_todo_model.dart';
 import 'package:toodo/models/Streak%20Model/streak_model.dart';
 import 'package:toodo/models/todo_model.dart';
+import 'package:toodo/uis/quotes.dart';
 import 'package:yudiz_modal_sheet/yudiz_modal_sheet.dart';
 
 Box<TodoModel> todoBox; //box that stores todo
@@ -143,15 +144,11 @@ void addTodoBottomSheet(context) {
                 todoEmoji: todoEmoji.toString(),
                 isCompleted: false);
 
-            if ((todo.todoName).runtimeType != Null &&
-                todo.todoName.length >= 2) {
-              decrementCount(); // which means the (remember the home screen says, "You can add 4 more"), we are decresing it, so it will be like "You can add 3 more"
-
 //Here checking that if reminder is null then set no reminders, if user has asked to add remaiders for their tooooodo, then Set the Reminder.
-              if (todo.todoReminder == null) {
-                print("No Reminders Set");
-              } else if (todo.todoReminder != null) {
-                /* Many of the people use AM/PM things and many of them use 24 hour mode, 
+            if (todo.todoReminder == null) {
+              print("No Reminders Set");
+            } else if (todo.todoReminder != null) {
+              /* Many of the people use AM/PM things and many of them use 24 hour mode, 
                 so the toodolee is for everyone, 
                 so we had to set reminders for both of the every group. 
                 so we are doing - 
@@ -177,39 +174,39 @@ void addTodoBottomSheet(context) {
                 For more Info also Check setReminderMethod(), which is in setNotification.dart in Notification File.
                 For more Info, Check getReminderTime() method, which is in the last line of the Notification/setNotification.dart
                 */
-                if (todo.todoReminder.contains("PM") == true) {
-                  // if the reminder has PM in it.
-                  setReminderMethod(
-                      getReminderTime(todo.todoReminder, context),
-                      todo.todoName,
-                      (getReminderTime(todo.todoReminder, context).first +
-                          getReminderTime(todo.todoReminder, context).last),
-                      context);
-                  print(
-                      "${((getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last))} is the current value of the channel id");
-                } else if (todo.todoReminder.contains("AM") == true) {
-                  setReminderMethod(
-                      getReminderTime(todo.todoReminder, context),
-                      todo.todoName,
-                      (getReminderTime(todo.todoReminder, context).first +
-                          getReminderTime(todo.todoReminder, context).last),
-                      context);
-                  print(
-                      "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
-                } else if (todo.todoReminder.contains("AM") == false &&
-                    todo.todoReminder.contains("PM") == false) {
-                  setReminderMethod(
-                      getReminderTime(todo.todoReminder, context),
-                      todo.todoName,
-                      (getReminderTime(todo.todoReminder, context).first +
-                          getReminderTime(todo.todoReminder, context).last),
-                      context);
-                  print(
-                      "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
-                }
+              if (todo.todoReminder.contains("PM") == true) {
+                // if the reminder has PM in it.
+                setReminderMethod(
+                    getReminderTime(todo.todoReminder, context),
+                    todo.todoName,
+                    (getReminderTime(todo.todoReminder, context).first +
+                        getReminderTime(todo.todoReminder, context).last),
+                    context);
+                print(
+                    "${((getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last))} is the current value of the channel id");
+              } else if (todo.todoReminder.contains("AM") == true) {
+                setReminderMethod(
+                    getReminderTime(todo.todoReminder, context),
+                    todo.todoName,
+                    (getReminderTime(todo.todoReminder, context).first +
+                        getReminderTime(todo.todoReminder, context).last),
+                    context);
+                print(
+                    "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
+              } else if (todo.todoReminder.contains("AM") == false &&
+                  todo.todoReminder.contains("PM") == false) {
+                setReminderMethod(
+                    getReminderTime(todo.todoReminder, context),
+                    todo.todoName,
+                    (getReminderTime(todo.todoReminder, context).first +
+                        getReminderTime(todo.todoReminder, context).last),
+                    context);
+                print(
+                    "${(getReminderTime(todo.todoReminder, context).first + getReminderTime(todo.todoReminder, context).last)} is the current value of the channel id");
               }
-              //If user is trying to add something, which has no letters, then,
-            } else if (todoName.runtimeType == Null ||
+            }
+            //If user is trying to add something, which has no letters, then,
+            if (todoName.runtimeType == Null ||
                 (todo.todoName).runtimeType == Null) {
               print("No means no I will not do anything, hmmm");
             }
@@ -223,8 +220,14 @@ void addTodoBottomSheet(context) {
 // If everything is good, user has added todo which is some pair of letters and todoName is not null, then,
 // we will jump to WorkingOnPage() and also change chips, set every chip false and make the workingSelectedChip to true, i.e First Page before streaks.
 
-            if (todo.todoName != null) {
-              // deleteQuotes();
+            if (todo.todoName != null &&
+                todo.todoName.trimLeft().isEmpty == false) {
+              // if the user is trying to add blank spaces so these kind of Tooodoles will not be added,
+              //and if the user is trying to add no values then also the tooodolees will not be added,
+              //this statement is check king if these is true or not.
+              decrementCount(); // which means the (remember the home screen says, "You can add 4 more"), we are decreeeeeeezing :hehe it, so it will be like "You can add 3 more"
+
+              deleteQuotes();
               setState(() {
                 initialselectedPage = 0;
 
@@ -408,16 +411,19 @@ void addTodoBottomSheet(context) {
                                       // If the button is tapped the Top Sheet will be slided and we will be able to set challenge of how long. <3 & >45
                                       if (todoReminder != null)
                                         FadeInUp(
-                                          child: IconButton(
-                                            icon: Icon(
-                                              CarbonIcons.edt_loop,
+                                          child: Opacity(
+                                            opacity: 0.6,
+                                            child: IconButton(
+                                              icon: Icon(
+                                                CarbonIcons.edt_loop,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(
+                                                    context); // Hide the Bottom sheet, so it will not annoy the upcomming Top Sheet.
+                                                setChallenge(
+                                                    context); //This will open the TopSheet where these is the rain of challenge.
+                                              },
                                             ),
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Hide the Bottom sheet, so it will not annoy the upcomming Top Sheet.
-                                              setChallenge(
-                                                  context); //This will open the TopSheet where these is the rain of challenge.
-                                            },
                                           ),
                                         )
                                       else

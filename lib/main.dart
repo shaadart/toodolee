@@ -563,10 +563,6 @@ There are exactly Three Chips, as you can see in the Front App.
                                     selected: workingSwitchValue,
                                     onSelected: (val) {
                                       setState(() {
-                                        player.play(
-                                          'sounds/ui_tap-variant-01.wav',
-                                          stayAwake: false,
-                                        );
                                         initialselectedPage =
                                             0; //set the workingOn as the main Index
 
@@ -613,10 +609,6 @@ There are exactly Three Chips, as you can see in the Front App.
                                     selected: streakSwitchValue,
                                     onSelected: (val) {
                                       setState(() {
-                                        player.play(
-                                          'sounds/ui_tap-variant-01.wav',
-                                          stayAwake: false,
-                                        );
                                         initialselectedPage = 1;
 
                                         selectedChip.put("selectedPage", 1);
@@ -669,10 +661,6 @@ There are exactly Three Chips, as you can see in the Front App.
                                           "${streakBox.isEmpty} are emptiness");
                                       print("${streakBox.keys} are keys");
                                       setState(() {
-                                        player.play(
-                                          'sounds/ui_tap-variant-01.wav',
-                                          stayAwake: false,
-                                        );
                                         initialselectedPage = 2;
 
                                         selectedChip.put("selectedPage", 2);

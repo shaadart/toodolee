@@ -1,5 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:app_settings/app_settings.dart';
+//import 'package:app_settings/app_settings.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:expansion_card/expansion_card.dart';
@@ -66,9 +66,9 @@ class _SettingPageState extends State<SettingPage> {
       if (t != null) {
         setState(() {
           settingsBox.put("dailyNotifications", true);
-          dailyReminder = t.format(context); 
+          dailyReminder = t.format(context);
           // store the time that user has set to the dailRemainder variable,
-          // like user may have stored 7:18 AM or 6:30 PM or 13:00 as according to their mobile phone and 
+          // like user may have stored 7:18 AM or 6:30 PM or 13:00 as according to their mobile phone and
           // what type of clock (12 or 24 hour clock) they use.
 
           dailyReminderBox.put("reminderTime", dailyReminder);
@@ -400,13 +400,13 @@ class _SettingPageState extends State<SettingPage> {
               // This will be opening the local OS settings for Notification so user can see additional Notification settings.
               GestureDetector(
                 onTap: () {
-                  AppSettings.openNotificationSettings(); // opens App Settings.
+                  // AppSettings.openNotificationSettings(); // opens App Settings.
                 },
                 child: ListTile(
                   trailing: IconButton(
                       icon: Icon(CarbonIcons.launch),
                       onPressed: () {
-                        AppSettings.openNotificationSettings();
+                        //     AppSettings.openNotificationSettings();  // opens App Settings.
                       }),
                   title: Text("Check Notifications Settings"),
                 ),

@@ -698,7 +698,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                             color: Colors.blue,
                                                             onPressed: () {
                                                               player.play(
-                                                                'sounds/ui_tap-variant-01.wav',
+                                                                'sounds/navigation_forward-selection-minimal.wav',
                                                                 stayAwake:
                                                                     false,
                                                               );
@@ -733,7 +733,7 @@ from restarting and cancelling the notifications for the deleted and completed. 
                                                                             onPressed:
                                                                                 () {
                                                                               player.play(
-                                                                                'sounds/ui_tap-variant-01.wav',
+                                                                                'sounds/navigation_forward-selection-minimal.wav',
                                                                                 stayAwake: false,
                                                                               );
                                                                               Navigator.pop(context);
@@ -897,6 +897,10 @@ Show,
                                       trailing: IconButton(
                                         color: Colors.blue,
                                         onPressed: () {
+                                          player.play(
+                                            'sounds/navigation_forward-selection-minimal.wav',
+                                            stayAwake: false,
+                                          ); // plays the tap sound
                                           // After prressing the more button the modal sheet opens up.
 
                                           showModalBottomSheet(
@@ -962,6 +966,11 @@ Show,
                                                       deleteQuotes(); // re-new the quotes.
 
                                                       Navigator.pop(context);
+
+                                                      player.play(
+                                                        'sounds/navigation_transition-left.wav',
+                                                        stayAwake: false,
+                                                      ); // deleting sound effect, plays swooooosh (deleting) sound
                                                     },
                                                     child: ListTile(
                                                       leading: Icon(
