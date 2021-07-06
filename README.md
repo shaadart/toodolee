@@ -62,7 +62,7 @@ Toodoleee is a revolt Against All Tooodo apps, Because they worsen your creatvit
 Check who is best among us, and what packages, fonts and people are behind for the world.
 
 
-# Please Sponsor the Toodoolee
+# If you can, Sponsor the Toodoolee
 
 <a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img height='60' src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px" ></a>
 
