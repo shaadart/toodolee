@@ -66,3 +66,8 @@ Check who is best among us, and what packages, fonts and people are behind for t
 
 <a href="https://www.buymeacoffee.com/toodolee" target="_blank"><img height='60' src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px" ></a>
 
+
+It's All Starts with the Dream,
+It is made like an Erosion on the Stone by Dripping Water,
+Pick up that Stone, And work on it till the rest of your day.
+
